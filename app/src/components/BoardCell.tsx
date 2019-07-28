@@ -1,5 +1,7 @@
 import React from 'react';
 
+import './BoardCell.css';
+
 interface Props {
     x: number;
     y: number;
@@ -13,7 +15,7 @@ export const BoardCell: React.FC<Props> = ({ x, y, value, onClick }: Props) => {
     }
 
     return (
-        <button onClick={cellClicked}>
+        <button className="BoardCell" onClick={cellClicked}>
             {value}
         </button>
     );

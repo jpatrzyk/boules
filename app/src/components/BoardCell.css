@@ -1,0 +1,9 @@
+:root {
+  --cell-size: 48px;
+}
+
+.BoardCell {
+  width: var(--cell-size);
+  height: var(--cell-size);
+}
+

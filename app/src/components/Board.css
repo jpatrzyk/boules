@@ -1,0 +1,10 @@
+.Board {
+  margin: 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.Board-row {
+  display: flex;
+}
+

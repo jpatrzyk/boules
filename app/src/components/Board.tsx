@@ -2,6 +2,8 @@ import React from 'react';
 
 import { BoardCell } from "./BoardCell";
 
+import './Board.css';
+
 interface Props {
     size: number;
     model: number[];
@@ -19,10 +21,10 @@ function range(n: number) {
 export const Board: React.FC<Props> = ({ size, model, onClick }: Props) => {
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <div className="Board">
             {range(size).map(x => {
                 return (
-                    <div style={{ display: 'flex' }}>
+                    <div className="Board-row">
                         {range(size).map(y => {
                             const value = model[x * size + y];
                             return (
