@@ -2,12 +2,14 @@ import React from 'react';
 
 import { useModel, randomBalls } from "./hooks/useModel";
 import { Board } from './components/Board';
+import { NextColors } from "./components/NextColors";
+
 import './App.css';
 
 const size = 8;
 
 const App: React.FC = () => {
-  const [model, dispatch] = useModel(size, 10);
+  const [state, dispatch] = useModel(size, 10);
 
   function boardClicked(x: number, y: number) {
     dispatch(randomBalls());
@@ -19,7 +21,8 @@ const App: React.FC = () => {
         <h1>Kulki</h1>
       </header>
       <main>
-        <Board size={size} model={model} onClick={boardClicked} />
+        <NextColors nextColors={state.nextColors} />
+        <Board size={size} model={state.model} onClick={boardClicked} />
       </main>
     </div>
   );

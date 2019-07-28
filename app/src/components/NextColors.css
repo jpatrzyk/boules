@@ -1,0 +1,8 @@
+.NextColors {
+  margin: 24px;
+  display: flex;
+}
+
+.NextColors-row {
+  display: flex;
+}
