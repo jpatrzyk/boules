@@ -1,16 +1,97 @@
 :root {
-  --cell-size: 48px;
-  --circle-size: 36px;
+    --cell-size: 64px;
+    --circle-size: 48px;
 }
 
 .BoardCell {
-  width: var(--cell-size);
-  height: var(--cell-size);
+    width: var(--cell-size);
+    height: var(--cell-size);
 }
 
 .BoardCell-circle {
-  width: var(--circle-size);
-  height: var(--circle-size);
-  border-radius: calc(var(--circle-size) / 2);
+    width: var(--circle-size);
+    height: var(--circle-size);
+    border-radius: calc(var(--circle-size) / 2);
+    box-shadow: rgba(0, 0, 0, 0.5) -2px 2px 3px 0;
 }
 
+.BoardCell-circle--1 {
+    background-image: radial-gradient(
+            farthest-corner at 60% 40%,
+            var(--material-color-deep-orange-100) 1%,
+            var(--material-color-deep-orange-600) 50%,
+            var(--material-color-deep-orange-900) 75%);
+}
+
+.BoardCell-circle--2 {
+    background-image: radial-gradient(
+            farthest-corner at 60% 40%,
+            var(--material-color-blue-100) 1%,
+            var(--material-color-blue-600) 50%,
+            var(--material-color-blue-900) 75%);
+}
+
+.BoardCell-circle--3 {
+    background-image: radial-gradient(
+            farthest-corner at 60% 40%,
+            var(--material-color-amber-100) 1%,
+            var(--material-color-amber-600) 50%,
+            var(--material-color-amber-900) 75%);
+}
+
+.BoardCell-circle--4 {
+    background-image: radial-gradient(
+            farthest-corner at 60% 40%,
+            var(--material-color-light-green-100) 1%,
+            var(--material-color-light-green-600) 50%,
+            var(--material-color-light-green-900) 75%);
+}
+
+.BoardCell-circle--5 {
+    background-image: radial-gradient(
+            farthest-corner at 60% 40%,
+            var(--material-color-purple-100) 1%,
+            var(--material-color-purple-600) 50%,
+            var(--material-color-purple-900) 75%);
+}
+
+.BoardCell-circle--6 {
+    background-image: radial-gradient(
+            farthest-corner at 60% 40%,
+            var(--material-color-teal-100) 1%,
+            var(--material-color-teal-600) 50%,
+            var(--material-color-teal-900) 75%);
+}
+
+.BoardCell-circle--7 {
+    background-image: radial-gradient(
+            farthest-corner at 60% 40%,
+            var(--material-color-brown-100) 1%,
+            var(--material-color-brown-600) 50%,
+            var(--material-color-brown-900) 75%);
+}
+
+.BoardCell-circle--8 {
+    background-image: radial-gradient(
+            farthest-corner at 60% 40%,
+            var(--material-color-pink-100) 1%,
+            var(--material-color-pink-600) 50%,
+            var(--material-color-pink-900) 75%);
+}
+
+.BoardCell-circle--9 {
+    background-image: radial-gradient(
+            farthest-corner at 60% 40%,
+            var(--material-color-lime-100) 1%,
+            var(--material-color-lime-600) 50%,
+            var(--material-color-lime-900) 75%);
+}
+
+
+.BoardCell-circle--10 {
+    background-image: radial-gradient(
+            farthest-corner at 60% 40%,
+            var(--material-color-cyan-100) 1%,
+            var(--material-color-cyan-600) 50%,
+            var(--material-color-cyan-900) 75%);
+}
