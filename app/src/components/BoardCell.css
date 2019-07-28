@@ -1,9 +1,16 @@
 :root {
   --cell-size: 48px;
+  --circle-size: 36px;
 }
 
 .BoardCell {
   width: var(--cell-size);
   height: var(--cell-size);
+}
+
+.BoardCell-circle {
+  width: var(--circle-size);
+  height: var(--circle-size);
+  border-radius: calc(var(--circle-size) / 2);
 }
 

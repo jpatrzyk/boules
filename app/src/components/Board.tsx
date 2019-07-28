@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { range } from "../utils/helpers";
 import { BoardCell } from "./BoardCell";
 
 import './Board.css';
@@ -8,14 +9,6 @@ interface Props {
     size: number;
     model: number[];
     onClick: (x: number, y: number) => void
-}
-
-function range(n: number) {
-    const result = Array(n);
-    for (let i = 0; i < n; i++) {
-        result[i] = i;
-    }
-    return result;
 }
 
 export const Board: React.FC<Props> = ({ size, model, onClick }: Props) => {
