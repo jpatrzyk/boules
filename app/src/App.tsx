@@ -1,21 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
+
+import { useModel, randomBalls } from "./hooks/useModel";
 import { Board } from './components/Board';
 import './App.css';
 
 const size = 8;
 
 const App: React.FC = () => {
-  const [model, setModel] = useState<number[]>(() => {
-    const model = new Array(size * size);
-    model.fill(0);
-    return model;
-  });
+  const [model, dispatch] = useModel(size, 10);
 
   function boardClicked(x: number, y: number) {
-    const index = x * size + y;
-    const updatedModel = [...model];
-    updatedModel[index] += 1;
-    setModel(updatedModel);
+    dispatch(randomBalls());
   }
 
   return (
