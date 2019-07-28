@@ -1,26 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import { Board } from './components/Board';
 import './App.css';
 
+const size = 8;
+
 const App: React.FC = () => {
+  const [model, setModel] = useState<number[]>(() => {
+    const model = new Array(size * size);
+    model.fill(0);
+    return model;
+  });
+
+  function boardClicked(x: number, y: number) {
+    const index = x * size + y;
+    const updatedModel = [...model];
+    updatedModel[index] += 1;
+    setModel(updatedModel);
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+      <header>
+        <h1>Kulki</h1>
       </header>
+      <main>
+        <Board size={size} model={model} onClick={boardClicked} />
+      </main>
     </div>
   );
-}
+};
 
 export default App;
