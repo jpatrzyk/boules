@@ -3,7 +3,8 @@ import { randomInt, range } from "../utils/helpers";
 import { MAX_COLORS_COUNT, NEXT_BALLS_COUNT } from "../utils/constants";
 
 type Action =
-  | { type: 'next_random' };
+  | { type: 'next_random' }
+  | { type: 'board_clicked', x: number, y: number };
 
 interface State {
   model: number[];
@@ -12,7 +13,11 @@ interface State {
 }
 
 export function randomBalls(): Action {
-  return {type: 'next_random'};
+  return { type: 'next_random' };
+}
+
+export function boardClicked(x: number, y: number): Action {
+  return { type: 'board_clicked', x, y };
 }
 
 export function useModel(size: number, colorsCount: number) {
@@ -31,7 +36,7 @@ export function useModel(size: number, colorsCount: number) {
     };
   }
 
-  function addRandomBalls({ model, nextColors }: State): State {
+  function addRandomBalls({ model, nextColors, ...state }: State): State {
     const emptyPlaces: number[] = [];
     model.forEach((value, position) => {
       if (value === 0) {
@@ -54,8 +59,24 @@ export function useModel(size: number, colorsCount: number) {
     });
 
     return {
-        model: updatedModel,
-        nextColors: chooseNextColors(),
+      ...state,
+      model: updatedModel,
+      nextColors: chooseNextColors(),
+    };
+  }
+
+  function handleBoardClicked(state: State, x: number, y: number): State {
+    const position = x * size + y;
+    console.log({ position, hasBall: state.model[position] });
+    if (state.model[position] === 0 || state.selectedBall === position) {
+      return {
+        ...state,
+        selectedBall: undefined
+      };
+    }
+    return {
+      ...state,
+      selectedBall: position
     };
   }
 
@@ -63,6 +84,8 @@ export function useModel(size: number, colorsCount: number) {
     switch (action.type) {
       case 'next_random':
         return addRandomBalls(state);
+      case 'board_clicked':
+        return handleBoardClicked(state, action.x, action.y);
       default:
         throw new Error();
     }

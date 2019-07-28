@@ -18,6 +18,21 @@
     box-shadow: rgba(0, 0, 0, 0.5) -2px 2px 3px 0;
 }
 
+.ColoredCell-circle--selected {
+    animation-name: bounce;
+    animation-duration: 0.5s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes bounce {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
 .ColoredCell-circle--1 {
     background-image: radial-gradient(
             farthest-corner at 60% 40%,

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useModel, randomBalls } from "./hooks/useModel";
+import { useModel, randomBalls, boardClicked } from "./hooks/useModel";
 import { Board } from './components/Board';
 import { NextColors } from "./components/NextColors";
 
@@ -11,7 +11,8 @@ const size = 8;
 const App: React.FC = () => {
   const [state, dispatch] = useModel(size, 10);
 
-  function boardClicked(x: number, y: number) {
+  function handleBoardClicked(x: number, y: number) {
+    dispatch(boardClicked(x, y));
     dispatch(randomBalls());
   }
 
@@ -22,7 +23,12 @@ const App: React.FC = () => {
       </header>
       <main>
         <NextColors nextColors={state.nextColors} />
-        <Board size={size} model={state.model} onClick={boardClicked} />
+        <Board
+          size={size}
+          model={state.model}
+          selectedBall={state.selectedBall}
+          onClick={handleBoardClicked}
+        />
       </main>
     </div>
   );

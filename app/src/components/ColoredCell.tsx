@@ -4,14 +4,20 @@ import './ColoredCell.css';
 
 interface Props {
   value: number; // 0 - empty, 1,2,... - color
+  isSelected?: boolean;
 }
 
-export const ColoredCell: React.FC<Props> = ({ value }: Props) => {
+export const ColoredCell: React.FC<Props> = ({ value, isSelected }: Props) => {
   function renderContent() {
     if (!value) {
       return null;
     }
-    return <div className={`ColoredCell-circle ColoredCell-circle--${value}`}/>;
+    const classNames = [`ColoredCell-circle ColoredCell-circle--${value}`];
+    if (isSelected) {
+        classNames.push('ColoredCell-circle--selected');
+    }
+
+    return <div className={classNames.join(' ')}/>;
   }
 
   return (
