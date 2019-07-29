@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { range } from "../utils/helpers";
+import { range } from "utils/helpers";
 import { BoardCell } from "./BoardCell";
 
 import './Board.css';

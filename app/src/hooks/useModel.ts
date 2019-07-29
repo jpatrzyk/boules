@@ -1,6 +1,6 @@
 import { useReducer } from 'react';
-import { randomInt, range } from "../utils/helpers";
-import { MAX_COLORS_COUNT, NEXT_BALLS_COUNT } from "../utils/constants";
+import { randomInt, range } from "utils/helpers";
+import { MAX_COLORS_COUNT, NEXT_BALLS_COUNT } from "utils/constants";
 
 type Action =
   | { type: 'next_random' }

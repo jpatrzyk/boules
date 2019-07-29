@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { useModel, randomBalls, boardClicked } from "./hooks/useModel";
-import { Board } from './components/Board';
-import { NextColors } from "./components/NextColors";
+import { useModel, randomBalls, boardClicked } from "hooks/useModel";
+import { Board } from 'components/Board';
+import { NextColors } from "components/NextColors";
 
 import './App.css';
 
