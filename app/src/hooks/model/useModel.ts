@@ -7,6 +7,7 @@ import findFullLineStart from './findFullLineStart';
 type Action = { type: 'board_clicked'; position: number } | { type: 'move_finished' };
 
 interface State {
+  points: number;
   model: number[];
   size: number;
   lineLength: number;
@@ -47,6 +48,7 @@ export function init(size: number, colorsCount: number): State {
   const model = new Array(size * size);
   model.fill(0);
   const emptyState = {
+    points: 0,
     model,
     size,
     lineLength: DEFAULT_LINE_LENGTH,
@@ -135,11 +137,12 @@ export function handleMoveFinished(state: State): State {
       selectedBall: nextSelectedBall,
     };
   } else {
-    const { fullLineStart, next } = findFullLineStart(updatedModel, state.size, state.lineLength, nextSelectedBall);
+    const { fullLineStart, length, next } = findFullLineStart(updatedModel, state.size, state.lineLength, nextSelectedBall);
     if (fullLineStart >= 0) {
       return {
         ...state,
         model: removeFullLine(updatedModel, fullLineStart, next),
+        points: state.points + length,
         currentlyAnimatingPath: undefined,
         selectedBall: -1,
       };

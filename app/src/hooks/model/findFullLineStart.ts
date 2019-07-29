@@ -36,6 +36,7 @@ export default function findFullLineStart(
 
   return {
     fullLineStart: -1,
+    length: 0,
     next: () => 0,
   };
 }
@@ -120,11 +121,13 @@ function _findFullLineStart(
   if (maxSubsequentCount >= lineLength) {
     return {
       fullLineStart: maxStart,
+      length: maxSubsequentCount,
       next,
     };
   }
   return {
     fullLineStart: -1,
+    length: 0,
     next,
   };
 }

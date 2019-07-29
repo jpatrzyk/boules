@@ -25,6 +25,7 @@ const App: React.FC = () => {
         <h1>Kulki</h1>
       </header>
       <main>
+        <h2>Punkty: {state.points}</h2>
         <NextColors nextColors={state.nextColors} />
         <Board
           size={size}
