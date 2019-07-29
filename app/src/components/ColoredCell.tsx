@@ -5,6 +5,14 @@ import './ColoredCell.css';
 interface Props {
   value: number; // 0 - empty, 1,2,... - color
   isSelected?: boolean;
+  animateTo?: Direction;
+}
+
+export enum Direction {
+  top = 'Top',
+  bottom = 'Bottom',
+  left = 'Left',
+  right = 'Right',
 }
 
 export const ColoredCell: React.FC<Props> = ({ value, isSelected }: Props) => {

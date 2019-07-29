@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
-import { useModel, randomBalls, boardClicked } from 'hooks/model/useModel';
+import { useModel, boardClicked, moveFinished } from 'hooks/model/useModel';
 import { Board } from 'components/Board';
 import { NextColors } from 'components/NextColors';
 
@@ -11,10 +11,13 @@ const size = 8;
 const App: React.FC = () => {
   const [state, dispatch] = useModel(size, 10);
 
-  function handleBoardClicked(x: number, y: number) {
-    dispatch(boardClicked(x, y));
-    dispatch(randomBalls());
-  }
+  const handleBoardClicked = useCallback((position: number) => {
+    dispatch(boardClicked(position));
+  }, [dispatch]);
+
+  const handleMoveFinished = useCallback(() => {
+    dispatch(moveFinished());
+  }, [dispatch]);
 
   return (
     <div className="App">
@@ -23,7 +26,14 @@ const App: React.FC = () => {
       </header>
       <main>
         <NextColors nextColors={state.nextColors} />
-        <Board size={size} model={state.model} selectedBall={state.selectedBall} onClick={handleBoardClicked} />
+        <Board
+          size={size}
+          model={state.model}
+          selectedBall={state.selectedBall}
+          currentlyAnimatingPath={state.currentlyAnimatingPath}
+          onClick={handleBoardClicked}
+          onMoveFinished={handleMoveFinished}
+        />
       </main>
     </div>
   );

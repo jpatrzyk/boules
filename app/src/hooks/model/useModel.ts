@@ -2,22 +2,23 @@ import { useReducer } from 'react';
 import { randomInt, range } from 'utils/helpers';
 import { MAX_COLORS_COUNT, NEXT_BALLS_COUNT } from 'utils/constants';
 
-type Action = { type: 'next_random' } | { type: 'board_clicked'; x: number; y: number };
+type Action = { type: 'board_clicked'; position: number } | { type: 'move_finished' };
 
 interface State {
   model: number[];
   size: number;
   colorsCount: number;
-  selectedBall?: number;
+  selectedBall: number; // -1 means no selection
   nextColors: number[];
+  currentlyAnimatingPath?: number[];
 }
 
-export function randomBalls(): Action {
-  return { type: 'next_random' };
+export function boardClicked(position: number): Action {
+  return { type: 'board_clicked', position };
 }
 
-export function boardClicked(x: number, y: number): Action {
-  return { type: 'board_clicked', x, y };
+export function moveFinished(): Action {
+  return { type: 'move_finished' };
 }
 
 export function chooseNextColors(colorsCount: number) {
@@ -28,12 +29,14 @@ export function chooseNextColors(colorsCount: number) {
 export function init(size: number, colorsCount: number): State {
   const model = new Array(size * size);
   model.fill(0);
-  return {
+  const emptyState = {
     model,
     size,
     colorsCount,
+    selectedBall: -1,
     nextColors: chooseNextColors(colorsCount),
   };
+  return addRandomBalls(emptyState);
 }
 
 export function addRandomBalls({ model, nextColors, ...state }: State): State {
@@ -121,32 +124,66 @@ export function findPath(fromPosition: number, toPosition: number, model: number
   return null;
 }
 
-export function handleBoardClicked(state: State, x: number, y: number): State {
-  const position = x * state.size + y;
-  if (state.model[position] === 0 && state.selectedBall) {
+export function handleBoardClicked(state: State, position: number): State {
+  if (state.model[position]) {
+    if (state.selectedBall === position) {
+      return {
+        ...state,
+        selectedBall: -1,
+      };
+    }
     return {
       ...state,
-      selectedBall: undefined,
+      selectedBall: position,
     };
   }
-  if (state.selectedBall === position) {
+  if (state.selectedBall >= 0) {
+    const path = findPath(state.selectedBall, position, state.model, state.size);
+    if (path === null) {
+      return {
+        ...state,
+        selectedBall: -1,
+      };
+    }
     return {
       ...state,
-      selectedBall: undefined,
+      currentlyAnimatingPath: path,
     };
   }
-  return {
-    ...state,
-    selectedBall: position,
-  };
+  return state;
+}
+
+export function handleMoveFinished(state: State): State {
+  if (!state.currentlyAnimatingPath || !state.currentlyAnimatingPath.length) {
+    return state;
+  }
+  const [nextSelectedBall, ...remainingPath] = state.currentlyAnimatingPath;
+  const updatedModel = [...state.model];
+  updatedModel[nextSelectedBall] = updatedModel[state.selectedBall];
+  updatedModel[state.selectedBall] = 0;
+  if (remainingPath.length) {
+    return {
+      ...state,
+      model: updatedModel,
+      currentlyAnimatingPath: remainingPath,
+      selectedBall: nextSelectedBall,
+    };
+  } else {
+    return addRandomBalls({
+      ...state,
+      model: updatedModel,
+      currentlyAnimatingPath: undefined,
+      selectedBall: -1,
+    });
+  }
 }
 
 function reducer(state: State, action: Action) {
   switch (action.type) {
-    case 'next_random':
-      return addRandomBalls(state);
     case 'board_clicked':
-      return handleBoardClicked(state, action.x, action.y);
+      return handleBoardClicked(state, action.position);
+    case 'move_finished':
+      return handleMoveFinished(state);
     default:
       throw new Error();
   }

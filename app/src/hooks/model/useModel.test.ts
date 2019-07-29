@@ -1,5 +1,5 @@
 import { MAX_COLORS_COUNT, NEXT_BALLS_COUNT } from 'utils/constants';
-import { chooseNextColors, init, addRandomBalls, handleBoardClicked, findPath } from './useModel';
+import { chooseNextColors, init, addRandomBalls, handleBoardClicked, findPath, handleMoveFinished } from './useModel';
 
 describe('chooseNextColors', () => {
   it('should return array of NEXT_BALLS_COUNT length', () => {
@@ -33,15 +33,16 @@ describe('init', () => {
       model: expect.arrayContaining([expect.any(Number)]),
       size,
       colorsCount,
+      selectedBall: -1,
       nextColors: expect.arrayContaining([expect.any(Number)]),
     });
   });
 
-  it('should return model of length = size * size filled out with zeros', () => {
+  it('should return model of length = size * size with NEXT_BALLS_COUNT random numbers and zeros', () => {
     const size = 3;
     const state = init(size, 5);
     expect(state.model).toHaveLength(size * size);
-    expect(state.model).toMatchObject(expect.arrayContaining([0, 0, 0, 0, 0, 0, 0, 0, 0])); // 9 * 0
+    expect(state.model.filter(a => a === 0)).toHaveLength(size * size - NEXT_BALLS_COUNT);
   });
 });
 
@@ -50,22 +51,26 @@ describe('addRandomBalls', () => {
     const state = {
       model: [0, 1, 0, 0, 2, 0, 0, 3, 0],
       size: 3,
-      colorsCount: 5,
-      nextColors: [4, 5, 5],
+      colorsCount: 6,
+      selectedBall: -1,
+      nextColors: [4, 5, 6],
     };
     const updatedState = addRandomBalls(state);
-    expect(updatedState.model).toMatchObject(expect.arrayContaining([0, 0, 0, 1, 2, 3, 4, 5, 5]));
+    expect(updatedState.model).toMatchObject(expect.arrayContaining([0, 1, 2, 3, 4, 5, 6]));
   });
 
   it('should add no more new balls than available empty places', () => {
     const state = {
       model: [1, 1, 1, 2, 2, 2, 0, 3, 0],
       size: 3,
-      colorsCount: 5,
-      nextColors: [4, 5, 5],
+      colorsCount: 6,
+      selectedBall: -1,
+      nextColors: [4, 5, 6],
     };
     const updatedState = addRandomBalls(state);
-    expect(updatedState.model).toMatchObject(expect.arrayContaining([1, 1, 1, 2, 2, 2, 3, 4, 5]));
+    expect(updatedState.model).toMatchObject(expect.arrayContaining([1, 2, 3, 4, 5]));
+    expect(updatedState.model).toMatchObject(expect.not.arrayContaining([0]));
+    expect(updatedState.model).toMatchObject(expect.not.arrayContaining([6]));
   });
 });
 
@@ -75,10 +80,11 @@ describe('handleBoardClicked', () => {
       model: [1, 2, 0, 2, 1, 3, 0, 1, 2],
       size: 3,
       colorsCount: 5,
+      selectedBall: 0,
       nextColors: [4, 5, 5],
     };
-    const updatedState = handleBoardClicked(state, 1, 2);
-    expect(updatedState.selectedBall).toBe(5); // 5 = 1 * size + 2, and model[5] > 0
+    const updatedState = handleBoardClicked(state, 5);
+    expect(updatedState.selectedBall).toBe(5);
   });
 
   it('should un-select a ball if clicked on currently selected ball', () => {
@@ -89,8 +95,71 @@ describe('handleBoardClicked', () => {
       colorsCount: 5,
       nextColors: [4, 5, 5],
     };
-    const updatedState = handleBoardClicked(state, 1, 2);
-    expect(updatedState.selectedBall).toBeUndefined();
+    const updatedState = handleBoardClicked(state, 5);
+    expect(updatedState.selectedBall).toBe(-1);
+  });
+
+  it('should un-select a ball if no path exists', () => {
+    const state = {
+      model: [1, 2, 0, 2, 1, 3, 0, 1, 2],
+      selectedBall: 1,
+      size: 3,
+      colorsCount: 5,
+      nextColors: [4, 5, 5],
+    };
+    const updatedState = handleBoardClicked(state, 6);
+    expect(updatedState.selectedBall).toBe(-1);
+  });
+
+  it('should set path if such exists', () => {
+    const state = {
+      model: [1, 0, 0, 0, 0, 0, 0, 0, 0],
+      selectedBall: 0,
+      size: 3,
+      colorsCount: 5,
+      nextColors: [4, 5, 5],
+    };
+    const updatedState = handleBoardClicked(state, 2);
+    expect(updatedState).toMatchObject({
+      selectedBall: 0,
+      currentlyAnimatingPath: [1, 2],
+    });
+  });
+});
+
+describe('handleMoveFinished', () => {
+  it('should move selected ball and remove the first element of the path', () => {
+    const state = {
+      model: [1, 0, 0, 0, 0, 0, 0, 0, 0],
+      selectedBall: 0,
+      currentlyAnimatingPath: [1, 2],
+      size: 3,
+      colorsCount: 5,
+      nextColors: [4, 5, 5],
+    };
+    const updatedState = handleMoveFinished(state);
+    expect(updatedState).toMatchObject({
+      model: [0, 1, 0, 0, 0, 0, 0, 0, 0],
+      selectedBall: 1,
+      currentlyAnimatingPath: [2],
+    });
+  });
+
+  it('should un-select the moved ball if finished', () => {
+    const state = {
+      model: [0, 1, 0, 0, 0, 0, 0, 0, 0],
+      selectedBall: 1,
+      currentlyAnimatingPath: [2],
+      size: 3,
+      colorsCount: 5,
+      nextColors: [4, 5, 5],
+    };
+    const updatedState = handleMoveFinished(state);
+    expect(updatedState).toMatchObject({
+      model: [0, 0, 1, 0, 0, 0, 0, 0, 0],
+      selectedBall: -1,
+      currentlyAnimatingPath: undefined,
+    });
   });
 });
 

@@ -1,24 +1,36 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
-import { ColoredCell } from './ColoredCell';
+import { ColoredCell, Direction } from './ColoredCell';
 import './BoardCell.css';
 
 interface Props {
-  x: number;
-  y: number;
+  position: number;
   value: number; // 0 - empty, 1,2,... - color
   isSelected: boolean;
-  onClick: (x: number, y: number) => void;
+  animateTo?: Direction;
+  onClick: (position: number) => void;
+  onMoveFinished: (position: number) => void;
 }
 
-export const BoardCell: React.FC<Props> = ({ x, y, value, isSelected, onClick }: Props) => {
+export const BoardCell: React.FC<Props> = ({ position, value, isSelected, animateTo, onClick, onMoveFinished }: Props) => {
+  useEffect(() => {
+    if (animateTo) {
+      const timeout = setTimeout(() => {
+        onMoveFinished(position);
+      }, 300);
+      return () => {
+        clearTimeout(timeout);
+      };
+    }
+  }, [position, animateTo, onMoveFinished]);
+
   function cellClicked() {
-    onClick(x, y);
+    onClick(position);
   }
 
   return (
     <button className="BoardCell" onClick={cellClicked}>
-      <ColoredCell value={value} isSelected={isSelected} />
+      <ColoredCell value={value} isSelected={isSelected} animateTo={animateTo} />
     </button>
   );
 };
