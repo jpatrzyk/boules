@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ColoredCell } from "./ColoredCell";
+import { ColoredCell } from './ColoredCell';
 import './BoardCell.css';
 
 interface Props {

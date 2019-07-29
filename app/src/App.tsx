@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { useModel, randomBalls, boardClicked } from "hooks/useModel";
+import { useModel, randomBalls, boardClicked } from 'hooks/useModel';
 import { Board } from 'components/Board';
-import { NextColors } from "components/NextColors";
+import { NextColors } from 'components/NextColors';
 
 import './App.css';
 
@@ -23,12 +23,7 @@ const App: React.FC = () => {
       </header>
       <main>
         <NextColors nextColors={state.nextColors} />
-        <Board
-          size={size}
-          model={state.model}
-          selectedBall={state.selectedBall}
-          onClick={handleBoardClicked}
-        />
+        <Board size={size} model={state.model} selectedBall={state.selectedBall} onClick={handleBoardClicked} />
       </main>
     </div>
   );

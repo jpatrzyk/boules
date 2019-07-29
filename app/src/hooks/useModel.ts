@@ -1,10 +1,8 @@
 import { useReducer } from 'react';
-import { randomInt, range } from "utils/helpers";
-import { MAX_COLORS_COUNT, NEXT_BALLS_COUNT } from "utils/constants";
+import { randomInt, range } from 'utils/helpers';
+import { MAX_COLORS_COUNT, NEXT_BALLS_COUNT } from 'utils/constants';
 
-type Action =
-  | { type: 'next_random' }
-  | { type: 'board_clicked', x: number, y: number };
+type Action = { type: 'next_random' } | { type: 'board_clicked'; x: number; y: number };
 
 interface State {
   model: number[];
@@ -21,7 +19,6 @@ export function boardClicked(x: number, y: number): Action {
 }
 
 export function useModel(size: number, colorsCount: number) {
-
   function chooseNextColors() {
     const maxColor = Math.min(colorsCount, MAX_COLORS_COUNT) + 1;
     return range(NEXT_BALLS_COUNT).map(() => randomInt(1, maxColor));
@@ -49,8 +46,7 @@ export function useModel(size: number, colorsCount: number) {
       places = emptyPlaces;
     } else {
       const sliceLength = emptyPlaces.length / NEXT_BALLS_COUNT;
-      places = range(NEXT_BALLS_COUNT)
-        .map(x => emptyPlaces[randomInt(x * sliceLength, (x + 1) * sliceLength)]);
+      places = range(NEXT_BALLS_COUNT).map(x => emptyPlaces[randomInt(x * sliceLength, (x + 1) * sliceLength)]);
     }
 
     const updatedModel = [...model];
@@ -71,12 +67,12 @@ export function useModel(size: number, colorsCount: number) {
     if (state.model[position] === 0 || state.selectedBall === position) {
       return {
         ...state,
-        selectedBall: undefined
+        selectedBall: undefined,
       };
     }
     return {
       ...state,
-      selectedBall: position
+      selectedBall: position,
     };
   }
 

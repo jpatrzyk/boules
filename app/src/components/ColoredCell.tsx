@@ -14,15 +14,11 @@ export const ColoredCell: React.FC<Props> = ({ value, isSelected }: Props) => {
     }
     const classNames = [`ColoredCell-circle ColoredCell-circle--${value}`];
     if (isSelected) {
-        classNames.push('ColoredCell-circle--selected');
+      classNames.push('ColoredCell-circle--selected');
     }
 
-    return <div className={classNames.join(' ')}/>;
+    return <div className={classNames.join(' ')} />;
   }
 
-  return (
-    <div className="ColoredCell">
-      {renderContent()}
-    </div>
-  );
+  return <div className="ColoredCell">{renderContent()}</div>;
 };
