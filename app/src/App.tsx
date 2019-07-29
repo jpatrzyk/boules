@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useModel, randomBalls, boardClicked } from 'hooks/useModel';
+import { useModel, randomBalls, boardClicked } from 'hooks/model/useModel';
 import { Board } from 'components/Board';
 import { NextColors } from 'components/NextColors';
 
