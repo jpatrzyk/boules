@@ -20,16 +20,20 @@ export default function findFullLineStart(
     return vertical;
   }
 
-  const leftTop = getLeftTop(addedBallPosition, size);
-  const rightBottom = getRightBottom(addedBallPosition, size);
-  const diagonal1 = _findFullLineStart(model, leftTop, rightBottom, i => i + size + 1, color, lineLength);
+  const goLeftUp = (i: number) => i - size - 1;
+  const goRightDown = (i: number) => i + size + 1;
+  const leftTop = _getDiagonalCorner(addedBallPosition, size, goLeftUp);
+  const rightBottom = _getDiagonalCorner(addedBallPosition, size, goRightDown);
+  const diagonal1 = _findFullLineStart(model, leftTop, rightBottom, goRightDown, color, lineLength);
   if (diagonal1.fullLineStart >= 0) {
     return diagonal1;
   }
 
-  const rightTop = getRightTop(addedBallPosition, size);
-  const leftBottom = getLeftBottom(addedBallPosition, size);
-  const diagonal2 = _findFullLineStart(model, rightTop, leftBottom, i => i + size - 1, color, lineLength);
+  const goRightUp = (i: number) => i - size + 1;
+  const goLeftDown = (i: number) => i + size - 1;
+  const rightTop = _getDiagonalCorner(addedBallPosition, size, goRightUp);
+  const leftBottom = _getDiagonalCorner(addedBallPosition, size, goLeftDown);
+  const diagonal2 = _findFullLineStart(model, rightTop, leftBottom, goLeftDown, color, lineLength);
   if (diagonal2.fullLineStart >= 0) {
     return diagonal2;
   }
@@ -41,51 +45,15 @@ export default function findFullLineStart(
   };
 }
 
-function getLeftTop(position: number, size: number) {
-  let p = position;
-  let y = p % size;
-  let x = (p - y) / size;
-  while (y > 0 && x > 0) {
-    p = p - size - 1;
-    y = p % size;
-    x = (p - y) / size;
-  }
-  return p;
-}
-
-function getRightBottom(position: number, size: number) {
-  let p = position;
-  let y = p % size;
-  let x = (p - y) / size;
-  while (y < size && x < size) {
-    p = p + size + 1;
-    y = p % size;
-    x = (p - y) / size;
-  }
-  return p;
-}
-
-function getRightTop(position: number, size: number) {
-  let p = position;
-  let y = p % size;
-  let x = (p - y) / size;
-  while (y < size && x > 0) {
-    p = p - size + 1;
-    y = p % size;
-    x = (p - y) / size;
-  }
-  return p;
-}
-
-function getLeftBottom(position: number, size: number) {
-  let p = position;
-  let y = p % size;
-  let x = (p - y) / size;
-  while (y > 0 && x < size) {
-    p = p + size - 1;
-    y = p % size;
-    x = (p - y) / size;
-  }
+function _getDiagonalCorner(position: number, size: number, next: (p: number) => number): number {
+  let p, x, y;
+  let next_p = position;
+  do {
+    p = next_p;
+    next_p = next(next_p);
+    y = next_p % size;
+    x = (next_p - y) / size;
+  } while (x >= 0 && y >= 0 && x < size && y < size);
   return p;
 }
 
