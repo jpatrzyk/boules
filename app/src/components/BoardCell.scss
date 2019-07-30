@@ -2,11 +2,11 @@
   margin: 0;
   padding: 0;
   border: 0;
-  background-image: linear-gradient(var(--material-color-grey-50), var(--material-color-grey-200));
-  box-shadow: inset var(--material-color-grey-400) 0 0 0 1px;
+  background-image: linear-gradient(#fafafa, #eee);
+  box-shadow: inset #bdbdbd 0 0 0 1px;
 
   &:focus {
     outline: none;
-    box-shadow: inset var(--material-color-blue-500) 0 0 2px 2px;
+    box-shadow: inset #2196f3 0 0 2px 2px;
   }
 }
