@@ -28,7 +28,7 @@ $colors: (
   6: #009999,
   7: #ff7700 #aa3300 #ffdd88,
   8: #aacc00 #555500 #eeee77,
-  9: #000000,
+  9: #222222,
   10: #ff66bb #aa0077 #ffddee,
   11: #8b4513,
   12: #808080,
@@ -67,7 +67,7 @@ $colors: (
 }
 
 .ColoredCell-circle--moving {
-  animation-duration: 800ms;
+  animation-duration: 600ms;
 }
 
 $directions: (

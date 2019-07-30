@@ -30,7 +30,7 @@ describe('init', () => {
     const colorsCount = 5;
     const state = init(size, colorsCount);
     expect(state).toEqual({
-      points: 0,
+      score : 0,
       model: expect.arrayContaining([expect.any(Number)]),
       size,
       lineLength: DEFAULT_LINE_LENGTH,
@@ -51,7 +51,7 @@ describe('init', () => {
 describe('addRandomBalls', () => {
   it('should fill some of the empty places with balls specified in state.nextColors', () => {
     const state = {
-      points: 0,
+      score : 0,
       model: [0, 1, 0, 0, 2, 0, 0, 3, 0],
       size: 3,
       lineLength: 3,
@@ -65,7 +65,7 @@ describe('addRandomBalls', () => {
 
   it('should add no more new balls than available empty places', () => {
     const state = {
-      points: 0,
+      score : 0,
       model: [1, 1, 1, 2, 2, 2, 0, 3, 0],
       size: 3,
       lineLength: 3,
@@ -83,7 +83,7 @@ describe('addRandomBalls', () => {
 describe('handleBoardClicked', () => {
   it('should select clicked ball', () => {
     const state = {
-      points: 0,
+      score : 0,
       // prettier-ignore
       model: [
         1, 2, 0,
@@ -101,7 +101,7 @@ describe('handleBoardClicked', () => {
 
   it('should un-select a ball if clicked on currently selected ball', () => {
     const state = {
-      points: 0,
+      score : 0,
       // prettier-ignore
       model: [
         1, 2, 0,
@@ -119,7 +119,7 @@ describe('handleBoardClicked', () => {
 
   it('should un-select a ball if no path exists', () => {
     const state = {
-      points: 0,
+      score : 0,
       // prettier-ignore
       model: [
         1, 2, 0,
@@ -137,7 +137,7 @@ describe('handleBoardClicked', () => {
 
   it('should set path if such exists', () => {
     const state = {
-      points: 0,
+      score : 0,
       // prettier-ignore
       model: [
         1, 0, 0,
@@ -160,7 +160,7 @@ describe('handleBoardClicked', () => {
 describe('handleMoveFinished', () => {
   it('should move selected ball and remove the first element of the path', () => {
     const state = {
-      points: 0,
+      score : 0,
       // prettier-ignore
       model: [
         1, 0, 0,
@@ -187,7 +187,7 @@ describe('handleMoveFinished', () => {
 
   it('should un-select the moved ball if finished', () => {
     const state = {
-      points: 0,
+      score : 0,
       model: [0, 1, 0, 0, 0, 0, 0, 0, 0],
       selectedBall: 1,
       currentlyAnimatingPath: [2],
@@ -205,7 +205,7 @@ describe('handleMoveFinished', () => {
 
   it('should add next balls if finished and no line built', () => {
     const state = {
-      points: 0,
+      score : 0,
       model: [0, 1, 0, 0, 0, 0, 0, 0, 0],
       selectedBall: 1,
       currentlyAnimatingPath: [2],
@@ -220,7 +220,7 @@ describe('handleMoveFinished', () => {
 
   it('should remove the line of same balls if no shorter than model.lineLength', () => {
     const state = {
-      points: 0,
+      score : 0,
       // prettier-ignore
       model: [
         0, 3, 0,
@@ -235,7 +235,7 @@ describe('handleMoveFinished', () => {
     };
     const updatedState = handleMoveFinished(state); // moving from (1,0) to (2,0)
     expect(updatedState).toMatchObject({
-      points: 3,
+      score : 3,
       // prettier-ignore
       model: [
         0, 3, 0,

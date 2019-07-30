@@ -4,10 +4,10 @@ import { DEFAULT_LINE_LENGTH, MAX_COLORS_COUNT, NEXT_BALLS_COUNT } from 'utils/c
 import findPath from './findPath';
 import findFullLineStart from './findFullLineStart';
 
-type Action = { type: 'board_clicked'; position: number } | { type: 'move_finished' };
+type Action = { type: 'board_clicked'; position: number } | { type: 'move_finished' } | { type: 'new_game' };
 
 interface State {
-  points: number;
+  score: number;
   model: number[];
   size: number;
   lineLength: number;
@@ -25,12 +25,16 @@ export function moveFinished(): Action {
   return { type: 'move_finished' };
 }
 
+export function newGame(): Action {
+  return { type: 'new_game' };
+}
+
 export function useModel(size: number, colorsCount: number) {
   function initState() {
     return init(size, colorsCount);
   }
 
-  return useReducer(reducer, {}, initState);
+  return useReducer(reducer, undefined, initState);
 }
 
 function reducer(state: State, action: Action) {
@@ -39,6 +43,8 @@ function reducer(state: State, action: Action) {
       return handleBoardClicked(state, action.position);
     case 'move_finished':
       return handleMoveFinished(state);
+    case 'new_game':
+      return init(state.size, state.colorsCount);
     default:
       throw new Error();
   }
@@ -48,7 +54,7 @@ export function init(size: number, colorsCount: number): State {
   const model = new Array(size * size);
   model.fill(0);
   const emptyState = {
-    points: 0,
+    score: 0,
     model,
     size,
     lineLength: DEFAULT_LINE_LENGTH,
@@ -137,12 +143,17 @@ export function handleMoveFinished(state: State): State {
       selectedBall: nextSelectedBall,
     };
   } else {
-    const { fullLineStart, length, next } = findFullLineStart(updatedModel, state.size, state.lineLength, nextSelectedBall);
+    const { fullLineStart, length, next } = findFullLineStart(
+      updatedModel,
+      state.size,
+      state.lineLength,
+      nextSelectedBall,
+    );
     if (fullLineStart >= 0) {
       return {
         ...state,
         model: removeFullLine(updatedModel, fullLineStart, next),
-        points: state.points + length,
+        score: state.score + length,
         currentlyAnimatingPath: undefined,
         selectedBall: -1,
       };

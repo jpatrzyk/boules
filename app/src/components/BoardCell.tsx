@@ -13,12 +13,20 @@ interface Props {
   onMoveFinished: () => void;
 }
 
-export const BoardCell: React.FC<Props> = ({ position, value, selected, disabled, animateTo, onClick, onMoveFinished }: Props) => {
+export const BoardCell: React.FC<Props> = ({
+  position,
+  value,
+  selected,
+  disabled,
+  animateTo,
+  onClick,
+  onMoveFinished,
+}) => {
   useEffect(() => {
     if (animateTo) {
       const timeout = setTimeout(() => {
         onMoveFinished();
-      }, 300);
+      }, 150);
       return () => {
         clearTimeout(timeout);
       };

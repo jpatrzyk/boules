@@ -1,22 +1,32 @@
 import React, { useCallback } from 'react';
 
-import { useModel, boardClicked, moveFinished } from 'hooks/model/useModel';
+import { useModel, boardClicked, moveFinished, newGame } from 'hooks/model/useModel';
 import { Board } from 'components/Board';
 import { NextColors } from 'components/NextColors';
 
 import './App.scss';
+import { Modal } from './components/Modal';
 
-const size = 8;
+const size = 5;
 
 const App: React.FC = () => {
   const [state, dispatch] = useModel(size, 12);
 
-  const handleBoardClicked = useCallback((position: number) => {
-    dispatch(boardClicked(position));
-  }, [dispatch]);
+  const isGameOver = state.model.every(c => c > 0);
+
+  const handleBoardClicked = useCallback(
+    (position: number) => {
+      dispatch(boardClicked(position));
+    },
+    [dispatch],
+  );
 
   const handleMoveFinished = useCallback(() => {
     dispatch(moveFinished());
+  }, [dispatch]);
+
+  const handleModalClosed = useCallback(() => {
+    dispatch(newGame());
   }, [dispatch]);
 
   return (
@@ -25,7 +35,7 @@ const App: React.FC = () => {
         <h1>Kulki</h1>
       </header>
       <main>
-        <h2>Punkty: {state.points}</h2>
+        <h2>Punkty: {state.score}</h2>
         <NextColors nextColors={state.nextColors} />
         <Board
           size={size}
@@ -36,6 +46,9 @@ const App: React.FC = () => {
           onMoveFinished={handleMoveFinished}
         />
       </main>
+      <Modal open={isGameOver} onRequestClose={handleModalClosed} title="Game Over">
+        Game Over!
+      </Modal>
     </div>
   );
 };
