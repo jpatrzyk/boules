@@ -18,83 +18,6 @@ $bounce-cycle-duration: 500ms;
   box-shadow: rgba(0, 0, 0, 0.5) -2px 2px 3px 0;
 }
 
-.ColoredCell-circle--selected {
-  animation-name: bounce;
-  animation-duration: $bounce-cycle-duration;
-  animation-iteration-count: infinite;
-}
-
-.ColoredCell-circle--moving {
-  animation-duration: 800ms;
-}
-
-.ColoredCell-circle--movingUp {
-  animation-name: moveUp;
-}
-.ColoredCell-circle--movingDown {
-  animation-name: moveDown;
-}
-.ColoredCell-circle--movingLeft {
-  animation-name: moveLeft;
-}
-.ColoredCell-circle--movingRight {
-  animation-name: moveRight;
-}
-
-@keyframes bounce {
-  0% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-@keyframes moveUp {
-  0% {
-    transform: translateY(0);
-  }
-  25% {
-    transform: translateY(-$cell-size);
-  }
-  100% {
-    transform: translateY(-$cell-size);
-  }
-}
-@keyframes moveDown {
-  0% {
-    transform: translateY(0);
-  }
-  25% {
-    transform: translateY($cell-size);
-  }
-  100% {
-    transform: translateY($cell-size);
-  }
-}
-@keyframes moveLeft {
-  0% {
-    transform: translateX(0);
-  }
-  25% {
-    transform: translateX(-$cell-size);
-  }
-  100% {
-    transform: translateX(-$cell-size);
-  }
-}
-@keyframes moveRight {
-  0% {
-    transform: translateX(0);
-  }
-  25% {
-    transform: translateX($cell-size);
-  }
-  100% {
-    transform: translateX($cell-size);
-  }
-}
-
 // we must define MAX_COLORS_COUNT colors
 $colors: (
   1: #990000,
@@ -125,5 +48,49 @@ $colors: (
 
   .ColoredCell-circle--#{$index} {
     background-image: radial-gradient(farthest-corner at 60% 40%, $lighter 1%, $main-color 50%, $darker 85%);
+  }
+}
+
+.ColoredCell-circle--selected {
+  animation-name: bounce;
+  animation-duration: $bounce-cycle-duration;
+  animation-iteration-count: infinite;
+}
+
+@keyframes bounce {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.ColoredCell-circle--moving {
+  animation-duration: 800ms;
+}
+
+$directions: (
+  Up: translateY(-$cell-size),
+  Down: translateY($cell-size),
+  Left: translateX(-$cell-size),
+  Right: translateX($cell-size),
+);
+
+@each $direction, $transform in $directions {
+  @keyframes move#{$direction} {
+    0% {
+      transform: translate(0);
+    }
+    25% {
+      transform: $transform;
+    }
+    100% {
+      transform: $transform;
+    }
+  }
+
+  .ColoredCell-circle--moving#{$direction} {
+    animation-name: move#{$direction};
   }
 }
