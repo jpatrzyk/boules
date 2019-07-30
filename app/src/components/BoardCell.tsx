@@ -6,17 +6,18 @@ import './BoardCell.css';
 interface Props {
   position: number;
   value: number; // 0 - empty, 1,2,... - color
-  isSelected: boolean;
+  selected: boolean;
+  disabled?: boolean;
   animateTo?: Direction;
   onClick: (position: number) => void;
-  onMoveFinished: (position: number) => void;
+  onMoveFinished: () => void;
 }
 
-export const BoardCell: React.FC<Props> = ({ position, value, isSelected, animateTo, onClick, onMoveFinished }: Props) => {
+export const BoardCell: React.FC<Props> = ({ position, value, selected, disabled, animateTo, onClick, onMoveFinished }: Props) => {
   useEffect(() => {
     if (animateTo) {
       const timeout = setTimeout(() => {
-        onMoveFinished(position);
+        onMoveFinished();
       }, 300);
       return () => {
         clearTimeout(timeout);
@@ -29,8 +30,8 @@ export const BoardCell: React.FC<Props> = ({ position, value, isSelected, animat
   }
 
   return (
-    <button className="BoardCell" onClick={cellClicked}>
-      <ColoredCell value={value} isSelected={isSelected} animateTo={animateTo} />
+    <button className="BoardCell" onClick={cellClicked} disabled={disabled}>
+      <ColoredCell value={value} selected={selected} animateTo={animateTo} />
     </button>
   );
 };

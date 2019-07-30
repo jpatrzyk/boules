@@ -9,7 +9,7 @@ import './App.css';
 const size = 8;
 
 const App: React.FC = () => {
-  const [state, dispatch] = useModel(size, 10);
+  const [state, dispatch] = useModel(size, 5);
 
   const handleBoardClicked = useCallback((position: number) => {
     dispatch(boardClicked(position));

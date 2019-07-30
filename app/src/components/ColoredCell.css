@@ -24,12 +24,74 @@
   animation-iteration-count: infinite;
 }
 
+.ColoredCell-circle--moving {
+  animation-duration: 800ms;
+}
+
+.ColoredCell-circle--movingUp {
+  animation-name: moveUp;
+}
+.ColoredCell-circle--movingDown {
+  animation-name: moveDown;
+}
+.ColoredCell-circle--movingLeft {
+  animation-name: moveLeft;
+}
+.ColoredCell-circle--movingRight {
+  animation-name: moveRight;
+}
+
 @keyframes bounce {
   0% {
     transform: translateY(0);
   }
-  50% {
+  30% {
     transform: translateY(-10px);
+  }
+}
+
+@keyframes moveUp {
+  0% {
+    transform: translateY(0);
+  }
+  25% {
+    transform: translateY(-64px);
+  }
+  100% {
+    transform: translateY(-64px);
+  }
+}
+@keyframes moveDown {
+  0% {
+    transform: translateY(0);
+  }
+  25% {
+    transform: translateY(64px);
+  }
+  100% {
+    transform: translateY(64px);
+  }
+}
+@keyframes moveLeft {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-64px);
+  }
+  100% {
+    transform: translateX(-64px);
+  }
+}
+@keyframes moveRight {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(64px);
+  }
+  100% {
+    transform: translateX(64px);
   }
 }
 
