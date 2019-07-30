@@ -1,6 +1,8 @@
 $cell-size: 64px;
 $circle-size: 48px;
 
+$bounce-cycle-duration: 500ms;
+
 .ColoredCell {
   width: $cell-size;
   height: $cell-size;
@@ -18,7 +20,7 @@ $circle-size: 48px;
 
 .ColoredCell-circle--selected {
   animation-name: bounce;
-  animation-duration: 500ms;
+  animation-duration: $bounce-cycle-duration;
   animation-iteration-count: infinite;
 }
 
@@ -43,7 +45,7 @@ $circle-size: 48px;
   0% {
     transform: translateY(0);
   }
-  30% {
+  50% {
     transform: translateY(-10px);
   }
 }
@@ -93,92 +95,35 @@ $circle-size: 48px;
   }
 }
 
-.ColoredCell-circle--1 {
-  background-image: radial-gradient(
-    farthest-corner at 60% 40%,
-    var(--material-color-deep-orange-100) 1%,
-    var(--material-color-deep-orange-600) 50%,
-    var(--material-color-deep-orange-900) 75%
-  );
-}
+// we must define MAX_COLORS_COUNT colors
+$colors: (
+  1: #990000,
+  2: #008000,
+  3: #004499,
+  4: #ffcc00 #cc8800,
+  5: #990099,
+  6: #009999,
+  7: #ff7700 #aa3300 #ffdd88,
+  8: #aacc00 #555500 #eeee77,
+  9: #000000,
+  10: #ff66bb #aa0077 #ffddee,
+  11: #8b4513,
+  12: #808080,
+);
 
-.ColoredCell-circle--2 {
-  background-image: radial-gradient(
-    farthest-corner at 60% 40%,
-    var(--material-color-blue-100) 1%,
-    var(--material-color-blue-600) 50%,
-    var(--material-color-blue-900) 75%
-  );
-}
+@each $index, $color in $colors {
+  $main-color: nth($color, 1);
+  $darker: darken($main-color, 25%);
+  $lighter: lighten($main-color, 35%);
 
-.ColoredCell-circle--3 {
-  background-image: radial-gradient(
-    farthest-corner at 60% 40%,
-    var(--material-color-amber-100) 1%,
-    var(--material-color-amber-600) 50%,
-    var(--material-color-amber-900) 75%
-  );
-}
+  @if length($color) > 1 {
+    $darker: nth($color, 2);
+  }
+  @if length($color) > 2 {
+    $lighter: nth($color, 3);
+  }
 
-.ColoredCell-circle--4 {
-  background-image: radial-gradient(
-    farthest-corner at 60% 40%,
-    var(--material-color-light-green-100) 1%,
-    var(--material-color-light-green-600) 50%,
-    var(--material-color-light-green-900) 75%
-  );
-}
-
-.ColoredCell-circle--5 {
-  background-image: radial-gradient(
-    farthest-corner at 60% 40%,
-    var(--material-color-purple-100) 1%,
-    var(--material-color-purple-600) 50%,
-    var(--material-color-purple-900) 75%
-  );
-}
-
-.ColoredCell-circle--6 {
-  background-image: radial-gradient(
-    farthest-corner at 60% 40%,
-    var(--material-color-teal-100) 1%,
-    var(--material-color-teal-600) 50%,
-    var(--material-color-teal-900) 75%
-  );
-}
-
-.ColoredCell-circle--7 {
-  background-image: radial-gradient(
-    farthest-corner at 60% 40%,
-    var(--material-color-brown-100) 1%,
-    var(--material-color-brown-600) 50%,
-    var(--material-color-brown-900) 75%
-  );
-}
-
-.ColoredCell-circle--8 {
-  background-image: radial-gradient(
-    farthest-corner at 60% 40%,
-    var(--material-color-pink-100) 1%,
-    var(--material-color-pink-600) 50%,
-    var(--material-color-pink-900) 75%
-  );
-}
-
-.ColoredCell-circle--9 {
-  background-image: radial-gradient(
-    farthest-corner at 60% 40%,
-    var(--material-color-lime-100) 1%,
-    var(--material-color-lime-600) 50%,
-    var(--material-color-lime-900) 75%
-  );
-}
-
-.ColoredCell-circle--10 {
-  background-image: radial-gradient(
-    farthest-corner at 60% 40%,
-    var(--material-color-cyan-100) 1%,
-    var(--material-color-cyan-600) 50%,
-    var(--material-color-cyan-900) 75%
-  );
+  .ColoredCell-circle--#{$index} {
+    background-image: radial-gradient(farthest-corner at 60% 40%, $lighter 1%, $main-color 50%, $darker 85%);
+  }
 }
