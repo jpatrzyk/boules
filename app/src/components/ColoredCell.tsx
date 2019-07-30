@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './ColoredCell.css';
+import './ColoredCell.scss';
 
 interface Props {
   value: number; // 0 - empty, 1,2,... - color

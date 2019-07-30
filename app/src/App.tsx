@@ -4,7 +4,7 @@ import { useModel, boardClicked, moveFinished } from 'hooks/model/useModel';
 import { Board } from 'components/Board';
 import { NextColors } from 'components/NextColors';
 
-import './App.css';
+import './App.scss';
 
 const size = 8;
 

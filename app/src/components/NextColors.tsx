@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ColoredCell } from './ColoredCell';
 
-import './NextColors.css';
+import './NextColors.scss';
 
 interface Props {
   nextColors: number[];

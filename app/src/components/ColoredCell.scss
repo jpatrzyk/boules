@@ -1,20 +1,18 @@
-:root {
-  --cell-size: 64px;
-  --circle-size: 48px;
-}
+$cell-size: 64px;
+$circle-size: 48px;
 
 .ColoredCell {
-  width: var(--cell-size);
-  height: var(--cell-size);
+  width: $cell-size;
+  height: $cell-size;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .ColoredCell-circle {
-  width: var(--circle-size);
-  height: var(--circle-size);
-  border-radius: calc(var(--circle-size) / 2);
+  width: $circle-size;
+  height: $circle-size;
+  border-radius: $circle-size / 2;
   box-shadow: rgba(0, 0, 0, 0.5) -2px 2px 3px 0;
 }
 
@@ -55,10 +53,10 @@
     transform: translateY(0);
   }
   25% {
-    transform: translateY(-64px);
+    transform: translateY(-$cell-size);
   }
   100% {
-    transform: translateY(-64px);
+    transform: translateY(-$cell-size);
   }
 }
 @keyframes moveDown {
@@ -66,10 +64,10 @@
     transform: translateY(0);
   }
   25% {
-    transform: translateY(64px);
+    transform: translateY($cell-size);
   }
   100% {
-    transform: translateY(64px);
+    transform: translateY($cell-size);
   }
 }
 @keyframes moveLeft {
@@ -77,10 +75,10 @@
     transform: translateX(0);
   }
   25% {
-    transform: translateX(-64px);
+    transform: translateX(-$cell-size);
   }
   100% {
-    transform: translateX(-64px);
+    transform: translateX(-$cell-size);
   }
 }
 @keyframes moveRight {
@@ -88,10 +86,10 @@
     transform: translateX(0);
   }
   25% {
-    transform: translateX(64px);
+    transform: translateX($cell-size);
   }
   100% {
-    transform: translateX(64px);
+    transform: translateX($cell-size);
   }
 }
 

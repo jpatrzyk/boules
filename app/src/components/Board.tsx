@@ -4,7 +4,7 @@ import { range } from 'utils/helpers';
 import { BoardCell } from './BoardCell';
 import { Direction } from './ColoredCell';
 
-import './Board.css';
+import './Board.scss';
 
 interface Props {
   size: number;

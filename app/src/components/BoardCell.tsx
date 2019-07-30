@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 import { ColoredCell, Direction } from './ColoredCell';
-import './BoardCell.css';
+import './BoardCell.scss';
 
 interface Props {
   position: number;
