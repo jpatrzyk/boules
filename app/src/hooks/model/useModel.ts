@@ -16,10 +16,14 @@ type Action =
   | { type: 'animation_finished' }
   | { type: 'new_game' };
 
-interface BaseState {
+interface GameConditions {
+  colorsCount: number;
+  showNextColors: boolean;
+}
+
+interface BaseState extends GameConditions {
   size: number;
   lineLength: number;
-  colorsCount: number;
   score: number;
   model: number[];
   nextColors: number[];
@@ -91,11 +95,13 @@ function reducer(state: State, action: Action) {
 export function init(
   size: number = DEFAULT_BOARD_SIZE,
   colorsCount: number = DEFAULT_COLORS_COUNT,
+  showNextColors: boolean = true,
 ): AddingState {
   const emptyState: BaseState = {
     size,
     lineLength: DEFAULT_LINE_LENGTH,
     colorsCount,
+    showNextColors,
     score: 0,
     model: new Array(size * size).fill(0),
     nextColors: chooseNextColors(colorsCount, INITIAL_BALLS_COUNT),
@@ -265,6 +271,11 @@ export function handleAnimationFinished(state: MovingState | AddingState | Freei
   throw new Error();
 }
 
-export function calculateScore(lineLength: number, state: BaseState): number {
-  return lineLength; // todo take state into account
+export function calculateScore(lineLength: number, state: GameConditions): number {
+  const ballCost = Math.max(1, state.colorsCount - 5);
+  const cumulativeSum = lineLength * ballCost;
+  if (state.showNextColors) {
+    return cumulativeSum - Math.round(cumulativeSum / 3);
+  }
+  return cumulativeSum;
 }

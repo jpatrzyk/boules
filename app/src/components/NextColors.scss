@@ -1,8 +1,19 @@
+@import '../styles/variables';
+
 .NextColors {
   margin: 24px;
   display: flex;
+  align-items: center;
 }
 
 .NextColors-row {
   display: flex;
+}
+
+.NextColors-cell {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background-image: linear-gradient($color-background-1, $color-background-2);
+  box-shadow: inset $color-border-0 0 0 0 1px;
 }

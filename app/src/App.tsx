@@ -1,15 +1,18 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
-import { useModel, boardClicked, animationFinished, newGame } from 'hooks/model/useModel';
+import { INITIAL_BALLS_COUNT, NEXT_BALLS_COUNT } from './utils/constants';
+import { animationFinished, boardClicked, newGame, useModel } from 'hooks/model/useModel';
 import { Board } from 'components/Board';
 import { NextColors } from 'components/NextColors';
 import { Button } from './components/Button';
-import { GameOverModal, CloseBehavior } from './components/GameOverModal';
+import { CloseBehavior, GameOverModal } from './components/GameOverModal';
 import { RankingModal } from './components/RankingModal';
 
 import './App.scss';
 
 const size = 5;
+
+const emptyNextColors = new Array(NEXT_BALLS_COUNT).fill(0);
 
 const App: React.FC = () => {
   const [state, dispatch] = useModel(size, 3);
@@ -56,6 +59,10 @@ const App: React.FC = () => {
     setShowRanking(false);
   }, [setShowRanking]);
 
+  const isAddingFirstBalls = state.nextColors.length === INITIAL_BALLS_COUNT;
+  const nextColors =
+    !state.showNextColors || isAddingFirstBalls ? emptyNextColors : state.nextColors;
+
   return (
     <div className="App">
       <header>
@@ -67,7 +74,7 @@ const App: React.FC = () => {
       </nav>
       <main>
         <h2>Score: {state.score}</h2>
-        <NextColors nextColors={state.nextColors} />
+        <NextColors nextColors={nextColors} />
         <Board
           state={state}
           onClick={handleBoardClicked}

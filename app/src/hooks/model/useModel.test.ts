@@ -10,6 +10,7 @@ import {
   choosePositionsToAddNewBalls,
   handleBoardClicked,
   handleAnimationFinished,
+  calculateScore,
   StateType,
   WaitingState,
   MovingState,
@@ -84,6 +85,7 @@ describe('choosePositionsToAddNewBalls', () => {
       size: 3,
       lineLength: 3,
       colorsCount: 6,
+      showNextColors: true,
       score: 0,
       model: [0, 1, 0, 0, 2, 0, 0, 3, 0],
       nextColors: [4, 5, 6],
@@ -105,6 +107,7 @@ describe('choosePositionsToAddNewBalls', () => {
       size: 3,
       lineLength: 3,
       colorsCount: 6,
+      showNextColors: true,
       score: 0,
       model: [1, 1, 1, 2, 2, 2, 0, 3, 0],
       nextColors: [4, 5, 6],
@@ -125,6 +128,7 @@ describe('handleBoardClicked', () => {
       size: 3,
       lineLength: 3,
       colorsCount: 5,
+      showNextColors: true,
       score: 0,
       // prettier-ignore
       model: [
@@ -144,6 +148,7 @@ describe('handleBoardClicked', () => {
       size: 3,
       lineLength: 3,
       colorsCount: 5,
+      showNextColors: true,
       score: 0,
       // prettier-ignore
       model: [
@@ -163,6 +168,7 @@ describe('handleBoardClicked', () => {
       size: 3,
       lineLength: 3,
       colorsCount: 5,
+      showNextColors: true,
       score: 0,
       // prettier-ignore
       model: [
@@ -182,6 +188,7 @@ describe('handleBoardClicked', () => {
       size: 3,
       lineLength: 3,
       colorsCount: 5,
+      showNextColors: true,
       score: 0,
       // prettier-ignore
       model: [
@@ -207,6 +214,7 @@ describe('handleAnimationFinished', () => {
       size: 3,
       lineLength: 3,
       colorsCount: 5,
+      showNextColors: true,
       score: 0,
       // prettier-ignore
       model: [
@@ -236,6 +244,7 @@ describe('handleAnimationFinished', () => {
       size: 3,
       lineLength: 3,
       colorsCount: 5,
+      showNextColors: true,
       score: 0,
       model: [0, 1, 0, 0, 0, 0, 0, 0, 0],
       nextColors: [4, 5, 5],
@@ -255,6 +264,7 @@ describe('handleAnimationFinished', () => {
       size: 3,
       lineLength: 3,
       colorsCount: 5,
+      showNextColors: true,
       score: 0,
       // prettier-ignore
       model: [
@@ -284,6 +294,7 @@ describe('handleAnimationFinished', () => {
       size: 3,
       lineLength: 3,
       colorsCount: 5,
+      showNextColors: true,
       score: 0,
       // prettier-ignore
       model: [
@@ -313,6 +324,7 @@ describe('handleAnimationFinished', () => {
       size: 3,
       lineLength: 3,
       colorsCount: 5,
+      showNextColors: true,
       score: 0,
       // prettier-ignore
       model: [
@@ -339,6 +351,7 @@ describe('handleAnimationFinished', () => {
       size: 3,
       lineLength: 3,
       colorsCount: 5,
+      showNextColors: true,
       score: 0,
       // prettier-ignore
       model: [
@@ -372,6 +385,7 @@ describe('handleAnimationFinished', () => {
       size: 3,
       lineLength: 3,
       colorsCount: 5,
+      showNextColors: true,
       score: 3,
       // prettier-ignore
       model: [
@@ -394,5 +408,36 @@ describe('handleAnimationFinished', () => {
       type: StateType.Waiting,
       selectedBall: -1,
     });
+  });
+});
+
+describe('calculateScore', () => {
+  it('should score higher for larger colorsCount', () => {
+    const lineLength = 5;
+    const scoreA = calculateScore(lineLength, { colorsCount: 5, showNextColors: false });
+    const scoreB = calculateScore(lineLength, { colorsCount: 7, showNextColors: false });
+    expect(scoreB).toBeGreaterThan(scoreA);
+  });
+
+  it('should score equally for if colorsCount <= 6', () => {
+    const lineLength = 5;
+    const scoreA = calculateScore(lineLength, { colorsCount: 5, showNextColors: false });
+    const scoreB = calculateScore(lineLength, { colorsCount: 6, showNextColors: false });
+    expect(scoreB).toEqual(scoreA);
+  });
+
+  it('should score higher for longer line', () => {
+    const colorsCount = 7;
+    const scoreA = calculateScore(5, { colorsCount, showNextColors: false });
+    const scoreB = calculateScore(6, { colorsCount, showNextColors: false });
+    expect(scoreB).toBeGreaterThan(scoreA);
+  });
+
+  it('should score higher if next colors are hidden', () => {
+    const colorsCount = 7;
+    const lineLength = 5;
+    const scoreA = calculateScore(lineLength, { colorsCount, showNextColors: true });
+    const scoreB = calculateScore(lineLength, { colorsCount, showNextColors: false });
+    expect(scoreB).toBeGreaterThan(scoreA);
   });
 });
