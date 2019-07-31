@@ -26,7 +26,7 @@ export function findAllKeys<V>(
 export function findKey<V, D extends number | undefined>(
   obj: NumDict<V>,
   predicate: (key: number, value: V) => boolean,
-  defaultValue: D
+  defaultValue: D,
 ): D {
   const keys = Object.keys(obj).map(k => Number(k));
   const found = keys.find(k => predicate(k, obj[k]));

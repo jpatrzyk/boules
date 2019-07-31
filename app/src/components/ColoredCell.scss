@@ -47,7 +47,12 @@ $colors: (
   }
 
   .ColoredCell-circle--#{$index} {
-    background-image: radial-gradient(farthest-corner at 60% 40%, $lighter 1%, $main-color 50%, $darker 85%);
+    background-image: radial-gradient(
+      farthest-corner at 60% 40%,
+      $lighter 1%,
+      $main-color 50%,
+      $darker 85%
+    );
   }
 }
 

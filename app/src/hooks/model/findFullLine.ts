@@ -17,14 +17,7 @@ export default function findFullLine(
   const goDown = (i: number) => i + size;
   const columnStart = addedBallPosition % size;
   const columnEnd = columnStart + (size - 1) * size;
-  const vertical = _findFullLineStart(
-    model,
-    columnStart,
-    columnEnd,
-    goDown,
-    color,
-    lineLength,
-  );
+  const vertical = _findFullLineStart(model, columnStart, columnEnd, goDown, color, lineLength);
   if (vertical >= 0) {
     return _findFullLine(model, vertical, goDown);
   }

@@ -29,7 +29,7 @@ export enum StateType {
   Waiting = 'waiting_for_click',
   Moving = 'moving_selected_ball',
   Adding = 'adding_new_balls',
-  Freeing = 'freeing_full_row'
+  Freeing = 'freeing_full_row',
 }
 
 export interface WaitingState extends BaseState {
@@ -228,14 +228,9 @@ export function handleAnimationFinished(state: MovingState | AddingState | Freei
     } else {
       const fullLines = Object.keys(state.positionsToFill)
         .map(k => Number(k))
-        .map(position => findFullLine(
-          updatedModel,
-          state.size,
-          state.lineLength,
-          position,
-        ));
+        .map(position => findFullLine(updatedModel, state.size, state.lineLength, position));
       if (fullLines.some(line => line !== null)) {
-        const allBallsToRemove = fullLines.flatMap(line => line === null ? [] : line);
+        const allBallsToRemove = fullLines.flatMap(line => (line === null ? [] : line));
         return {
           ...state,
           model: updatedModel,

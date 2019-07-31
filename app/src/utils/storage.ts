@@ -50,10 +50,7 @@ export async function putScore(playerName: string, score: number) {
 
 export async function getTopScoresDescending(): Promise<Score[]> {
   const db = await dbPromise;
-  const scoresAscending = await db.getAllFromIndex(
-    'scores',
-    'by-score',
-  );
+  const scoresAscending = await db.getAllFromIndex('scores', 'by-score');
   return scoresAscending.reverse().slice(0, HIGHEST_SCORES_LENGTH);
 }
 
