@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 
 import { useModel, boardClicked, moveFinished, newGame } from 'hooks/model/useModel';
 import { Board } from 'components/Board';
@@ -17,9 +17,13 @@ const size = 5;
 
 const App: React.FC = () => {
   const [state, dispatch] = useModel(size, 3);
+  const [showGameOver, setShowGameOver] = useState<boolean>(false);
   const [showRanking, setShowRanking] = useState<boolean>(false);
 
-  const isGameOver = state.model.every(c => c > 0);
+  useEffect(() => {
+    const isGameOver = state.model.every(c => c > 0);
+    setShowGameOver(isGameOver);
+  }, [state.model]);
 
   const handleRequestNewGame = useCallback(() => {
     dispatch(newGame());
@@ -42,13 +46,11 @@ const App: React.FC = () => {
 
   const handleModalClosed = useCallback(
     (closeBehavior?: CloseBehavior) => {
-      if (closeBehavior === 'quit') {
-        // todo
+      setShowGameOver(false);
+      if (closeBehavior === 'new_game') {
+        dispatch(newGame());
       } else if (closeBehavior === 'show_ranking') {
-        dispatch(newGame());
         setShowRanking(true);
-      } else {
-        dispatch(newGame());
       }
     },
     [dispatch],
@@ -79,7 +81,7 @@ const App: React.FC = () => {
           onMoveFinished={handleMoveFinished}
         />
       </main>
-      <GameOverModal score={state.score} open={isGameOver} onRequestClose={handleModalClosed} />
+      <GameOverModal score={state.score} open={showGameOver} onRequestClose={handleModalClosed} />
       <RankingModal open={showRanking} onRequestClose={handleRankingClosed} />
     </div>
   );
