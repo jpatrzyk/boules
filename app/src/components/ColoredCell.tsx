@@ -1,11 +1,14 @@
 import React from 'react';
+import classNames from 'classnames';
 
 import './ColoredCell.scss';
 
 interface Props {
   value: number; // 0 - empty, 1,2,... - color
   selected?: boolean;
-  animateTo?: Direction;
+  moveTo?: Direction;
+  fillNewValue?: number;
+  disappearing?: boolean;
 }
 
 export enum Direction {
@@ -15,19 +18,28 @@ export enum Direction {
   right = 'Right',
 }
 
-export const ColoredCell: React.FC<Props> = ({ value, selected, animateTo }: Props) => {
+export const ColoredCell: React.FC<Props> = ({
+  value,
+  selected,
+  moveTo,
+  fillNewValue,
+  disappearing,
+}: Props) => {
   function renderContent() {
-    if (!value) {
+    if (!value && !fillNewValue) {
       return null;
     }
-    const classNames = [`ColoredCell-circle ColoredCell-circle--${value}`];
-    if (animateTo) {
-      classNames.push('ColoredCell-circle--moving', `ColoredCell-circle--moving${animateTo}`);
-    } else if (selected) {
-      classNames.push('ColoredCell-circle--selected');
-    }
+    const color = value || fillNewValue;
 
-    return <div className={classNames.join(' ')} />;
+    const className = classNames('ColoredCell-circle', `ColoredCell-circle--${color}`, {
+      'ColoredCell-circle--selected': selected,
+      'ColoredCell-circle--moving': !!moveTo,
+      [`ColoredCell-circle--moving${moveTo}`]: !!moveTo,
+      'ColoredCell-circle--appearing': !!fillNewValue,
+      'ColoredCell-circle--disappearing': disappearing,
+    });
+
+    return <div className={className} />;
   }
 
   return <div className="ColoredCell">{renderContent()}</div>;

@@ -8,9 +8,11 @@ interface Props {
   value: number; // 0 - empty, 1,2,... - color
   selected: boolean;
   disabled?: boolean;
-  animateTo?: Direction;
+  moveTo?: Direction;
+  fillNewValue?: number;
+  disappearing?: boolean;
   onClick: (position: number) => void;
-  onMoveFinished: () => void;
+  onAnimationFinished: () => void;
 }
 
 export const BoardCell: React.FC<Props> = ({
@@ -18,20 +20,22 @@ export const BoardCell: React.FC<Props> = ({
   value,
   selected,
   disabled,
-  animateTo,
+  moveTo,
+  fillNewValue,
+  disappearing,
   onClick,
-  onMoveFinished,
+  onAnimationFinished,
 }) => {
   useEffect(() => {
-    if (animateTo) {
+    if (moveTo || fillNewValue || disappearing) {
       const timeout = setTimeout(() => {
-        onMoveFinished();
+        onAnimationFinished();
       }, 150);
       return () => {
         clearTimeout(timeout);
       };
     }
-  }, [position, animateTo, onMoveFinished]);
+  }, [moveTo, fillNewValue, disappearing, onAnimationFinished]);
 
   function cellClicked() {
     onClick(position);
@@ -39,7 +43,13 @@ export const BoardCell: React.FC<Props> = ({
 
   return (
     <button type="button" className="BoardCell" onClick={cellClicked} disabled={disabled}>
-      <ColoredCell value={value} selected={selected} animateTo={animateTo} />
+      <ColoredCell
+        value={value}
+        selected={selected}
+        moveTo={moveTo}
+        fillNewValue={fillNewValue}
+        disappearing={disappearing}
+      />
     </button>
   );
 };

@@ -1,39 +1,55 @@
 import React from 'react';
 
-import { range } from 'utils/helpers';
+import { State, StateType } from 'hooks/model/useModel';
+import { findKey, range } from 'utils/helpers';
 import { BoardCell } from './BoardCell';
 import { Direction } from './ColoredCell';
 
 import './Board.scss';
 
 interface Props {
-  size: number;
-  model: number[];
-  selectedBall: number;
-  currentlyAnimatingPath?: number[];
+  state: State;
   onClick: (position: number) => void;
-  onMoveFinished: () => void;
+  onAnimationFinished: () => void;
 }
 
-export const Board: React.FC<Props> = ({
-  size,
-  model,
-  selectedBall,
-  currentlyAnimatingPath,
-  onClick,
-  onMoveFinished,
-}: Props) => {
-  const nextPathPosition = !!currentlyAnimatingPath && !!currentlyAnimatingPath.length ? currentlyAnimatingPath[0] : -1;
-  const isAnimating = nextPathPosition >= 0;
-  const isLastMove = !!currentlyAnimatingPath && currentlyAnimatingPath.length === 1;
+export const Board: React.FC<Props> = ({ state, onClick, onAnimationFinished }: Props) => {
+  const { size, model } = state;
+
+  let selectedBall = -1,
+    isAnimating = false,
+    nextPathPosition = -1,
+    isLastMove = false,
+    nextPositionToAddBall = -1,
+    newBallColor = 0,
+    ballsToRemove = [] as number[];
+
+  if (state.type === StateType.Waiting) {
+    selectedBall = state.selectedBall;
+  }
+  if (state.type === StateType.Moving) {
+    selectedBall = state.selectedBall;
+    isAnimating = true;
+    nextPathPosition = state.remainingPath[0];
+    isLastMove = state.remainingPath.length === 1;
+  }
+  if (state.type === StateType.Adding) {
+    isAnimating = true;
+    nextPositionToAddBall = findKey(state.positionsToFill, (k, v) => v > 0, -1);
+    newBallColor = state.positionsToFill[nextPositionToAddBall];
+  }
+  if (state.type === StateType.Freeing) {
+    isAnimating = true;
+    ballsToRemove = state.ballsToRemove;
+  }
 
   function handleMoveFinished() {
     if (isLastMove) {
       setTimeout(() => {
-        onMoveFinished();
+        onAnimationFinished();
       }, 100);
     } else {
-      onMoveFinished();
+      onAnimationFinished();
     }
   }
 
@@ -46,6 +62,8 @@ export const Board: React.FC<Props> = ({
               const position = x * size + y;
               const value = model[position];
               const isSelected = selectedBall === position;
+              const isAddingNewBall = nextPositionToAddBall === position;
+              const isDisappearing = ballsToRemove.includes(position);
               return (
                 <BoardCell
                   key={y}
@@ -53,11 +71,15 @@ export const Board: React.FC<Props> = ({
                   value={value}
                   selected={isSelected}
                   disabled={isAnimating}
-                  animateTo={
-                    isSelected && isAnimating ? getAnimationDirection(position, nextPathPosition, size) : undefined
+                  moveTo={
+                    isSelected && isAnimating
+                      ? getAnimationDirection(position, nextPathPosition, size)
+                      : undefined
                   }
+                  fillNewValue={isAddingNewBall ? newBallColor : undefined}
+                  disappearing={isDisappearing}
                   onClick={isAnimating ? noop : onClick}
-                  onMoveFinished={handleMoveFinished}
+                  onAnimationFinished={handleMoveFinished}
                 />
               );
             })}

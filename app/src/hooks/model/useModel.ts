@@ -1,28 +1,66 @@
 import { useReducer } from 'react';
-import { randomInt, range } from 'utils/helpers';
-import { DEFAULT_LINE_LENGTH, MAX_COLORS_COUNT, NEXT_BALLS_COUNT } from 'utils/constants';
+import { findAllKeys, randomInt, range } from 'utils/helpers';
+import {
+  DEFAULT_LINE_LENGTH,
+  MAX_COLORS_COUNT,
+  INITIAL_BALLS_COUNT,
+  NEXT_BALLS_COUNT,
+  DEFAULT_BOARD_SIZE,
+  DEFAULT_COLORS_COUNT,
+} from 'utils/constants';
 import findPath from './findPath';
-import findFullLineStart from './findFullLineStart';
+import findFullLine from './findFullLine';
 
-type Action = { type: 'board_clicked'; position: number } | { type: 'move_finished' } | { type: 'new_game' };
+type Action =
+  | { type: 'board_clicked'; position: number }
+  | { type: 'animation_finished' }
+  | { type: 'new_game' };
 
-interface State {
-  score: number;
-  model: number[];
+interface BaseState {
   size: number;
   lineLength: number;
   colorsCount: number;
-  selectedBall: number; // -1 means no selection
+  score: number;
+  model: number[];
   nextColors: number[];
-  currentlyAnimatingPath?: number[];
 }
+
+export enum StateType {
+  Waiting = 'waiting_for_click',
+  Moving = 'moving_selected_ball',
+  Adding = 'adding_new_balls',
+  Freeing = 'freeing_full_row'
+}
+
+export interface WaitingState extends BaseState {
+  type: StateType.Waiting;
+  selectedBall: number; // -1 means no selection
+}
+
+export interface MovingState extends BaseState {
+  type: StateType.Moving;
+  selectedBall: number;
+  remainingPath: number[];
+}
+
+export interface AddingState extends BaseState {
+  type: StateType.Adding;
+  positionsToFill: { [position: number]: number };
+}
+
+export interface FreeingState extends BaseState {
+  type: StateType.Freeing;
+  ballsToRemove: number[];
+}
+
+export type State = WaitingState | MovingState | AddingState | FreeingState;
 
 export function boardClicked(position: number): Action {
   return { type: 'board_clicked', position };
 }
 
-export function moveFinished(): Action {
-  return { type: 'move_finished' };
+export function animationFinished(): Action {
+  return { type: 'animation_finished' };
 }
 
 export function newGame(): Action {
@@ -38,67 +76,71 @@ export function useModel(size: number, colorsCount: number) {
 }
 
 function reducer(state: State, action: Action) {
-  switch (action.type) {
-    case 'board_clicked':
-      return handleBoardClicked(state, action.position);
-    case 'move_finished':
-      return handleMoveFinished(state);
-    case 'new_game':
-      return init(state.size, state.colorsCount);
-    default:
-      throw new Error();
+  if (action.type === 'board_clicked' && state.type === StateType.Waiting) {
+    return handleBoardClicked(state, action.position);
   }
+  if (action.type === 'animation_finished' && state.type !== StateType.Waiting) {
+    return handleAnimationFinished(state as MovingState | AddingState | FreeingState);
+  }
+  if (action.type === 'new_game') {
+    return init(state.size, state.colorsCount);
+  }
+  return state;
 }
 
-export function init(size: number, colorsCount: number): State {
-  const model = new Array(size * size);
-  model.fill(0);
-  const emptyState = {
-    score: 0,
-    model,
+export function init(
+  size: number = DEFAULT_BOARD_SIZE,
+  colorsCount: number = DEFAULT_COLORS_COUNT,
+): AddingState {
+  const emptyState: BaseState = {
     size,
     lineLength: DEFAULT_LINE_LENGTH,
     colorsCount,
-    selectedBall: -1,
-    nextColors: chooseNextColors(colorsCount),
+    score: 0,
+    model: new Array(size * size).fill(0),
+    nextColors: chooseNextColors(colorsCount, INITIAL_BALLS_COUNT),
   };
-  return addRandomBalls(emptyState);
+  return choosePositionsToAddNewBalls(emptyState);
 }
 
-export function chooseNextColors(colorsCount: number) {
+export function chooseNextColors(colorsCount: number, nextBallsCount: number = NEXT_BALLS_COUNT) {
   const maxColor = Math.min(colorsCount, MAX_COLORS_COUNT) + 1;
-  return range(NEXT_BALLS_COUNT).map(() => randomInt(1, maxColor));
+  return range(nextBallsCount).map(() => randomInt(1, maxColor));
 }
 
-export function addRandomBalls({ model, nextColors, ...state }: State): State {
+export function choosePositionsToAddNewBalls(state: BaseState): AddingState {
   const emptyPlaces: number[] = [];
-  model.forEach((value, position) => {
+  state.model.forEach((value, position) => {
     if (value === 0) {
       emptyPlaces.push(position);
     }
   });
 
   let places = [];
-  if (emptyPlaces.length <= NEXT_BALLS_COUNT) {
+  const count = state.nextColors.length;
+  if (emptyPlaces.length <= count) {
     places = emptyPlaces;
   } else {
-    const sliceLength = emptyPlaces.length / NEXT_BALLS_COUNT;
-    places = range(NEXT_BALLS_COUNT).map(x => emptyPlaces[randomInt(x * sliceLength, (x + 1) * sliceLength)]);
+    const sliceLength = emptyPlaces.length / count;
+    places = range(count).map(x => emptyPlaces[randomInt(x * sliceLength, (x + 1) * sliceLength)]);
   }
 
-  const updatedModel = [...model];
+  const positionsToFill = {} as { [position: number]: number };
   places.forEach((position, i) => {
-    updatedModel[position] = nextColors[i];
+    positionsToFill[position] = state.nextColors[i];
   });
 
   return {
     ...state,
-    model: updatedModel,
-    nextColors: chooseNextColors(state.colorsCount),
+    type: StateType.Adding,
+    positionsToFill,
   };
 }
 
-export function handleBoardClicked(state: State, position: number): State {
+export function handleBoardClicked(
+  state: WaitingState,
+  position: number,
+): WaitingState | MovingState {
   if (state.model[position]) {
     if (state.selectedBall === position) {
       return {
@@ -121,59 +163,113 @@ export function handleBoardClicked(state: State, position: number): State {
     }
     return {
       ...state,
-      currentlyAnimatingPath: path,
+      type: StateType.Moving,
+      remainingPath: path,
     };
   }
   return state;
 }
 
-export function handleMoveFinished(state: State): State {
-  if (!state.currentlyAnimatingPath || !state.currentlyAnimatingPath.length) {
-    return state;
+export function handleAnimationFinished(state: MovingState | AddingState | FreeingState): State {
+  if (state.type === StateType.Moving) {
+    const [updatedBallPosition, ...remainingPath] = state.remainingPath;
+    const updatedModel = [...state.model];
+    updatedModel[updatedBallPosition] = updatedModel[state.selectedBall];
+    updatedModel[state.selectedBall] = 0;
+    if (remainingPath.length > 0) {
+      return {
+        ...state,
+        model: updatedModel,
+        remainingPath,
+        selectedBall: updatedBallPosition,
+      };
+    } else {
+      const fullLine = findFullLine(
+        updatedModel,
+        state.size,
+        state.lineLength,
+        updatedBallPosition,
+      );
+      if (fullLine === null) {
+        return choosePositionsToAddNewBalls({
+          ...state,
+          model: updatedModel,
+        });
+      } else {
+        return {
+          ...state,
+          model: updatedModel,
+          score: state.score + calculateScore(fullLine.length, state),
+          type: StateType.Freeing,
+          ballsToRemove: fullLine,
+        };
+      }
+    }
   }
-  const [nextSelectedBall, ...remainingPath] = state.currentlyAnimatingPath;
-  const updatedModel = [...state.model];
-  updatedModel[nextSelectedBall] = updatedModel[state.selectedBall];
-  updatedModel[state.selectedBall] = 0;
-  if (remainingPath.length) {
+  if (state.type === StateType.Adding) {
+    const updatedModel = [...state.model];
+    const positionsYetToFill = findAllKeys(state.positionsToFill, (_k, v) => v > 0);
+    if (positionsYetToFill.length < 1) {
+      throw new Error();
+    }
+
+    const newBallPosition = positionsYetToFill[0];
+    updatedModel[newBallPosition] = state.positionsToFill[newBallPosition];
+
+    if (positionsYetToFill.length > 1) {
+      return {
+        ...state,
+        model: updatedModel,
+        positionsToFill: {
+          ...state.positionsToFill,
+          [newBallPosition]: -1,
+        },
+      };
+    } else {
+      const fullLines = Object.keys(state.positionsToFill)
+        .map(k => Number(k))
+        .map(position => findFullLine(
+          updatedModel,
+          state.size,
+          state.lineLength,
+          position,
+        ));
+      if (fullLines.some(line => line !== null)) {
+        const allBallsToRemove = fullLines.flatMap(line => line === null ? [] : line);
+        return {
+          ...state,
+          model: updatedModel,
+          nextColors: chooseNextColors(state.colorsCount),
+          score: state.score + calculateScore(allBallsToRemove.length, state),
+          type: StateType.Freeing,
+          ballsToRemove: allBallsToRemove,
+        };
+      } else {
+        return {
+          ...state,
+          model: updatedModel,
+          nextColors: chooseNextColors(state.colorsCount),
+          type: StateType.Waiting,
+          selectedBall: -1,
+        };
+      }
+    }
+  }
+  if (state.type === StateType.Freeing) {
+    const updatedModel = [...state.model];
+    state.ballsToRemove.forEach(position => {
+      updatedModel[position] = 0;
+    });
     return {
       ...state,
       model: updatedModel,
-      currentlyAnimatingPath: remainingPath,
-      selectedBall: nextSelectedBall,
-    };
-  } else {
-    const { fullLineStart, length, next } = findFullLineStart(
-      updatedModel,
-      state.size,
-      state.lineLength,
-      nextSelectedBall,
-    );
-    if (fullLineStart >= 0) {
-      return {
-        ...state,
-        model: removeFullLine(updatedModel, fullLineStart, next),
-        score: state.score + length,
-        currentlyAnimatingPath: undefined,
-        selectedBall: -1,
-      };
-    }
-
-    return addRandomBalls({
-      ...state,
-      model: updatedModel,
-      currentlyAnimatingPath: undefined,
+      type: StateType.Waiting,
       selectedBall: -1,
-    });
+    };
   }
+  throw new Error();
 }
 
-function removeFullLine(model: number[], start: number, next: (i: number) => number): number[] {
-  const updatedModel = [...model];
-  let i = start;
-  while (model[i] === model[start]) {
-    updatedModel[i] = 0;
-    i = next(i);
-  }
-  return updatedModel;
+export function calculateScore(lineLength: number, state: BaseState): number {
+  return lineLength; // todo take state into account
 }

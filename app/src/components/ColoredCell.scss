@@ -94,3 +94,33 @@ $directions: (
     animation-name: move#{$direction};
   }
 }
+
+.ColoredCell-circle--appearing {
+  animation-name: appear;
+  animation-duration: 150ms;
+}
+
+@keyframes appear {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.ColoredCell-circle--disappearing {
+  animation-name: disappear;
+  animation-duration: 200ms;
+}
+
+@keyframes disappear {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}

@@ -1,4 +1,5 @@
 export const NEXT_BALLS_COUNT = 3;
+export const INITIAL_BALLS_COUNT = 5;
 export const MAX_COLORS_COUNT = 12; // see colors array in ColoredCell.scss
 export const DEFAULT_COLORS_COUNT = 7;
 export const DEFAULT_BOARD_SIZE = 9;

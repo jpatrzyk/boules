@@ -1,6 +1,6 @@
 import React, { useCallback, useState, useEffect } from 'react';
 
-import { useModel, boardClicked, moveFinished, newGame } from 'hooks/model/useModel';
+import { useModel, boardClicked, animationFinished, newGame } from 'hooks/model/useModel';
 import { Board } from 'components/Board';
 import { NextColors } from 'components/NextColors';
 import { Button } from './components/Button';
@@ -10,10 +10,6 @@ import { RankingModal } from './components/RankingModal';
 import './App.scss';
 
 const size = 5;
-
-// change model
-// show animation if necessary
-// onAnimationFinished
 
 const App: React.FC = () => {
   const [state, dispatch] = useModel(size, 3);
@@ -40,8 +36,8 @@ const App: React.FC = () => {
     [dispatch],
   );
 
-  const handleMoveFinished = useCallback(() => {
-    dispatch(moveFinished());
+  const handleAnimationFinished = useCallback(() => {
+    dispatch(animationFinished());
   }, [dispatch]);
 
   const handleModalClosed = useCallback(
@@ -73,12 +69,9 @@ const App: React.FC = () => {
         <h2>Score: {state.score}</h2>
         <NextColors nextColors={state.nextColors} />
         <Board
-          size={size}
-          model={state.model}
-          selectedBall={state.selectedBall}
-          currentlyAnimatingPath={state.currentlyAnimatingPath}
+          state={state}
           onClick={handleBoardClicked}
-          onMoveFinished={handleMoveFinished}
+          onAnimationFinished={handleAnimationFinished}
         />
       </main>
       <GameOverModal score={state.score} open={showGameOver} onRequestClose={handleModalClosed} />
