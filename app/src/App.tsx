@@ -1,14 +1,15 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import { useModel, boardClicked, moveFinished, newGame } from 'hooks/model/useModel';
 import { Board } from 'components/Board';
 import { NextColors } from 'components/NextColors';
-
+import { Button } from './components/Button';
 import { GameOverModal, CloseBehavior } from './components/GameOverModal';
+import { RankingModal } from './components/RankingModal';
 
 import './App.scss';
 
-const size = 3;
+const size = 5;
 
 // change model
 // show animation if necessary
@@ -16,8 +17,17 @@ const size = 3;
 
 const App: React.FC = () => {
   const [state, dispatch] = useModel(size, 3);
+  const [showRanking, setShowRanking] = useState<boolean>(false);
 
   const isGameOver = state.model.every(c => c > 0);
+
+  const handleRequestNewGame = useCallback(() => {
+    dispatch(newGame());
+  }, [dispatch]);
+
+  const handleRequestShowRanking = useCallback(() => {
+    setShowRanking(true);
+  }, [setShowRanking]);
 
   const handleBoardClicked = useCallback(
     (position: number) => {
@@ -35,7 +45,8 @@ const App: React.FC = () => {
       if (closeBehavior === 'quit') {
         // todo
       } else if (closeBehavior === 'show_ranking') {
-        // todo
+        dispatch(newGame());
+        setShowRanking(true);
       } else {
         dispatch(newGame());
       }
@@ -43,13 +54,21 @@ const App: React.FC = () => {
     [dispatch],
   );
 
+  const handleRankingClosed = useCallback(() => {
+    setShowRanking(false);
+  }, [setShowRanking]);
+
   return (
     <div className="App">
       <header>
-        <h1>Kulki</h1>
+        <h1>Boules</h1>
       </header>
+      <nav>
+        <Button onClick={handleRequestNewGame}>New Game</Button>
+        <Button onClick={handleRequestShowRanking}>Show Ranking</Button>
+      </nav>
       <main>
-        <h2>Punkty: {state.score}</h2>
+        <h2>Score: {state.score}</h2>
         <NextColors nextColors={state.nextColors} />
         <Board
           size={size}
@@ -61,6 +80,7 @@ const App: React.FC = () => {
         />
       </main>
       <GameOverModal score={state.score} open={isGameOver} onRequestClose={handleModalClosed} />
+      <RankingModal open={showRanking} onRequestClose={handleRankingClosed} />
     </div>
   );
 };

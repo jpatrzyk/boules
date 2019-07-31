@@ -16,8 +16,8 @@ export const Modal: React.FC<Props> = ({ open, onRequestClose, title, children }
       <div className={classNames('Modal', { 'Modal--hidden': !open })}>
         <div className="Modal-mask" />
         <div className="Modal-window">
-          {!!title && (<h2>{title}</h2>)}
-          {children}
+          {!!title && <h2>{title}</h2>}
+          <div className="Modal-content">{children}</div>
         </div>
       </div>
     );

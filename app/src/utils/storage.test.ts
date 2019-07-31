@@ -1,7 +1,13 @@
 import 'fake-indexeddb/auto';
 
 import { HIGHEST_SCORES_LENGTH } from './constants';
-import { dbPromise, isInTopScores, putScore, getAllScoresDescending } from './storage';
+import {
+  dbPromise,
+  isInTopScores,
+  putScore,
+  getTopScoresDescending,
+  clearAllScores,
+} from './storage';
 
 describe('isInTopScores', () => {
   beforeEach(async () => {
@@ -71,17 +77,38 @@ describe('getAllScoresDescending', () => {
     await db.clear('scores');
   });
 
-  it('should return all scores in order descending by score value', async () => {
+  it('should return only HIGHEST_SCORES_LENGTH top scores descending by score value', async () => {
     const db = await dbPromise;
     const timestamp = new Date(2019, 2, 14, 0, 0, 0, 0).getTime();
-    await db.add('scores', { score: 33, playerName: 'A', timestamp });
-    await db.add('scores', { score: 55, playerName: 'A', timestamp: timestamp + 100 });
-    await db.add('scores', { score: 22, playerName: 'A', timestamp: timestamp + 200 });
+    const highestScore = 1000;
+    for (let i = 0; i < HIGHEST_SCORES_LENGTH; i++) {
+      await db.add('scores', { score: 100 + i, playerName: 'A', timestamp: timestamp + i * 23 });
+    }
+    await db.add('scores', { score: highestScore, playerName: 'A', timestamp: timestamp + 10000 });
+    for (let i = 1; i < 5; i++) {
+      await db.add('scores', { score: 200 + i, playerName: 'A', timestamp: timestamp + i * 37 });
+    }
 
-    const result = await getAllScoresDescending();
-    expect(result).toHaveLength(3);
-    expect(result[0].score).toBe(55);
-    expect(result[1].score).toBe(33);
-    expect(result[2].score).toBe(22);
+    const result = await getTopScoresDescending();
+    expect(result).toHaveLength(HIGHEST_SCORES_LENGTH);
+    expect(result[0].score).toBe(highestScore);
+    expect(result[1].score).toBeLessThanOrEqual(highestScore);
+  });
+});
+
+describe('clearAllScores', () => {
+  beforeEach(async () => {
+    const db = await dbPromise;
+    await db.clear('scores');
+  });
+
+  it('should remove all saved scores from the db', async () => {
+    const db = await dbPromise;
+    const timestamp = new Date(2019, 3, 16, 0, 0, 0, 0).getTime();
+    await db.add('scores', { score: 33, playerName: 'A', timestamp });
+
+    await clearAllScores();
+    const allScores = await db.getAll('scores');
+    expect(allScores).toHaveLength(0);
   });
 });

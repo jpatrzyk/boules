@@ -2,14 +2,16 @@ import { openDB, DBSchema } from 'idb';
 
 import { HIGHEST_SCORES_LENGTH } from './constants';
 
+export interface Score {
+  playerName: string;
+  score: number;
+  timestamp: number;
+}
+
 interface BoulesDB extends DBSchema {
   scores: {
     key: string;
-    value: {
-      playerName: string;
-      score: number;
-      timestamp: number;
-    };
+    value: Score;
     indexes: { 'by-score': number };
   };
 }
@@ -46,8 +48,16 @@ export async function putScore(playerName: string, score: number) {
   });
 }
 
-export async function getAllScoresDescending() {
+export async function getTopScoresDescending(): Promise<Score[]> {
   const db = await dbPromise;
-  const scoresAscending = await db.getAllFromIndex('scores', 'by-score');
-  return scoresAscending.reverse();
+  const scoresAscending = await db.getAllFromIndex(
+    'scores',
+    'by-score',
+  );
+  return scoresAscending.reverse().slice(0, HIGHEST_SCORES_LENGTH);
+}
+
+export async function clearAllScores() {
+  const db = await dbPromise;
+  await db.clear('scores');
 }

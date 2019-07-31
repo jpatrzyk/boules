@@ -1,0 +1,29 @@
+.RankingModal {
+  position: relative;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.RankingModal-tableWrapper {
+  flex-grow: 1;
+  flex-basis: 0;
+  overflow-y: auto;
+
+  table {
+    width: 100%;
+    margin-bottom: 16px;
+
+    td, th {
+      height: 36px;
+      padding: 8px;
+      text-align: left;
+    }
+  }
+}
+
+.RankingModal-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
