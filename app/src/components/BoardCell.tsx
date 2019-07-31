@@ -38,7 +38,7 @@ export const BoardCell: React.FC<Props> = ({
   }
 
   return (
-    <button className="BoardCell" onClick={cellClicked} disabled={disabled}>
+    <button type="button" className="BoardCell" onClick={cellClicked} disabled={disabled}>
       <ColoredCell value={value} selected={selected} animateTo={animateTo} />
     </button>
   );

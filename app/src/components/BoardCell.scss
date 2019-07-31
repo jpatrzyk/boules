@@ -1,12 +1,14 @@
+@import '../styles/variables';
+
 .BoardCell {
   margin: 0;
   padding: 0;
   border: 0;
-  background-image: linear-gradient(#fafafa, #eee);
-  box-shadow: inset #bdbdbd 0 0 0 1px;
+  background-image: linear-gradient($color-background-1, $color-background-2);
+  box-shadow: inset $color-border-0 0 0 0 1px;
 
   &:focus {
     outline: none;
-    box-shadow: inset #2196f3 0 0 2px 2px;
+    box-shadow: inset $color-primary 0 0 2px 2px;
   }
 }

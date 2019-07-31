@@ -1,0 +1,27 @@
+@import '../styles/variables';
+
+.Button {
+  border: 0;
+  min-width: 100px;
+  min-height: 48px;
+  padding: 0 16px;
+  margin: 4px;
+  border-radius: 3px;
+  font-size: 12pt;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+
+  &.Button--primary {
+    border: 1px solid $color-primary-dark;
+    background-image: linear-gradient(to bottom, $color-primary, $color-primary-dark);
+    color: $color-text-dark-background;
+  }
+
+  &.Button--default {
+    border: 1px solid $color-border-0;
+    background-image: linear-gradient($color-background-1, $color-background-2);
+    color: lighten($color-text, 10%);
+  }
+}
