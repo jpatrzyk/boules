@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
   DEFAULT_COLORS_COUNT,
@@ -23,6 +24,7 @@ const size = 5;
 const emptyNextColors = new Array(NEXT_BALLS_COUNT).fill(0);
 
 const App: React.FC = () => {
+  const { t, i18n } = useTranslation();
   const [state, dispatch] = useModel(size);
   const [showGameOver, setShowGameOver] = useState<boolean>(false);
   const [showRanking, setShowRanking] = useState<boolean>(false);
@@ -49,6 +51,13 @@ const App: React.FC = () => {
     };
     setConditionsFromStorage();
   }, [dispatch]);
+
+  const changeToPolish = useCallback(() => {
+    i18n.changeLanguage('pl');
+  }, [i18n]);
+  const changeToEnglish = useCallback(() => {
+    i18n.changeLanguage('en');
+  }, [i18n]);
 
   const handleModalClosed = useCallback(
     (closeBehavior?: CloseBehavior) => {
@@ -108,15 +117,19 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <header>
-        <h1>Boules</h1>
+        <h1>{t('app.title')}</h1>
       </header>
       <nav>
         <Button onClick={handleRequestNewGame}>New Game</Button>
         <Button onClick={handleRequestShowRanking}>Show Ranking</Button>
         <Button onClick={handleRequestShowOptions}>Show Options</Button>
+        <Button onClick={changeToPolish}>pl</Button>
+        <Button onClick={changeToEnglish}>en</Button>
       </nav>
       <main>
-        <h2>Score: {state.score}</h2>
+        <h2>
+          {t('app.score')} {state.score}
+        </h2>
         <NextColors nextColors={nextColors} />
         <Board
           state={state}
