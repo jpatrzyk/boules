@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { ColoredCell } from './ColoredCell';
 
@@ -9,9 +10,10 @@ interface Props {
 }
 
 export const NextColors: React.FC<Props> = ({ nextColors }: Props) => {
+  const { t } = useTranslation();
   return (
     <div className="NextColors">
-      <h2>Next colors:</h2>
+      <h2>{t('app.next_colors')}</h2>
       <div className="NextColors-row">
         {nextColors.map((value, index) => {
           return (

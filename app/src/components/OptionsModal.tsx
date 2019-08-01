@@ -1,4 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation, Trans } from 'react-i18next';
 
 import { GameConditions } from 'model/state';
 import { DEFAULT_LINE_LENGTH, MAX_COLORS_COUNT, MIN_COLORS_COUNT } from 'utils/constants';
@@ -18,15 +19,20 @@ interface Props {
   onCancel: () => void;
 }
 
-const switchOptions = [{ value: false, label: 'Hide' }, { value: true, label: 'Show' }];
 const colorsOptions = range(MAX_COLORS_COUNT + 1, MIN_COLORS_COUNT).map(value => ({
   value,
   label: value.toString(),
 }));
 
 export const OptionsModal: React.FC<Props> = ({ open, initialValue, onSubmit, onCancel }) => {
+  const { t } = useTranslation();
   const [showNextColors, setShowNextColors] = useState<boolean>(initialValue.showNextColors);
   const [colorsCount, setColorsCount] = useState<number>(initialValue.colorsCount);
+
+  const switchOptions = useMemo(
+    () => [{ value: false, label: t('options.hide') }, { value: true, label: t('options.show') }],
+    [t],
+  );
 
   useEffect(() => {
     if (open) {
@@ -55,31 +61,28 @@ export const OptionsModal: React.FC<Props> = ({ open, initialValue, onSubmit, on
   }, [showNextColors, colorsCount, onSubmit]);
 
   const estimatedScore = calculateScore(DEFAULT_LINE_LENGTH, { showNextColors, colorsCount });
-
   return (
-    <Modal open={open} onRequestClose={onCancel} title="Options">
+    <Modal open={open} onRequestClose={onCancel} title={t('options.modal_title')}>
       <div className="OptionsModal">
-        <p>
-          The more colors, the higher is the score. Also, hiding next colors makes score higher. See
-          below.
-        </p>
-        <h4>Show next colors?</h4>
+        <p>{t('options.info')}</p>
+        <h4>{t('options.show_next_colors')}</h4>
         <RadioGroup options={switchOptions} value={showNextColors} onChange={handleSwitchChange} />
 
-        <h4>Number of colors:</h4>
+        <h4>{t('options.number_of_colors')}</h4>
         <RadioGroup
           options={colorsOptions}
           value={colorsCount}
           onChange={handleColorsCountChange}
         />
-        <p>
-          Points earned for line of length {DEFAULT_LINE_LENGTH}: <strong>{estimatedScore}</strong>
-        </p>
+        <Trans i18nKey="options.summary" parent="p">
+          With these settings, for <strong>{{ lineLength: DEFAULT_LINE_LENGTH }}-cell-long</strong>{' '}
+          row you will earn <strong>{{ estimatedScore }}</strong> points.
+        </Trans>
       </div>
       <div className="OptionsModal-buttons">
-        <Button onClick={onCancel}>Cancel</Button>
+        <Button onClick={onCancel}>{t('global.cancel')}</Button>
         <Button variant="primary" onClick={handleSubmit}>
-          Save
+          {t('global.save')}
         </Button>
       </div>
     </Modal>

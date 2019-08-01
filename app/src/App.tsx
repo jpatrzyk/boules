@@ -120,9 +120,9 @@ const App: React.FC = () => {
         <h1>{t('app.title')}</h1>
       </header>
       <nav>
-        <Button onClick={handleRequestNewGame}>New Game</Button>
-        <Button onClick={handleRequestShowRanking}>Show Ranking</Button>
-        <Button onClick={handleRequestShowOptions}>Show Options</Button>
+        <Button onClick={handleRequestNewGame}>{t('app.new_game')}</Button>
+        <Button onClick={handleRequestShowRanking}>{t('app.show_ranking')}</Button>
+        <Button onClick={handleRequestShowOptions}>{t('app.show_options')}</Button>
         <Button onClick={changeToPolish}>pl</Button>
         <Button onClick={changeToEnglish}>en</Button>
       </nav>

@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Score, loadTopScoresDescending, clearAllScores } from 'utils/storage';
 import { Modal } from './_ui/Modal';
@@ -14,6 +15,7 @@ interface Props {
 }
 
 export const RankingModal: React.FC<Props> = ({ open, onRequestClose }) => {
+  const { t } = useTranslation();
   const [scores, setScores] = useState<Score[]>([]);
 
   useEffect(() => {
@@ -33,15 +35,15 @@ export const RankingModal: React.FC<Props> = ({ open, onRequestClose }) => {
   }, []);
 
   return (
-    <Modal open={open} onRequestClose={onRequestClose} title="High Scores">
+    <Modal open={open} onRequestClose={onRequestClose} title={t('ranking.modal_title')}>
       <div className="RankingModal">
         <div className="RankingModal-tableWrapper">
           <table>
             <thead>
               <tr>
-                <th>Player</th>
-                <th>Score</th>
-                <th>Date</th>
+                <th>{t('ranking.th_player')}</th>
+                <th>{t('ranking.th_score')}</th>
+                <th>{t('ranking.th_date')}</th>
               </tr>
             </thead>
             <tbody>
@@ -56,9 +58,9 @@ export const RankingModal: React.FC<Props> = ({ open, onRequestClose }) => {
           </table>
         </div>
         <div className="RankingModal-buttons">
-          <Button onClick={handleRequestClearScores}>Clear</Button>
+          <Button onClick={handleRequestClearScores}>{t('ranking.clear')}</Button>
           <Button variant="primary" onClick={onRequestClose}>
-            Close
+            {t('ranking.close')}
           </Button>
         </div>
       </div>

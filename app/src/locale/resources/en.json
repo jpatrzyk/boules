@@ -1,6 +1,40 @@
 {
+  "global": {
+    "yes": "Yes",
+    "no": "No",
+    "save": "Save",
+    "cancel": "Cancel"
+  },
   "app": {
     "title": "Boules",
-    "score": "Score:"
+    "score": "Score:",
+    "next_colors": "Next colors:",
+    "new_game": "New Game",
+    "show_ranking": "Show Ranking",
+    "show_options": "Show Options"
+  },
+  "game_over": {
+    "modal_title": "Game Over",
+    "congratulations": "Congratulations! You achieved a very high score!",
+    "name_label": "Your name:",
+    "dont_save": "Don't save",
+    "new_game_prompt": "Game Over. Would you like to start a new game?"
+  },
+  "options": {
+    "modal_title": "Options",
+    "info": "The more colors, the higher is the score. Also, hiding next colors makes score higher. See below.",
+    "show_next_colors": "Show next colors?",
+    "show": "Show",
+    "hide": "Hide",
+    "number_of_colors": "Number of colors:",
+    "summary": "With these settings, for <1>{{lineLength}}-cell-long</1> row you will earn <1>{{estimatedScore}}</1> points."
+  },
+  "ranking": {
+    "modal_title": "High Scores",
+    "th_player": "Player",
+    "th_score": "Score",
+    "th_date": "Date",
+    "close": "Close",
+    "clear": "Clear all scores"
   }
 }

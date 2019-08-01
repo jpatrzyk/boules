@@ -1,4 +1,5 @@
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Modal } from './_ui/Modal';
 import { Button } from './_ui/Button';
@@ -13,6 +14,7 @@ interface Props {
 }
 
 export const GameOverModal: React.FC<Props> = ({ score, open, onRequestClose }) => {
+  const { t } = useTranslation();
   const [isTopScore, setIsTopScore] = useState<boolean>(false);
   const [playerName, setPlayerName] = useState<string>('');
 
@@ -47,14 +49,14 @@ export const GameOverModal: React.FC<Props> = ({ score, open, onRequestClose }) 
     if (isTopScore) {
       return (
         <div>
-          <p>Congratulations! You achieved a very high score!</p>
-          <label>Your name:</label>
+          <p>{t('game_over.congratulations')}</p>
+          <label>{t('game_over.name_label')}</label>
           <input type="text" value={playerName} onChange={handleInputChange} />
         </div>
       );
     }
 
-    return <p>Game Over. Would you like to start a new game?</p>;
+    return <p>{t('game_over.new_game_prompt')}</p>;
   }
 
   function renderButtons() {
@@ -62,9 +64,9 @@ export const GameOverModal: React.FC<Props> = ({ score, open, onRequestClose }) 
       return (
         <div>
           <Button variant="primary" onClick={handleSave}>
-            Save
+            {t('global.save')}
           </Button>
-          <Button onClick={onRequestClose}>Don't save</Button>
+          <Button onClick={onRequestClose}>{t('game_over.dont_save')}</Button>
         </div>
       );
     }
@@ -72,15 +74,15 @@ export const GameOverModal: React.FC<Props> = ({ score, open, onRequestClose }) 
     return (
       <div>
         <Button variant="primary" onClick={handleRequestNewGame}>
-          Yes
+          {t('global.yes')}
         </Button>
-        <Button onClick={onRequestClose}>No</Button>
+        <Button onClick={onRequestClose}>{t('global.no')}</Button>
       </div>
     );
   }
 
   return (
-    <Modal open={open} onRequestClose={onRequestClose} title="Game Over">
+    <Modal open={open} onRequestClose={onRequestClose} title={t('game_over.modal_title')}>
       {renderContent()}
       {renderButtons()}
     </Modal>
