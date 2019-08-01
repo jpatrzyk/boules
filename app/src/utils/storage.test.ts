@@ -1,5 +1,6 @@
 import 'fake-indexeddb/auto';
 
+import { BaseState } from 'model/state';
 import { HIGHEST_SCORES_LENGTH } from './constants';
 import {
   dbPromise,
@@ -7,6 +8,9 @@ import {
   putScore,
   loadTopScoresDescending,
   clearAllScores,
+  loadSavedGamesNames,
+  loadGame,
+  persistGame,
 } from './storage';
 
 describe('isInTopScores', () => {
@@ -110,5 +114,93 @@ describe('clearAllScores', () => {
     await clearAllScores();
     const allScores = await db.getAll('scores');
     expect(allScores).toHaveLength(0);
+  });
+});
+
+describe('loadSavedGamesNames', () => {
+  beforeEach(async () => {
+    const db = await dbPromise;
+    await db.clear('savedGames');
+  });
+
+  it('should return all saved games keys', async () => {
+    const db = await dbPromise;
+    const gameState: BaseState = {
+      colorsCount: 5,
+      showNextColors: true,
+      size: 3,
+      lineLength: 3,
+      score: 28,
+      model: [1, 2, 0, 0, 3, 5, 0, 4, 0],
+      nextColors: [3, 3, 5],
+    };
+    await db.add('savedGames', gameState, 'game1');
+    await db.add('savedGames', gameState, 'game2');
+    await db.add('savedGames', gameState, 'game3');
+
+    const names = await loadSavedGamesNames();
+    expect(names).toHaveLength(3);
+    expect(names).toEqual(expect.arrayContaining(['game1', 'game2', 'game3']));
+  });
+});
+
+describe('loadGame', () => {
+  beforeEach(async () => {
+    const db = await dbPromise;
+    await db.clear('savedGames');
+  });
+
+  it('should return savedGameByName', async () => {
+    const db = await dbPromise;
+    const gameState: BaseState = {
+      colorsCount: 5,
+      showNextColors: true,
+      size: 3,
+      lineLength: 3,
+      score: 28,
+      model: [1, 2, 0, 0, 3, 5, 0, 4, 0],
+      nextColors: [3, 3, 5],
+    };
+    const otherGameState: BaseState = {
+      colorsCount: 7,
+      showNextColors: false,
+      size: 3,
+      lineLength: 3,
+      score: 76,
+      model: [0, 7, 1, 0, 2, 0, 3, 4, 0],
+      nextColors: [1, 4, 6],
+    };
+    await db.add('savedGames', gameState, 'expected_game');
+    await db.add('savedGames', otherGameState, 'other1');
+    await db.add('savedGames', otherGameState, 'other2');
+
+    const game = await loadGame('expected_game');
+    expect(game).toEqual(gameState);
+  });
+});
+
+describe('persistGame', () => {
+  beforeEach(async () => {
+    const db = await dbPromise;
+    await db.clear('savedGames');
+  });
+
+  it('should put game state into db with name as the key', async () => {
+    const db = await dbPromise;
+    const gameState: BaseState = {
+      colorsCount: 5,
+      showNextColors: true,
+      size: 3,
+      lineLength: 3,
+      score: 28,
+      model: [1, 2, 0, 0, 3, 5, 0, 4, 0],
+      nextColors: [3, 3, 5],
+    };
+
+    const key = await persistGame('test_game', gameState);
+
+    const persisted = await db.get('savedGames', key);
+    expect(key).toEqual('test_game');
+    expect(persisted).toEqual(gameState);
   });
 });

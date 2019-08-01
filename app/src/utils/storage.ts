@@ -1,6 +1,6 @@
 import { openDB, DBSchema } from 'idb';
 
-import { GameConditions } from 'model/state';
+import { GameConditions, BaseState } from 'model/state';
 import { HIGHEST_SCORES_LENGTH } from './constants';
 
 export interface Score {
@@ -21,6 +21,10 @@ interface BoulesDB extends DBSchema {
     key: typeof GAME_CONDITIONS_KEY;
     value: GameConditions;
   };
+  savedGames: {
+    key: string;
+    value: BaseState;
+  };
 }
 
 export const dbPromise = openDB<BoulesDB>('boules-1', 1, {
@@ -30,6 +34,7 @@ export const dbPromise = openDB<BoulesDB>('boules-1', 1, {
     });
     store.createIndex('by-score', 'score');
     db.createObjectStore('gameConditions');
+    db.createObjectStore('savedGames');
   },
 });
 
@@ -74,5 +79,20 @@ export async function loadGameConditions() {
 
 export async function persistGameConditions(value: GameConditions) {
   const db = await dbPromise;
-  return db.put('gameConditions', value, GAME_CONDITIONS_KEY);
+  return await db.put('gameConditions', value, GAME_CONDITIONS_KEY);
+}
+
+export async function loadSavedGamesNames() {
+  const db = await dbPromise;
+  return db.getAllKeys('savedGames');
+}
+
+export async function loadGame(name: string) {
+  const db = await dbPromise;
+  return await db.get('savedGames', name);
+}
+
+export async function persistGame(name: string, state: BaseState) {
+  const db = await dbPromise;
+  return await db.put('savedGames', state, name);
 }
