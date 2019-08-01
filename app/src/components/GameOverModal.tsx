@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 
-import { Modal } from './Modal';
-import { Button } from './Button';
+import { Modal } from './_ui/Modal';
+import { Button } from './_ui/Button';
 import { isInTopScores, putScore } from 'utils/storage';
 
 export type CloseBehavior = 'new_game' | 'show_ranking' | 'quit';

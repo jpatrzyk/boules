@@ -1,8 +1,8 @@
 declare type NumDict<T> = { [key: number]: T };
 
-export function range(n: number) {
+export function range(n: number, start: number = 0) {
   const result = Array(n);
-  for (let i = 0; i < n; i++) {
+  for (let i = start; i < n; i++) {
     result[i] = i;
   }
   return result;

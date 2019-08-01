@@ -1,0 +1,36 @@
+@import '../../styles/variables';
+
+.RadioButton {
+  flex-basis: 48px;
+  min-height: 48px;
+  padding: 0 8px;
+  margin: 0;
+  font-size: 12pt;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+
+  border: 1px solid $color-border-0;
+  background-image: linear-gradient($color-background-1, $color-background-2);
+  color: lighten($color-text, 10%);
+
+  &:first-child {
+    border-top-left-radius: $button-border-radius;
+    border-bottom-left-radius: $button-border-radius;
+  }
+  &:last-child {
+    border-top-right-radius: $button-border-radius;
+    border-bottom-right-radius: $button-border-radius;
+  }
+
+  & + & {
+    border-left: none;
+  }
+
+  &.RadioButton--selected {
+    border: 1px solid $color-primary-dark;
+    background-image: linear-gradient(to bottom, $color-primary, $color-primary-dark);
+    color: $color-text-dark-background;
+  }
+}

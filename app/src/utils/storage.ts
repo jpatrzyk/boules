@@ -1,5 +1,6 @@
 import { openDB, DBSchema } from 'idb';
 
+import { GameConditions } from 'model/state';
 import { HIGHEST_SCORES_LENGTH } from './constants';
 
 export interface Score {
@@ -8,11 +9,17 @@ export interface Score {
   timestamp: number;
 }
 
+const GAME_CONDITIONS_KEY = 'GAME_CONDITIONS';
+
 interface BoulesDB extends DBSchema {
   scores: {
-    key: string;
+    key: number;
     value: Score;
     indexes: { 'by-score': number };
+  };
+  gameConditions: {
+    key: typeof GAME_CONDITIONS_KEY;
+    value: GameConditions;
   };
 }
 
@@ -22,6 +29,7 @@ export const dbPromise = openDB<BoulesDB>('boules-1', 1, {
       keyPath: 'timestamp',
     });
     store.createIndex('by-score', 'score');
+    db.createObjectStore('gameConditions');
   },
 });
 
@@ -48,7 +56,7 @@ export async function putScore(playerName: string, score: number) {
   });
 }
 
-export async function getTopScoresDescending(): Promise<Score[]> {
+export async function loadTopScoresDescending(): Promise<Score[]> {
   const db = await dbPromise;
   const scoresAscending = await db.getAllFromIndex('scores', 'by-score');
   return scoresAscending.reverse().slice(0, HIGHEST_SCORES_LENGTH);
@@ -57,4 +65,14 @@ export async function getTopScoresDescending(): Promise<Score[]> {
 export async function clearAllScores() {
   const db = await dbPromise;
   await db.clear('scores');
+}
+
+export async function loadGameConditions() {
+  const db = await dbPromise;
+  return db.get('gameConditions', GAME_CONDITIONS_KEY);
+}
+
+export async function persistGameConditions(value: GameConditions) {
+  const db = await dbPromise;
+  return db.put('gameConditions', value, GAME_CONDITIONS_KEY);
 }

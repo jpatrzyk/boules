@@ -2,20 +2,22 @@ import {
   MAX_COLORS_COUNT,
   NEXT_BALLS_COUNT,
   DEFAULT_LINE_LENGTH,
-  INITIAL_BALLS_COUNT,
+  INITIAL_BALLS_COUNT, DEFAULT_COLORS_COUNT,
 } from 'utils/constants';
+import {
+  StateType,
+  WaitingState,
+  MovingState,
+  AddingState,
+  FreeingState, BaseState,
+} from 'model/state';
 import {
   chooseNextColors,
   init,
   choosePositionsToAddNewBalls,
   handleBoardClicked,
   handleAnimationFinished,
-  calculateScore,
-  StateType,
-  WaitingState,
-  MovingState,
-  AddingState,
-  FreeingState,
+  calculateScore, buildNewGame,
 } from './useModel';
 
 describe('chooseNextColors', () => {
@@ -50,30 +52,38 @@ describe('chooseNextColors', () => {
 describe('init', () => {
   it('should return state with all necessary fields', () => {
     const size = 7;
-    const colorsCount = 5;
-    const state = init(size, colorsCount);
+    const state = init(size);
     expect(state).toMatchObject({
       size,
       lineLength: DEFAULT_LINE_LENGTH,
-      colorsCount,
+      colorsCount: DEFAULT_COLORS_COUNT,
       score: 0,
       model: new Array(size * size).fill(0),
-      nextColors: expect.any(Array),
-      type: StateType.Adding,
-      positionsToFill: expect.any(Object),
+      nextColors: new Array(NEXT_BALLS_COUNT).fill(0),
+      type: StateType.Initial,
     });
   });
 
   it('should return model of length = size * size filled with zeros', () => {
     const size = 3;
-    const state = init(size, 5);
+    const state = init(size);
     expect(state.model).toHaveLength(size * size);
     expect(state.model.filter(a => a === 0)).toHaveLength(size * size); // all zeros
   });
+});
 
+describe('buildNewGame', () => {
   it('should return positionsToFill with INITIAL_BALLS_COUNT keys and values from state.nextColors', () => {
-    const size = 3;
-    const state = init(size, 5);
+    const prevState: BaseState = {
+      size: 3,
+      lineLength: 3,
+      colorsCount: 6,
+      showNextColors: true,
+      score: 0,
+      model: [0, 1, 0, 0, 2, 0, 0, 3, 0],
+      nextColors: [4, 5, 6],
+    };
+    const state = buildNewGame(prevState);
     expect(Object.keys(state.positionsToFill)).toHaveLength(INITIAL_BALLS_COUNT);
     expect(Object.values(state.positionsToFill)).toEqual(expect.arrayContaining(state.nextColors));
   });
@@ -278,7 +288,7 @@ describe('handleAnimationFinished', () => {
     };
     const updatedState = handleAnimationFinished(state); // moving from (1,0) to (2,0)
     expect(updatedState).toMatchObject({
-      score: 3,
+      score: calculateScore(state.lineLength, state),
       // prettier-ignore
       model: [
         0, 3, 0,
@@ -368,7 +378,7 @@ describe('handleAnimationFinished', () => {
     };
     const updatedState = handleAnimationFinished(state);
     expect(updatedState).toMatchObject({
-      score: 3,
+      score: calculateScore(state.lineLength, state),
       // prettier-ignore
       model: [
         0, 3, 0,

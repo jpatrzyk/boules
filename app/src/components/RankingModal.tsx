@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { Modal } from './Modal';
-import { Button } from './Button';
-import { Score, getTopScoresDescending, clearAllScores } from 'utils/storage';
+import { Score, loadTopScoresDescending, clearAllScores } from 'utils/storage';
+import { Modal } from './_ui/Modal';
+import { Button } from './_ui/Button';
 
 import './RankingModal.scss';
 
@@ -23,7 +23,7 @@ export const RankingModal: React.FC<Props> = ({ open, onRequestClose }) => {
   }, [open]);
 
   async function loadScores() {
-    const allScores = await getTopScoresDescending();
+    const allScores = await loadTopScoresDescending();
     setScores(allScores);
   }
 

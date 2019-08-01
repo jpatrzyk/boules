@@ -9,6 +9,13 @@ jest.mock('./components/GameOverModal', () => ({
 jest.mock('./components/RankingModal', () => ({
   RankingModal: () => <div />,
 }));
+jest.mock('./components/OptionsModal', () => ({
+  OptionsModal: () => <div />,
+}));
+jest.mock('./utils/storage', () => ({
+  loadGameConditions: jest.fn(async () => {}),
+  persistGameConditions: jest.fn(() => {}),
+}));
 
 it('renders without crashing', () => {
   const div = document.createElement('div');

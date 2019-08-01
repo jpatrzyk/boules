@@ -1,12 +1,25 @@
 import { useReducer } from 'react';
+
+import {
+  AddingState,
+  BaseState,
+  FreeingState,
+  GameConditions,
+  InitialState,
+  MovingState,
+  State,
+  StateType,
+  WaitingState,
+} from 'model/state';
 import { findAllKeys, randomInt, range } from 'utils/helpers';
 import {
-  DEFAULT_LINE_LENGTH,
-  MAX_COLORS_COUNT,
-  INITIAL_BALLS_COUNT,
-  NEXT_BALLS_COUNT,
   DEFAULT_BOARD_SIZE,
   DEFAULT_COLORS_COUNT,
+  DEFAULT_LINE_LENGTH,
+  DEFAULT_SHOW_NEXT_COLORS,
+  INITIAL_BALLS_COUNT,
+  MAX_COLORS_COUNT,
+  NEXT_BALLS_COUNT,
 } from 'utils/constants';
 import findPath from './findPath';
 import findFullLine from './findFullLine';
@@ -14,50 +27,7 @@ import findFullLine from './findFullLine';
 type Action =
   | { type: 'board_clicked'; position: number }
   | { type: 'animation_finished' }
-  | { type: 'new_game' };
-
-interface GameConditions {
-  colorsCount: number;
-  showNextColors: boolean;
-}
-
-interface BaseState extends GameConditions {
-  size: number;
-  lineLength: number;
-  score: number;
-  model: number[];
-  nextColors: number[];
-}
-
-export enum StateType {
-  Waiting = 'waiting_for_click',
-  Moving = 'moving_selected_ball',
-  Adding = 'adding_new_balls',
-  Freeing = 'freeing_full_row',
-}
-
-export interface WaitingState extends BaseState {
-  type: StateType.Waiting;
-  selectedBall: number; // -1 means no selection
-}
-
-export interface MovingState extends BaseState {
-  type: StateType.Moving;
-  selectedBall: number;
-  remainingPath: number[];
-}
-
-export interface AddingState extends BaseState {
-  type: StateType.Adding;
-  positionsToFill: { [position: number]: number };
-}
-
-export interface FreeingState extends BaseState {
-  type: StateType.Freeing;
-  ballsToRemove: number[];
-}
-
-export type State = WaitingState | MovingState | AddingState | FreeingState;
+  | { type: 'new_game'; options?: GameConditions };
 
 export function boardClicked(position: number): Action {
   return { type: 'board_clicked', position };
@@ -67,16 +37,13 @@ export function animationFinished(): Action {
   return { type: 'animation_finished' };
 }
 
-export function newGame(): Action {
-  return { type: 'new_game' };
+export function newGame(options?: GameConditions): Action {
+  return { type: 'new_game', options };
 }
 
-export function useModel(size: number, colorsCount: number) {
-  function initState() {
-    return init(size, colorsCount);
-  }
-
-  return useReducer(reducer, undefined, initState);
+export function useModel(size: number) {
+  const initialState = init(size);
+  return useReducer(reducer, initialState);
 }
 
 function reducer(state: State, action: Action) {
@@ -87,18 +54,29 @@ function reducer(state: State, action: Action) {
     return handleAnimationFinished(state as MovingState | AddingState | FreeingState);
   }
   if (action.type === 'new_game') {
-    return init(state.size, state.colorsCount);
+    return buildNewGame(state, action.options);
   }
   return state;
 }
 
-export function init(
-  size: number = DEFAULT_BOARD_SIZE,
-  colorsCount: number = DEFAULT_COLORS_COUNT,
-  showNextColors: boolean = true,
-): AddingState {
-  const emptyState: BaseState = {
+export function init(size: number = DEFAULT_BOARD_SIZE): InitialState {
+  return {
     size,
+    lineLength: DEFAULT_LINE_LENGTH,
+    colorsCount: DEFAULT_COLORS_COUNT,
+    showNextColors: DEFAULT_SHOW_NEXT_COLORS,
+    score: 0,
+    model: new Array(size * size).fill(0),
+    nextColors: new Array(NEXT_BALLS_COUNT).fill(0),
+    type: StateType.Initial,
+  };
+}
+
+export function buildNewGame(prevState: BaseState, options?: GameConditions): AddingState {
+  const { size } = prevState;
+  const { colorsCount, showNextColors } = options || prevState;
+  const emptyState: BaseState = {
+    size: prevState.size,
     lineLength: DEFAULT_LINE_LENGTH,
     colorsCount,
     showNextColors,

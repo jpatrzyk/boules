@@ -1,4 +1,4 @@
-@import '../styles/variables';
+@import '../../styles/variables';
 
 .Button {
   border: 0;
@@ -6,7 +6,7 @@
   min-height: 48px;
   padding: 0 16px;
   margin: 4px;
-  border-radius: 3px;
+  border-radius: $button-border-radius;
   font-size: 12pt;
   font-weight: 700;
   letter-spacing: 0.05em;

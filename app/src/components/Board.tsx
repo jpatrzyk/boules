@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { State, StateType } from 'hooks/model/useModel';
+import { State, StateType } from 'model/state';
 import { findKey, range } from 'utils/helpers';
 import { BoardCell } from './BoardCell';
 import { Direction } from './ColoredCell';

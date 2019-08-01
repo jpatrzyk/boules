@@ -5,7 +5,7 @@ import {
   dbPromise,
   isInTopScores,
   putScore,
-  getTopScoresDescending,
+  loadTopScoresDescending,
   clearAllScores,
 } from './storage';
 
@@ -89,7 +89,7 @@ describe('getAllScoresDescending', () => {
       await db.add('scores', { score: 200 + i, playerName: 'A', timestamp: timestamp + i * 37 });
     }
 
-    const result = await getTopScoresDescending();
+    const result = await loadTopScoresDescending();
     expect(result).toHaveLength(HIGHEST_SCORES_LENGTH);
     expect(result[0].score).toBe(highestScore);
     expect(result[1].score).toBeLessThanOrEqual(highestScore);
