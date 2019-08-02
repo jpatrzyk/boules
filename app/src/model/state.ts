@@ -1,10 +1,10 @@
 export interface GameConditions {
+  size: number;
   colorsCount: number;
   showNextColors: boolean;
 }
 
 export interface BaseState extends GameConditions {
-  size: number;
   lineLength: number;
   score: number;
   model: number[];

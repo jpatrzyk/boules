@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import {
+  DEFAULT_BOARD_SIZE,
   DEFAULT_COLORS_COUNT,
   DEFAULT_SHOW_NEXT_COLORS,
   INITIAL_BALLS_COUNT,
@@ -22,13 +23,11 @@ import { Button } from './components/_ui/Button';
 
 import './App.scss';
 
-const size = 5;
-
 const emptyNextColors = new Array(NEXT_BALLS_COUNT).fill(0);
 
 const App: React.FC = () => {
   const { t } = useTranslation();
-  const [state, dispatch] = useModel(size);
+  const [state, dispatch] = useModel();
   const [showGameOver, setShowGameOver] = useState<boolean>(false);
   const [showRanking, setShowRanking] = useState<boolean>(false);
 
@@ -39,6 +38,7 @@ const App: React.FC = () => {
         dispatch(newGame(savedConditions));
       } else {
         const defaultConditions: GameConditions = {
+          size: DEFAULT_BOARD_SIZE,
           showNextColors: DEFAULT_SHOW_NEXT_COLORS,
           colorsCount: DEFAULT_COLORS_COUNT,
         };

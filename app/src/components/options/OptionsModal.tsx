@@ -2,7 +2,12 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation, Trans } from 'react-i18next';
 
 import { GameConditions } from 'model/state';
-import { DEFAULT_LINE_LENGTH, MAX_COLORS_COUNT, MIN_COLORS_COUNT } from 'utils/constants';
+import {
+  DEFAULT_BOARD_SIZE,
+  DEFAULT_LINE_LENGTH,
+  MAX_COLORS_COUNT,
+  MIN_COLORS_COUNT,
+} from 'utils/constants';
 import { range } from 'utils/helpers';
 import { calculateScore } from 'hooks/model/useModel';
 import { Modal } from 'components/_ui/Modal';
@@ -18,15 +23,14 @@ interface Props {
   onCancel: () => void;
 }
 
-const colorsOptions = range(MAX_COLORS_COUNT + 1, MIN_COLORS_COUNT).map(value => ({
-  value,
-  label: value.toString(),
-}));
+const colorsOptions = range(MAX_COLORS_COUNT + 1, MIN_COLORS_COUNT);
+const sizesOptions = range(DEFAULT_BOARD_SIZE + 3, DEFAULT_LINE_LENGTH);
 
 export const OptionsModal: React.FC<Props> = ({ open, initialValue, onSubmit, onCancel }) => {
   const { t } = useTranslation();
   const [showNextColors, setShowNextColors] = useState<boolean>(initialValue.showNextColors);
   const [colorsCount, setColorsCount] = useState<number>(initialValue.colorsCount);
+  const [size, setSize] = useState<number>(initialValue.size);
 
   const switchOptions = useMemo(
     () => [{ value: false, label: t('options.hide') }, { value: true, label: t('options.show') }],
@@ -37,6 +41,7 @@ export const OptionsModal: React.FC<Props> = ({ open, initialValue, onSubmit, on
     if (open) {
       setShowNextColors(initialValue.showNextColors);
       setColorsCount(initialValue.colorsCount);
+      setSize(initialValue.size);
     }
   }, [open, initialValue]);
 
@@ -54,11 +59,18 @@ export const OptionsModal: React.FC<Props> = ({ open, initialValue, onSubmit, on
     [setColorsCount],
   );
 
-  const handleSubmit = useCallback(async () => {
-    onSubmit({ showNextColors, colorsCount });
-  }, [showNextColors, colorsCount, onSubmit]);
+  const handleSizeChange = useCallback(
+    (value: number) => {
+      setSize(value);
+    },
+    [setSize],
+  );
 
-  const estimatedScore = calculateScore(DEFAULT_LINE_LENGTH, { showNextColors, colorsCount });
+  const handleSubmit = useCallback(async () => {
+    onSubmit({ size, showNextColors, colorsCount });
+  }, [size, showNextColors, colorsCount, onSubmit]);
+
+  const estimatedScore = calculateScore(DEFAULT_LINE_LENGTH, { size, showNextColors, colorsCount });
   return (
     <Modal open={open} onRequestClose={onCancel} title={t('options.modal_title')}>
       <div className="OptionsModal">
@@ -76,6 +88,10 @@ export const OptionsModal: React.FC<Props> = ({ open, initialValue, onSubmit, on
           value={colorsCount}
           onChange={handleColorsCountChange}
         />
+
+        <h4>{t('options.board_size')}</h4>
+        <SegmentedControl options={sizesOptions} value={size} onChange={handleSizeChange} />
+
         <Trans i18nKey="options.summary" parent="p">
           With these settings, for <strong>{{ lineLength: DEFAULT_LINE_LENGTH }}-cell-long</strong>{' '}
           row you will earn <strong>{{ estimatedScore }}</strong> points.

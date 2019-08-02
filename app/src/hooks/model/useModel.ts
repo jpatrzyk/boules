@@ -25,8 +25,8 @@ import {
 import findPath from './findPath';
 import findFullLine from './findFullLine';
 
-export function useModel(size: number) {
-  const initialState = init(size);
+export function useModel() {
+  const initialState = init();
   return useReducer(reducer, initialState);
 }
 
@@ -80,11 +80,10 @@ export function init(size: number = DEFAULT_BOARD_SIZE): InitialState {
 }
 
 export function buildNewGame(prevState: BaseState, options?: GameConditions): AddingState {
-  const { size } = prevState;
-  const { colorsCount, showNextColors } = options || prevState;
+  const { size, colorsCount, showNextColors } = options || prevState;
   const emptyState: BaseState = {
-    size: prevState.size,
-    lineLength: DEFAULT_LINE_LENGTH,
+    lineLength: prevState.lineLength,
+    size,
     colorsCount,
     showNextColors,
     score: 0,
@@ -267,9 +266,11 @@ export function handleAnimationFinished(state: MovingState | AddingState | Freei
 }
 
 export function calculateScore(lineLength: number, state: GameConditions): number {
-  const ballCost = Math.max(1, state.colorsCount - 5);
-  const cumulativeSum = lineLength * ballCost;
-  if (state.showNextColors) {
+  const { size, colorsCount, showNextColors } = state;
+  const ballCost = Math.max(1, colorsCount - 5);
+  const bonus = 9 - size;
+  const cumulativeSum = lineLength * ballCost + bonus;
+  if (showNextColors) {
     return cumulativeSum - Math.round(cumulativeSum / 3);
   }
   return cumulativeSum;

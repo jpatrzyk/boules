@@ -25,11 +25,12 @@
   },
   "options": {
     "modal_title": "Opcje gry",
-    "info": "Im więcej kolorów w grze, tym więcej punktów możesz zdobyć. Dodatkowo, punktacja wzrasta jeżeli wyłączone jest wyświetlanie następnych kolorów. Zobacz kalkulację poniżej.",
+    "info": "Zdobywasz tym więcej punktów, im więcej kolorów w grze lub im mniejsza plansza. Dodatkowo, punktacja wzrasta jeżeli wyłączone jest wyświetlanie następnych kolorów. (Przykładowa kalkulacja poniżej.)",
     "show_next_colors": "Wyświetlanie następnych kolorów:",
     "show": "Pokazuj",
     "hide": "Ukryj",
     "number_of_colors": "Liczba kolorów w grze:",
+    "board_size": "Rozmiar planszy:",
     "summary": "Przy powyższych ustawieniach, za zbicie <1>{{lineLength}}</1> kulek zdobędziesz <1>{{estimatedScore}}</1> punktów."
   },
   "ranking": {

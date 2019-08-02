@@ -522,30 +522,46 @@ describe('handleAnimationFinished', () => {
 describe('calculateScore', () => {
   it('should score higher for larger colorsCount', () => {
     const lineLength = 5;
-    const scoreA = calculateScore(lineLength, { colorsCount: 5, showNextColors: false });
-    const scoreB = calculateScore(lineLength, { colorsCount: 7, showNextColors: false });
+    const size = 9;
+    const showNextColors = false;
+    const scoreA = calculateScore(lineLength, { size, colorsCount: 5, showNextColors });
+    const scoreB = calculateScore(lineLength, { size, colorsCount: 7, showNextColors });
     expect(scoreB).toBeGreaterThan(scoreA);
   });
 
   it('should score equally for if colorsCount <= 6', () => {
     const lineLength = 5;
-    const scoreA = calculateScore(lineLength, { colorsCount: 5, showNextColors: false });
-    const scoreB = calculateScore(lineLength, { colorsCount: 6, showNextColors: false });
+    const size = 9;
+    const showNextColors = false;
+    const scoreA = calculateScore(lineLength, { size, colorsCount: 5, showNextColors });
+    const scoreB = calculateScore(lineLength, { size, colorsCount: 6, showNextColors });
     expect(scoreB).toEqual(scoreA);
   });
 
-  it('should score higher for longer line', () => {
+  it('should score higher for smaller size', () => {
+    const lineLength = 5;
     const colorsCount = 7;
-    const scoreA = calculateScore(5, { colorsCount, showNextColors: false });
-    const scoreB = calculateScore(6, { colorsCount, showNextColors: false });
+    const showNextColors = false;
+    const scoreA = calculateScore(lineLength, { size: 9, colorsCount, showNextColors });
+    const scoreB = calculateScore(lineLength, { size: 7, colorsCount, showNextColors });
+    expect(scoreB).toBeGreaterThan(scoreA);
+  });
+
+  it('should score higher for longer line', () => {
+    const size = 9;
+    const colorsCount = 7;
+    const showNextColors = false;
+    const scoreA = calculateScore(5, { size, colorsCount, showNextColors });
+    const scoreB = calculateScore(6, { size, colorsCount, showNextColors });
     expect(scoreB).toBeGreaterThan(scoreA);
   });
 
   it('should score higher if next colors are hidden', () => {
+    const size = 9;
     const colorsCount = 7;
     const lineLength = 5;
-    const scoreA = calculateScore(lineLength, { colorsCount, showNextColors: true });
-    const scoreB = calculateScore(lineLength, { colorsCount, showNextColors: false });
+    const scoreA = calculateScore(lineLength, { size, colorsCount, showNextColors: true });
+    const scoreB = calculateScore(lineLength, { size, colorsCount, showNextColors: false });
     expect(scoreB).toBeGreaterThan(scoreA);
   });
 });
