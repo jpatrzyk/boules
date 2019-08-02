@@ -1,23 +1,26 @@
 import {
+  DEFAULT_COLORS_COUNT,
+  DEFAULT_LINE_LENGTH,
+  INITIAL_BALLS_COUNT,
   MAX_COLORS_COUNT,
   NEXT_BALLS_COUNT,
-  DEFAULT_LINE_LENGTH,
-  INITIAL_BALLS_COUNT, DEFAULT_COLORS_COUNT,
 } from 'utils/constants';
 import {
+  AddingState,
+  BaseState,
+  FreeingState,
+  MovingState,
   StateType,
   WaitingState,
-  MovingState,
-  AddingState,
-  FreeingState, BaseState,
 } from 'model/state';
 import {
+  buildNewGame,
+  calculateScore,
   chooseNextColors,
-  init,
   choosePositionsToAddNewBalls,
-  handleBoardClicked,
   handleAnimationFinished,
-  calculateScore, buildNewGame,
+  handleBoardClicked,
+  init,
 } from './useModel';
 
 describe('chooseNextColors', () => {
@@ -87,6 +90,27 @@ describe('buildNewGame', () => {
     expect(Object.keys(state.positionsToFill)).toHaveLength(INITIAL_BALLS_COUNT);
     expect(Object.values(state.positionsToFill)).toEqual(expect.arrayContaining(state.nextColors));
   });
+
+  it('should reset prev step model & prevent undo', () => {
+    const prevState: WaitingState = {
+      size: 3,
+      lineLength: 3,
+      colorsCount: 6,
+      showNextColors: true,
+      score: 4,
+      model: [0, 1, 2, 0, 2, 4, 0, 3, 6],
+      nextColors: [4, 5, 6],
+      prevStepScore: 4,
+      prevStepModel: [0, 0, 1, 0, 2, 0, 0, 3, 0],
+      prevStepNextColors: [2, 4, 6],
+      type: StateType.Waiting,
+      selectedBall: 1,
+    };
+    const state = buildNewGame(prevState);
+    expect(state.prevStepScore).toBeUndefined();
+    expect(state.prevStepModel).toBeUndefined();
+    expect(state.prevStepNextColors).toBeUndefined();
+  });
 });
 
 describe('choosePositionsToAddNewBalls', () => {
@@ -133,24 +157,34 @@ describe('choosePositionsToAddNewBalls', () => {
 });
 
 describe('handleBoardClicked', () => {
-  it('should select clicked ball', () => {
+  it('should select clicked ball & preserve prev step model', () => {
     const state: WaitingState = {
       size: 3,
       lineLength: 3,
       colorsCount: 5,
       showNextColors: true,
-      score: 0,
+      score: 4,
       // prettier-ignore
       model: [
         1, 2, 0,
         2, 1, 3,
         0, 1, 2],
       nextColors: [4, 5, 5],
+      prevStepScore: 4,
+      // prettier-ignore
+      prevStepModel: [
+        0, 2, 0,
+        0, 1, 3,
+        2, 0, 0],
+      prevStepNextColors: [1, 2, 1],
       type: StateType.Waiting,
       selectedBall: 0,
     };
     const updatedState = handleBoardClicked(state, 5);
     expect(updatedState.selectedBall).toBe(5);
+    expect(updatedState.prevStepScore).toEqual(state.prevStepScore);
+    expect(updatedState.prevStepModel).toEqual(state.prevStepModel);
+    expect(updatedState.prevStepNextColors).toEqual(state.prevStepNextColors);
   });
 
   it('should un-select a ball if clicked on currently selected ball', () => {
@@ -159,18 +193,28 @@ describe('handleBoardClicked', () => {
       lineLength: 3,
       colorsCount: 5,
       showNextColors: true,
-      score: 0,
+      score: 4,
       // prettier-ignore
       model: [
         1, 2, 0,
         2, 1, 3,
         0, 1, 2],
       nextColors: [4, 5, 5],
+      prevStepScore: 4,
+      // prettier-ignore
+      prevStepModel: [
+        0, 2, 0,
+        0, 1, 3,
+        2, 0, 0],
+      prevStepNextColors: [1, 2, 1],
       type: StateType.Waiting,
       selectedBall: 5,
     };
     const updatedState = handleBoardClicked(state, 5);
     expect(updatedState.selectedBall).toBe(-1);
+    expect(updatedState.prevStepScore).toEqual(state.prevStepScore);
+    expect(updatedState.prevStepModel).toEqual(state.prevStepModel);
+    expect(updatedState.prevStepNextColors).toEqual(state.prevStepNextColors);
   });
 
   it('should un-select a ball if no path exists', () => {
@@ -179,33 +223,50 @@ describe('handleBoardClicked', () => {
       lineLength: 3,
       colorsCount: 5,
       showNextColors: true,
-      score: 0,
+      score: 4,
       // prettier-ignore
       model: [
         1, 2, 0,
         2, 1, 3,
         0, 1, 2],
       nextColors: [4, 5, 5],
+      prevStepScore: 4,
+      // prettier-ignore
+      prevStepModel: [
+        0, 2, 0,
+        0, 1, 3,
+        2, 0, 0],
+      prevStepNextColors: [1, 2, 1],
       type: StateType.Waiting,
       selectedBall: 1,
     };
     const updatedState = handleBoardClicked(state, 6);
     expect(updatedState.selectedBall).toBe(-1);
+    expect(updatedState.prevStepScore).toEqual(state.prevStepScore);
+    expect(updatedState.prevStepModel).toEqual(state.prevStepModel);
+    expect(updatedState.prevStepNextColors).toEqual(state.prevStepNextColors);
   });
 
-  it('should set path if such exists', () => {
+  it('should set path if such exists & update prevStepModel', () => {
     const state: WaitingState = {
       size: 3,
       lineLength: 3,
       colorsCount: 5,
       showNextColors: true,
-      score: 0,
+      score: 4,
       // prettier-ignore
       model: [
         1, 0, 0,
         0, 0, 0,
         0, 0, 0],
       nextColors: [4, 5, 5],
+      prevStepScore: 4,
+      // prettier-ignore
+      prevStepModel: [
+        1, 2, 0,
+        0, 2, 0,
+        2, 0, 0],
+      prevStepNextColors: [1, 2, 1],
       type: StateType.Waiting,
       selectedBall: 0,
     };
@@ -214,6 +275,10 @@ describe('handleBoardClicked', () => {
       type: StateType.Moving,
       selectedBall: 0,
       remainingPath: [1, 2],
+      model: state.model,
+      prevStepScore: state.prevStepScore,
+      prevStepModel: state.model,
+      prevStepNextColors: state.nextColors,
     });
   });
 });
@@ -269,7 +334,7 @@ describe('handleAnimationFinished', () => {
     );
   });
 
-  it('should start removing the line of identical balls if no shorter than model.lineLength', () => {
+  it('should start removing the line of identical balls if no shorter than model.lineLength & update score', () => {
     const state: MovingState = {
       size: 3,
       lineLength: 3,
@@ -354,6 +419,39 @@ describe('handleAnimationFinished', () => {
     expect(updatedState.model).toEqual([4, 1, 0, 0, 5, 0, 5, 0, 0]);
     expect(updatedState.selectedBall).toEqual(-1);
     expect(updatedState.nextColors).not.toEqual(state.nextColors);
+  });
+
+  it('should block undo if game over after adding last ball', () => {
+    const state: AddingState = {
+      size: 3,
+      lineLength: 3,
+      colorsCount: 5,
+      showNextColors: true,
+      prevStepScore: 7,
+      // prettier-ignore
+      prevStepModel: [
+        0, 1, 2,
+        2, 0, 1,
+        3, 0, 3],
+      prevStepNextColors: [4, 5, 5],
+      score: 7,
+      // prettier-ignore
+      model: [
+        4, 1, 2,
+        2, 5, 1,
+        0, 3, 3],
+      nextColors: [4, 5, 5],
+      type: StateType.Adding,
+      positionsToFill: {
+        0: -1,
+        4: -1,
+        6: 5,
+      },
+    };
+    const updatedState = handleAnimationFinished(state) as WaitingState;
+    expect(updatedState.prevStepScore).toBeUndefined();
+    expect(updatedState.prevStepModel).toBeUndefined();
+    expect(updatedState.prevStepNextColors).toBeUndefined();
   });
 
   it('should start removing the line of identical balls if such was automatically created', () => {

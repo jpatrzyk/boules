@@ -47,6 +47,22 @@ function reducer(state: State, action: BoardAction) {
       selectedBall: -1,
     } as WaitingState;
   }
+  if (
+    action.type === 'undo' &&
+    state.type === StateType.Waiting &&
+    state.prevStepModel &&
+    state.prevStepNextColors
+  ) {
+    return {
+      ...state,
+      score: state.prevStepScore || 0,
+      model: state.prevStepModel,
+      nextColors: state.prevStepNextColors,
+      prevStepModel: undefined,
+      prevStepNextColors: undefined,
+      selectedBall: -1,
+    };
+  }
   return state;
 }
 
@@ -140,6 +156,9 @@ export function handleBoardClicked(
       ...state,
       type: StateType.Moving,
       remainingPath: path,
+      prevStepScore: state.score,
+      prevStepModel: [...state.model],
+      prevStepNextColors: [...state.nextColors],
     };
   }
   return state;
@@ -215,13 +234,20 @@ export function handleAnimationFinished(state: MovingState | AddingState | Freei
           ballsToRemove: allBallsToRemove,
         };
       } else {
-        return {
+        const updatedState: WaitingState = {
           ...state,
           model: updatedModel,
           nextColors: chooseNextColors(state.colorsCount),
           type: StateType.Waiting,
           selectedBall: -1,
         };
+        if (updatedState.model.every(c => c > 0)) {
+          // game over
+          updatedState.prevStepScore = undefined;
+          updatedState.prevStepModel = undefined;
+          updatedState.prevStepNextColors = undefined;
+        }
+        return updatedState;
       }
     }
   }

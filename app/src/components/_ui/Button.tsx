@@ -16,7 +16,7 @@ export const Button: React.FC<Props> = ({ children, variant = 'default', disable
   return (
     <button
       type="button"
-      className={classNames('Button', `Button--${variant}`)}
+      className={classNames('Button', `Button--${variant}`, { 'Button--disabled': disabled })}
       onClick={onClick}
       disabled={disabled}
     >

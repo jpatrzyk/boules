@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 import { State, StateType, BoardAction, boardClicked, animationFinished } from 'model/state';
 import { delay, findKey, range } from 'utils/helpers';
@@ -10,10 +10,18 @@ import './Board.scss';
 interface Props {
   state: State;
   dispatch: (action: BoardAction) => void;
+  onGameOver: () => void;
 }
 
-export const Board: React.FC<Props> = ({ state, dispatch }: Props) => {
+export const Board: React.FC<Props> = ({ state, dispatch, onGameOver }: Props) => {
   const { size, model } = state;
+
+  useEffect(() => {
+    const isGameOver = state.type === StateType.Waiting && state.model.every((c: number) => c > 0);
+    if (isGameOver) {
+      onGameOver();
+    }
+  }, [state.type, state.model, onGameOver]);
 
   let selectedBall = -1,
     isAnimating = false,

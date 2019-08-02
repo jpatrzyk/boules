@@ -9,6 +9,9 @@ export interface BaseState extends GameConditions {
   score: number;
   model: number[];
   nextColors: number[];
+  prevStepScore?: number;
+  prevStepModel?: number[];
+  prevStepNextColors?: number[];
 }
 
 export enum StateType {
@@ -50,7 +53,8 @@ export type BoardAction =
   | { type: 'board_clicked'; position: number }
   | { type: 'animation_finished' }
   | { type: 'new_game'; options?: GameConditions }
-  | { type: 'load_game'; gameState: BaseState };
+  | { type: 'load_game'; gameState: BaseState }
+  | { type: 'undo' };
 
 export function boardClicked(position: number): BoardAction {
   return { type: 'board_clicked', position };
@@ -66,4 +70,8 @@ export function newGame(options?: GameConditions): BoardAction {
 
 export function loadGame(gameState: BaseState): BoardAction {
   return { type: 'load_game', gameState };
+}
+
+export function undo(): BoardAction {
+  return { type: 'undo' };
 }

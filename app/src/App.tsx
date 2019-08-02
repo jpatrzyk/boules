@@ -8,7 +8,7 @@ import {
   NEXT_BALLS_COUNT,
 } from './utils/constants';
 import { loadGameConditions, persistGameConditions } from './utils/storage';
-import { GameConditions, newGame, loadGame, BaseState } from './model/state';
+import { GameConditions, newGame, loadGame, BaseState, undo } from './model/state';
 import { useModel } from 'hooks/model/useModel';
 import { Board } from 'components/Board';
 import { NextColors } from 'components/NextColors';
@@ -33,11 +33,6 @@ const App: React.FC = () => {
   const [showRanking, setShowRanking] = useState<boolean>(false);
 
   useEffect(() => {
-    const isGameOver = state.model.every((c: number) => c > 0);
-    setShowGameOver(isGameOver);
-  }, [state.model]);
-
-  useEffect(() => {
     const setConditionsFromStorage = async () => {
       const savedConditions = await loadGameConditions();
       if (savedConditions) {
@@ -54,6 +49,10 @@ const App: React.FC = () => {
     setConditionsFromStorage();
   }, [dispatch]);
 
+  const handleGameOver = useCallback(() => {
+    setShowGameOver(true);
+  }, [setShowGameOver]);
+
   const handleGameOverModalClosed = useCallback(
     (closeBehavior?: CloseBehavior) => {
       setShowGameOver(false);
@@ -66,8 +65,12 @@ const App: React.FC = () => {
     [dispatch],
   );
 
-  const handleRequestNewGame = useCallback(() => {
+  const handleNewGameClick = useCallback(() => {
     dispatch(newGame());
+  }, [dispatch]);
+
+  const handleUndoClick = useCallback(() => {
+    dispatch(undo());
   }, [dispatch]);
 
   const handleOptionsSubmitted = useCallback(
@@ -97,7 +100,10 @@ const App: React.FC = () => {
         </div>
       </header>
       <nav>
-        <Button onClick={handleRequestNewGame}>{t('app.new_game')}</Button>
+        <Button onClick={handleNewGameClick}>{t('app.new_game')}</Button>
+        <Button disabled={!state.prevStepModel} onClick={handleUndoClick}>
+          {t('app.undo')}
+        </Button>
         <RankingSection openRankingModal={showRanking} />
         <OptionsSection value={state} onChange={handleOptionsSubmitted} />
         <LoadGameSection onGameLoaded={handleGameLoaded} />
@@ -108,7 +114,7 @@ const App: React.FC = () => {
           {t('app.score')} {state.score}
         </h2>
         <NextColors nextColors={nextColors} />
-        <Board state={state} dispatch={dispatch} />
+        <Board state={state} dispatch={dispatch} onGameOver={handleGameOver} />
       </main>
       <GameOverModal
         score={state.score}

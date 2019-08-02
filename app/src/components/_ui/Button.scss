@@ -18,7 +18,7 @@
     box-shadow: inset $color-primary 0 0 2px 2px;
   }
 
-  &.Button--primary {
+  &--primary {
     border: 1px solid $color-primary-dark;
     background-image: linear-gradient(to bottom, $color-primary, $color-primary-dark);
     color: $color-text-dark-background;
@@ -29,9 +29,14 @@
     }
   }
 
-  &.Button--default {
+  &--default {
     border: 1px solid $color-border-0;
     background-image: linear-gradient($color-background-1, $color-background-2);
     color: lighten($color-text, 10%);
+  }
+
+  &.Button--disabled {
+    background: $color-background-disabled;
+    opacity: 0.75;
   }
 }
