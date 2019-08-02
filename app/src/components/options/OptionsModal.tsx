@@ -3,12 +3,11 @@ import { useTranslation, Trans } from 'react-i18next';
 
 import { GameConditions } from 'model/state';
 import { DEFAULT_LINE_LENGTH, MAX_COLORS_COUNT, MIN_COLORS_COUNT } from 'utils/constants';
-import { persistGameConditions } from 'utils/storage';
 import { range } from 'utils/helpers';
 import { calculateScore } from 'hooks/model/useModel';
-import { Modal } from './_ui/Modal';
-import { Button } from './_ui/Button';
-import { SegmentedControl } from './_ui/SegmentedControl';
+import { Modal } from 'components/_ui/Modal';
+import { Button } from 'components/_ui/Button';
+import { SegmentedControl } from 'components/_ui/SegmentedControl';
 
 import './OptionsModal.scss';
 
@@ -56,7 +55,6 @@ export const OptionsModal: React.FC<Props> = ({ open, initialValue, onSubmit, on
   );
 
   const handleSubmit = useCallback(async () => {
-    await persistGameConditions({ showNextColors, colorsCount });
     onSubmit({ showNextColors, colorsCount });
   }, [showNextColors, colorsCount, onSubmit]);
 

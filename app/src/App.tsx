@@ -14,7 +14,7 @@ import { Board } from 'components/Board';
 import { NextColors } from 'components/NextColors';
 import { CloseBehavior, GameOverModal } from './components/GameOverModal';
 import { RankingModal } from './components/RankingModal';
-import { OptionsModal } from './components/OptionsModal';
+import { OptionsSection } from './components/options/OptionsSection';
 import { LocaleChooser } from './components/locale-chooser/LocaleChooser';
 import { Button } from './components/_ui/Button';
 
@@ -29,7 +29,6 @@ const App: React.FC = () => {
   const [state, dispatch] = useModel(size);
   const [showGameOver, setShowGameOver] = useState<boolean>(false);
   const [showRanking, setShowRanking] = useState<boolean>(false);
-  const [showOptions, setShowOptions] = useState<boolean>(false);
 
   useEffect(() => {
     const isGameOver = state.model.every((c: number) => c > 0);
@@ -88,20 +87,11 @@ const App: React.FC = () => {
     setShowRanking(false);
   }, [setShowRanking]);
 
-  const handleRequestShowOptions = useCallback(() => {
-    setShowOptions(true);
-  }, [setShowOptions]);
-
-  const handleOptionsClosed = useCallback(() => {
-    setShowOptions(false);
-  }, [setShowOptions]);
-
   const handleOptionsSubmitted = useCallback(
     (options: GameConditions) => {
-      setShowOptions(false);
       dispatch(newGame(options));
     },
-    [setShowOptions, dispatch],
+    [dispatch],
   );
 
   const loadGameRequested = useCallback(() => {}, []);
@@ -123,7 +113,7 @@ const App: React.FC = () => {
       <nav>
         <Button onClick={handleRequestNewGame}>{t('app.new_game')}</Button>
         <Button onClick={handleRequestShowRanking}>{t('app.show_ranking')}</Button>
-        <Button onClick={handleRequestShowOptions}>{t('app.show_options')}</Button>
+        <OptionsSection value={state} onChange={handleOptionsSubmitted} />
         <Button onClick={loadGameRequested}>{t('app.load_game')}</Button>
         <Button onClick={saveGameRequested}>{t('app.save_game')}</Button>
       </nav>
@@ -140,12 +130,6 @@ const App: React.FC = () => {
       </main>
       <GameOverModal score={state.score} open={showGameOver} onRequestClose={handleModalClosed} />
       <RankingModal open={showRanking} onRequestClose={handleRankingClosed} />
-      <OptionsModal
-        open={showOptions}
-        initialValue={state}
-        onSubmit={handleOptionsSubmitted}
-        onCancel={handleOptionsClosed}
-      />
     </div>
   );
 };
