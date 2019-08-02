@@ -37,8 +37,10 @@ export const SaveGameModal: React.FC<Props> = ({ gameState, open, onRequestClose
     <Modal open={open} onRequestClose={onRequestClose} title={t('save_game.modal_title')}>
       <div className="SaveGameModal">
         <div className="SaveGameModal-inputWrapper">
-          <label>{t('save_game.input_label')}</label>
-          <input type="text" value={gameName} onChange={handleInputChange} />
+          <label>
+            {t('save_game.input_label')}
+            <input type="text" value={gameName} onChange={handleInputChange} />
+          </label>
         </div>
         <div className="SaveGameModal-buttons">
           <Button onClick={onRequestClose}>{t('global.cancel')}</Button>

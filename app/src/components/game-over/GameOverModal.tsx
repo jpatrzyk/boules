@@ -53,8 +53,10 @@ export const GameOverModal: React.FC<Props> = ({ score, open, onRequestClose }) 
         <div>
           <p>{t('game_over.congratulations')}</p>
           <div className="GameOverModal-inputWrapper">
-            <label>{t('game_over.name_label')}</label>
-            <input type="text" value={playerName} onChange={handleInputChange} />
+            <label>
+              {t('game_over.name_label')}
+              <input type="text" value={playerName} onChange={handleInputChange} />
+            </label>
           </div>
         </div>
       );
