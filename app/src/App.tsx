@@ -12,8 +12,8 @@ import { GameConditions } from './model/state';
 import { animationFinished, boardClicked, newGame, useModel } from 'hooks/model/useModel';
 import { Board } from 'components/Board';
 import { NextColors } from 'components/NextColors';
-import { CloseBehavior, GameOverModal } from './components/GameOverModal';
-import { RankingModal } from './components/RankingModal';
+import { CloseBehavior, GameOverModal } from './components/game-over/GameOverModal';
+import { RankingSection } from './components/ranking/RankingSection';
 import { OptionsSection } from './components/options/OptionsSection';
 import { LocaleChooser } from './components/locale-chooser/LocaleChooser';
 import { Button } from './components/_ui/Button';
@@ -79,14 +79,6 @@ const App: React.FC = () => {
     dispatch(newGame());
   }, [dispatch]);
 
-  const handleRequestShowRanking = useCallback(() => {
-    setShowRanking(true);
-  }, [setShowRanking]);
-
-  const handleRankingClosed = useCallback(() => {
-    setShowRanking(false);
-  }, [setShowRanking]);
-
   const handleOptionsSubmitted = useCallback(
     (options: GameConditions) => {
       dispatch(newGame(options));
@@ -112,7 +104,7 @@ const App: React.FC = () => {
       </header>
       <nav>
         <Button onClick={handleRequestNewGame}>{t('app.new_game')}</Button>
-        <Button onClick={handleRequestShowRanking}>{t('app.show_ranking')}</Button>
+        <RankingSection openRankingModal={showRanking} />
         <OptionsSection value={state} onChange={handleOptionsSubmitted} />
         <Button onClick={loadGameRequested}>{t('app.load_game')}</Button>
         <Button onClick={saveGameRequested}>{t('app.save_game')}</Button>
@@ -129,7 +121,6 @@ const App: React.FC = () => {
         />
       </main>
       <GameOverModal score={state.score} open={showGameOver} onRequestClose={handleModalClosed} />
-      <RankingModal open={showRanking} onRequestClose={handleRankingClosed} />
     </div>
   );
 };

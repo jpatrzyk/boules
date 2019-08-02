@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Score, loadTopScoresDescending, clearAllScores } from 'utils/storage';
-import { Modal } from './_ui/Modal';
-import { Button } from './_ui/Button';
+import { Modal } from '../_ui/Modal';
+import { Button } from '../_ui/Button';
 
 import './RankingModal.scss';
 
