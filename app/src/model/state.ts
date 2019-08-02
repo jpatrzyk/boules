@@ -49,7 +49,8 @@ export type State = InitialState | WaitingState | MovingState | AddingState | Fr
 export type BoardAction =
   | { type: 'board_clicked'; position: number }
   | { type: 'animation_finished' }
-  | { type: 'new_game'; options?: GameConditions };
+  | { type: 'new_game'; options?: GameConditions }
+  | { type: 'load_game'; gameState: BaseState };
 
 export function boardClicked(position: number): BoardAction {
   return { type: 'board_clicked', position };
@@ -61,4 +62,8 @@ export function animationFinished(): BoardAction {
 
 export function newGame(options?: GameConditions): BoardAction {
   return { type: 'new_game', options };
+}
+
+export function loadGame(gameState: BaseState): BoardAction {
+  return { type: 'load_game', gameState };
 }

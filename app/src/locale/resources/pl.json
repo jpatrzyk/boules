@@ -18,7 +18,7 @@
   "game_over": {
     "modal_title": "Koniec gry",
     "congratulations": "Gratulacje! Twój wynik jest w czołówce!",
-    "name_label": "Podaj imię:",
+    "name_label": "Podaj imię",
     "dont_save": "Nie zapisuj",
     "new_game_prompt": "Koniec gry. Czy chcesz grać od nowa?"
   },
@@ -38,5 +38,14 @@
     "th_date": "Data",
     "close": "Zamknij",
     "clear": "Skasuj wyniki"
+  },
+  "load_game": {
+    "modal_title": "Wczytaj grę",
+    "clear": "Skasuj wszystkie zapisane gry"
+  },
+  "save_game": {
+    "modal_title": "Zapisz grę",
+    "initial_game_name": "kulki_{{date}}",
+    "input_label": "Nazwa gry"
   }
 }

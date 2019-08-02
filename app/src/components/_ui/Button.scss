@@ -13,10 +13,20 @@
   text-transform: uppercase;
   white-space: nowrap;
 
+  &:focus {
+    outline: none;
+    box-shadow: inset $color-primary 0 0 2px 2px;
+  }
+
   &.Button--primary {
     border: 1px solid $color-primary-dark;
     background-image: linear-gradient(to bottom, $color-primary, $color-primary-dark);
     color: $color-text-dark-background;
+
+    &:focus {
+      outline: none;
+      box-shadow: inset $color-text-dark-background 0 0 2px 2px;
+    }
   }
 
   &.Button--default {

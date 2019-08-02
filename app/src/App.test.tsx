@@ -12,6 +12,12 @@ jest.mock('./components/ranking/RankingSection', () => ({
 jest.mock('./components/options/OptionsSection', () => ({
   OptionsSection: () => <div />,
 }));
+jest.mock('./components/load-game/LoadGameSection', () => ({
+  LoadGameSection: () => <div />,
+}));
+jest.mock('./components/save-game/SaveGameSection', () => ({
+  SaveGameSection: () => <div />,
+}));
 jest.mock('./utils/storage', () => ({
   loadGameConditions: jest.fn(async () => {}),
   persistGameConditions: jest.fn(() => {}),

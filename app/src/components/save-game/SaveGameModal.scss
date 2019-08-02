@@ -1,0 +1,15 @@
+.SaveGameModal {
+  position: relative;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.SaveGameModal-inputWrapper {
+  flex-grow: 1;
+}
+
+.SaveGameModal-buttons {
+  display: flex;
+  justify-content: flex-end;
+}

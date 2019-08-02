@@ -1,6 +1,6 @@
 import React from 'react';
+import classNames from 'classnames';
 
-import { SegmentedControlButton } from './SegmentedControlButton';
 import './SegmentedControl.scss';
 
 interface Option<T> {
@@ -9,8 +9,9 @@ interface Option<T> {
 }
 
 interface Props<T> {
+  vertical?: boolean;
   options: (Option<T> | T)[];
-  value: T;
+  value?: T;
   onChange: (value: T) => void;
 }
 
@@ -18,9 +19,9 @@ export class SegmentedControl<T extends string | number | boolean> extends React
   Props<T>
 > {
   render() {
-    const { options, value: selectedValue, onChange } = this.props;
+    const { vertical, options, value: selectedValue, onChange } = this.props;
     return (
-      <div className="SegmentedControl">
+      <div className={classNames('SegmentedControl', { 'SegmentedControl--vertical': vertical })}>
         {options.map(sanitizeOption).map(option => (
           <SegmentedControlButton
             key={option.value.toString()}
@@ -43,4 +44,32 @@ function sanitizeOption<T extends string | number | boolean>(option: Option<T> |
     value: option,
     label: option.toString(),
   };
+}
+
+interface ButtonProps<T> {
+  label: string;
+  value: T;
+  selected?: boolean;
+  onSelect: (value: T) => void;
+}
+
+class SegmentedControlButton<T> extends React.PureComponent<ButtonProps<T>> {
+  buttonClicked = () => {
+    this.props.onSelect(this.props.value);
+  };
+
+  render() {
+    const { label, selected } = this.props;
+    return (
+      <button
+        type="button"
+        className={classNames('SegmentedControl-button', {
+          'SegmentedControl-button--selected': selected,
+        })}
+        onClick={this.buttonClicked}
+      >
+        {label}
+      </button>
+    );
+  }
 }

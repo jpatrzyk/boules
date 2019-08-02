@@ -8,13 +8,15 @@ import {
   NEXT_BALLS_COUNT,
 } from './utils/constants';
 import { loadGameConditions, persistGameConditions } from './utils/storage';
-import { GameConditions, newGame } from './model/state';
+import { GameConditions, newGame, loadGame, BaseState } from './model/state';
 import { useModel } from 'hooks/model/useModel';
 import { Board } from 'components/Board';
 import { NextColors } from 'components/NextColors';
 import { CloseBehavior, GameOverModal } from './components/game-over/GameOverModal';
 import { RankingSection } from './components/ranking/RankingSection';
 import { OptionsSection } from './components/options/OptionsSection';
+import { LoadGameSection } from './components/load-game/LoadGameSection';
+import { SaveGameSection } from './components/save-game/SaveGameSection';
 import { LocaleChooser } from './components/locale-chooser/LocaleChooser';
 import { Button } from './components/_ui/Button';
 
@@ -75,9 +77,12 @@ const App: React.FC = () => {
     [dispatch],
   );
 
-  const loadGameRequested = useCallback(() => {}, []);
-
-  const saveGameRequested = useCallback(async () => {}, []);
+  const handleGameLoaded = useCallback(
+    (gameState: BaseState) => {
+      dispatch(loadGame(gameState));
+    },
+    [dispatch],
+  );
 
   const isAddingFirstBalls = state.nextColors.length === INITIAL_BALLS_COUNT;
   const nextColors =
@@ -95,8 +100,8 @@ const App: React.FC = () => {
         <Button onClick={handleRequestNewGame}>{t('app.new_game')}</Button>
         <RankingSection openRankingModal={showRanking} />
         <OptionsSection value={state} onChange={handleOptionsSubmitted} />
-        <Button onClick={loadGameRequested}>{t('app.load_game')}</Button>
-        <Button onClick={saveGameRequested}>{t('app.save_game')}</Button>
+        <LoadGameSection onGameLoaded={handleGameLoaded} />
+        <SaveGameSection gameState={state} />
       </nav>
       <main>
         <h2>

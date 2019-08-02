@@ -18,7 +18,7 @@
   "game_over": {
     "modal_title": "Game Over",
     "congratulations": "Congratulations! You achieved a very high score!",
-    "name_label": "Your name:",
+    "name_label": "Enter your name",
     "dont_save": "Don't save",
     "new_game_prompt": "Game Over. Would you like to start a new game?"
   },
@@ -38,5 +38,14 @@
     "th_date": "Date",
     "close": "Close",
     "clear": "Clear all scores"
+  },
+  "load_game": {
+    "modal_title": "Load Game",
+    "clear": "Clear all saved games"
+  },
+  "save_game": {
+    "modal_title": "Save Game",
+    "initial_game_name": "saved_{{date}}",
+    "input_label": "Game Name"
   }
 }

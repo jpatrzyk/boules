@@ -40,6 +40,13 @@ function reducer(state: State, action: BoardAction) {
   if (action.type === 'new_game') {
     return buildNewGame(state, action.options);
   }
+  if (action.type === 'load_game') {
+    return {
+      ...action.gameState,
+      type: StateType.Waiting,
+      selectedBall: -1,
+    } as WaitingState;
+  }
   return state;
 }
 

@@ -47,3 +47,12 @@ export function delay(ms: number): Promise<void> {
     }, ms);
   });
 }
+
+export function currentDateFormatted(): string {
+  // returns current date in format YYYY-MM-DD_HH:mm eg.: 2019-08-02_1040
+  return new Date()
+    .toISOString()
+    .substring(0, 16)
+    .replace('T', '_')
+    .replace(':', '');
+}
