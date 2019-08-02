@@ -8,7 +8,7 @@
   "app": {
     "title": "Boules",
     "score": "Score:",
-    "next_colors": "Next colors:",
+    "next_colors": "Next colors",
     "new_game": "New Game",
     "undo": "Undo",
     "show_ranking": "Show Ranking",

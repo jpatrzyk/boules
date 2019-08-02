@@ -23,7 +23,9 @@ export const SaveGameSection: React.FC<Props> = ({ gameState }) => {
 
   return (
     <>
-      <Button onClick={openModal}>{t('app.save_game')}</Button>
+      <Button icon="save" onClick={openModal}>
+        {t('app.save_game')}
+      </Button>
       <SaveGameModal gameState={gameState} open={isModalOpen} onRequestClose={closeModal} />
     </>
   );

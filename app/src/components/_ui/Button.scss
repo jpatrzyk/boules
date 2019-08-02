@@ -1,5 +1,7 @@
 @import '../../styles/variables';
 
+$icon-size: 24px;
+
 .Button {
   border: 0;
   min-width: 100px;
@@ -7,11 +9,17 @@
   padding: 0 16px;
   margin: 4px;
   border-radius: $button-border-radius;
-  font-size: 1.1rem;
+  font-size: 1.0rem;
+  line-height: $icon-size;
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   white-space: nowrap;
+
+  i {
+    font-size: $icon-size;
+    line-height: $icon-size;
+  }
 
   &:focus {
     outline: none;

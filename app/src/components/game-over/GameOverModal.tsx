@@ -5,6 +5,8 @@ import { Modal } from '../_ui/Modal';
 import { Button } from '../_ui/Button';
 import { isInTopScores, putScore } from 'utils/storage';
 
+import './GameOverModal.scss';
+
 export type CloseBehavior = 'new_game' | 'show_ranking' | 'quit';
 
 interface Props {
@@ -50,8 +52,10 @@ export const GameOverModal: React.FC<Props> = ({ score, open, onRequestClose }) 
       return (
         <div>
           <p>{t('game_over.congratulations')}</p>
-          <label>{t('game_over.name_label')}</label>
-          <input type="text" value={playerName} onChange={handleInputChange} />
+          <div className="GameOverModal-inputWrapper">
+            <label>{t('game_over.name_label')}</label>
+            <input type="text" value={playerName} onChange={handleInputChange} />
+          </div>
         </div>
       );
     }
@@ -62,7 +66,7 @@ export const GameOverModal: React.FC<Props> = ({ score, open, onRequestClose }) 
   function renderButtons() {
     if (isTopScore) {
       return (
-        <div>
+        <div className="GameOverModal-buttons">
           <Button variant="primary" onClick={handleSave}>
             {t('global.save')}
           </Button>
@@ -72,7 +76,7 @@ export const GameOverModal: React.FC<Props> = ({ score, open, onRequestClose }) 
     }
 
     return (
-      <div>
+      <div className="GameOverModal-buttons">
         <Button variant="primary" onClick={handleRequestNewGame}>
           {t('global.yes')}
         </Button>
@@ -83,8 +87,10 @@ export const GameOverModal: React.FC<Props> = ({ score, open, onRequestClose }) 
 
   return (
     <Modal open={open} onRequestClose={onRequestClose} title={t('game_over.modal_title')}>
-      {renderContent()}
-      {renderButtons()}
+      <div className="GameOverModal">
+        {renderContent()}
+        {renderButtons()}
+      </div>
     </Modal>
   );
 };

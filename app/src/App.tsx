@@ -99,23 +99,32 @@ const App: React.FC = () => {
           <LocaleChooser />
         </div>
       </header>
+
       <nav>
-        <Button onClick={handleNewGameClick}>{t('app.new_game')}</Button>
-        <Button disabled={!state.prevStepModel} onClick={handleUndoClick}>
+        <Button icon="new" onClick={handleNewGameClick}>
+          {t('app.new_game')}
+        </Button>
+        <LoadGameSection onGameLoaded={handleGameLoaded} />
+        <SaveGameSection gameState={state} />
+        <Button icon="undo" disabled={!state.prevStepModel} onClick={handleUndoClick}>
           {t('app.undo')}
         </Button>
         <RankingSection openRankingModal={showRanking} />
         <OptionsSection value={state} onChange={handleOptionsSubmitted} />
-        <LoadGameSection onGameLoaded={handleGameLoaded} />
-        <SaveGameSection gameState={state} />
       </nav>
+
       <main>
-        <h2>
-          {t('app.score')} {state.score}
-        </h2>
-        <NextColors nextColors={nextColors} />
-        <Board state={state} dispatch={dispatch} onGameOver={handleGameOver} />
+        <aside>
+          <h2>
+            {t('app.score')} {state.score}
+          </h2>
+          <NextColors nextColors={nextColors} />
+        </aside>
+        <section>
+          <Board state={state} dispatch={dispatch} onGameOver={handleGameOver} />
+        </section>
       </main>
+
       <GameOverModal
         score={state.score}
         open={showGameOver}

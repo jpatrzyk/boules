@@ -26,7 +26,9 @@ export const RankingSection: React.FC<Props> = ({ openRankingModal }) => {
 
   return (
     <>
-      <Button onClick={handleRequestShowRanking}>{t('app.show_ranking')}</Button>
+      <Button icon="scores" onClick={handleRequestShowRanking}>
+        {t('app.show_ranking')}
+      </Button>
       <RankingModal open={showRanking} onRequestClose={handleRankingClosed} />
     </>
   );

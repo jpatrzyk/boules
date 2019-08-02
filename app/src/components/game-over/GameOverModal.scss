@@ -1,15 +1,16 @@
-.SaveGameModal {
+.GameOverModal {
   position: relative;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 }
 
-.SaveGameModal-inputWrapper {
+.GameOverModal-inputWrapper {
   flex-grow: 1;
   display: flex;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 24px;
 
   input {
     flex-grow: 1;
@@ -21,7 +22,7 @@
   }
 }
 
-.SaveGameModal-buttons {
+.GameOverModal-buttons {
   display: flex;
   justify-content: flex-end;
 }
