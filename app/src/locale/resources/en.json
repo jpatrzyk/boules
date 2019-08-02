@@ -11,7 +11,9 @@
     "next_colors": "Next colors:",
     "new_game": "New Game",
     "show_ranking": "Show Ranking",
-    "show_options": "Show Options"
+    "show_options": "Show Options",
+    "load_game": "Load Game",
+    "save_game": "Save Game"
   },
   "game_over": {
     "modal_title": "Game Over",

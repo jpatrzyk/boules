@@ -8,6 +8,10 @@ export function range(n: number, start: number = 0) {
   return result;
 }
 
+export function includesAll<T>(arr: T[], values: T[]): boolean {
+  return values.every(val => arr.includes(val));
+}
+
 // min included, max excluded
 export function randomInt(min: number, max: number): number {
   const intMin = Math.ceil(min);

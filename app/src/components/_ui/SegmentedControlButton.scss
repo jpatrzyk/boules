@@ -1,14 +1,13 @@
 @import '../../styles/variables';
 
-.RadioButton {
+.SegmentedControlButton {
   flex-basis: 48px;
-  min-height: 48px;
-  padding: 0 8px;
+  min-height: 36px;
+  padding: 0 16px;
   margin: 0;
-  font-size: 12pt;
-  font-weight: 700;
+  font-weight: 500;
+  font-size: 1.05rem;
   letter-spacing: 0.05em;
-  text-transform: uppercase;
   white-space: nowrap;
 
   border: 1px solid $color-border-0;
@@ -28,9 +27,8 @@
     border-left: none;
   }
 
-  &.RadioButton--selected {
-    border: 1px solid $color-primary-dark;
-    background-image: linear-gradient(to bottom, $color-primary, $color-primary-dark);
-    color: $color-text-dark-background;
+  &.SegmentedControlButton--selected {
+    background-image: none;
+    background-color: $color-background-selected;
   }
 }

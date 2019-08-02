@@ -15,6 +15,7 @@ import { NextColors } from 'components/NextColors';
 import { CloseBehavior, GameOverModal } from './components/GameOverModal';
 import { RankingModal } from './components/RankingModal';
 import { OptionsModal } from './components/OptionsModal';
+import { LocaleChooser } from './components/locale-chooser/LocaleChooser';
 import { Button } from './components/_ui/Button';
 
 import './App.scss';
@@ -24,7 +25,7 @@ const size = 5;
 const emptyNextColors = new Array(NEXT_BALLS_COUNT).fill(0);
 
 const App: React.FC = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [state, dispatch] = useModel(size);
   const [showGameOver, setShowGameOver] = useState<boolean>(false);
   const [showRanking, setShowRanking] = useState<boolean>(false);
@@ -51,13 +52,6 @@ const App: React.FC = () => {
     };
     setConditionsFromStorage();
   }, [dispatch]);
-
-  const changeToPolish = useCallback(() => {
-    i18n.changeLanguage('pl');
-  }, [i18n]);
-  const changeToEnglish = useCallback(() => {
-    i18n.changeLanguage('en');
-  }, [i18n]);
 
   const handleModalClosed = useCallback(
     (closeBehavior?: CloseBehavior) => {
@@ -110,6 +104,10 @@ const App: React.FC = () => {
     [setShowOptions, dispatch],
   );
 
+  const loadGameRequested = useCallback(() => {}, []);
+
+  const saveGameRequested = useCallback(async () => {}, []);
+
   const isAddingFirstBalls = state.nextColors.length === INITIAL_BALLS_COUNT;
   const nextColors =
     !state.showNextColors || isAddingFirstBalls ? emptyNextColors : state.nextColors;
@@ -118,13 +116,16 @@ const App: React.FC = () => {
     <div className="App">
       <header>
         <h1>{t('app.title')}</h1>
+        <div className="App-localeChooser">
+          <LocaleChooser />
+        </div>
       </header>
       <nav>
         <Button onClick={handleRequestNewGame}>{t('app.new_game')}</Button>
         <Button onClick={handleRequestShowRanking}>{t('app.show_ranking')}</Button>
         <Button onClick={handleRequestShowOptions}>{t('app.show_options')}</Button>
-        <Button onClick={changeToPolish}>pl</Button>
-        <Button onClick={changeToEnglish}>en</Button>
+        <Button onClick={loadGameRequested}>{t('app.load_game')}</Button>
+        <Button onClick={saveGameRequested}>{t('app.save_game')}</Button>
       </nav>
       <main>
         <h2>

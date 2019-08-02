@@ -8,7 +8,7 @@ import { range } from 'utils/helpers';
 import { calculateScore } from 'hooks/model/useModel';
 import { Modal } from './_ui/Modal';
 import { Button } from './_ui/Button';
-import { RadioGroup } from './_ui/RadioGroup';
+import { SegmentedControl } from './_ui/SegmentedControl';
 
 import './OptionsModal.scss';
 
@@ -66,10 +66,14 @@ export const OptionsModal: React.FC<Props> = ({ open, initialValue, onSubmit, on
       <div className="OptionsModal">
         <p>{t('options.info')}</p>
         <h4>{t('options.show_next_colors')}</h4>
-        <RadioGroup options={switchOptions} value={showNextColors} onChange={handleSwitchChange} />
+        <SegmentedControl
+          options={switchOptions}
+          value={showNextColors}
+          onChange={handleSwitchChange}
+        />
 
         <h4>{t('options.number_of_colors')}</h4>
-        <RadioGroup
+        <SegmentedControl
           options={colorsOptions}
           value={colorsCount}
           onChange={handleColorsCountChange}

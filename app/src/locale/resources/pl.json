@@ -11,7 +11,9 @@
     "next_colors": "Następne kolory:",
     "new_game": "Nowa gra",
     "show_ranking": "Ranking",
-    "show_options": "Opcje gry"
+    "show_options": "Opcje gry",
+    "load_game": "Wczytaj grę",
+    "save_game": "Zapisz grę"
   },
   "game_over": {
     "modal_title": "Koniec gry",

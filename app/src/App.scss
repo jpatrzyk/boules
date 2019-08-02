@@ -1,3 +1,16 @@
 .App {
   text-align: center;
+  max-width: 1024px;
+  margin: auto;
+
+  header {
+    position: relative;
+  }
+
+  .App-localeChooser {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+  }
 }

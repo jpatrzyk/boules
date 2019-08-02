@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import './RadioButton.scss';
+import './SegmentedControlButton.scss';
 
 interface Props<T> {
   label: string;
@@ -10,7 +10,7 @@ interface Props<T> {
   onSelect: (value: T) => void;
 }
 
-export class RadioButton<T> extends React.PureComponent<Props<T>> {
+export class SegmentedControlButton<T> extends React.PureComponent<Props<T>> {
   buttonClicked = () => {
     this.props.onSelect(this.props.value);
   };
@@ -20,7 +20,9 @@ export class RadioButton<T> extends React.PureComponent<Props<T>> {
     return (
       <button
         type="button"
-        className={classNames('RadioButton', { 'RadioButton--selected': selected })}
+        className={classNames('SegmentedControlButton', {
+          'SegmentedControlButton--selected': selected,
+        })}
         onClick={this.buttonClicked}
       >
         {label}
