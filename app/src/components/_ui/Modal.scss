@@ -44,7 +44,7 @@ $intro-animation-duration: 300ms;
   transform: translateX(-50%);
   animation-name: slideFromBottom;
   animation-duration: $intro-animation-duration;
-  width: 50%;
+  min-width: 50%;
   min-height: 30%;
   max-height: 90%;
   background-color: $color-background-0;
