@@ -45,3 +45,20 @@ export interface FreeingState extends BaseState {
 }
 
 export type State = InitialState | WaitingState | MovingState | AddingState | FreeingState;
+
+export type BoardAction =
+  | { type: 'board_clicked'; position: number }
+  | { type: 'animation_finished' }
+  | { type: 'new_game'; options?: GameConditions };
+
+export function boardClicked(position: number): BoardAction {
+  return { type: 'board_clicked', position };
+}
+
+export function animationFinished(): BoardAction {
+  return { type: 'animation_finished' };
+}
+
+export function newGame(options?: GameConditions): BoardAction {
+  return { type: 'new_game', options };
+}

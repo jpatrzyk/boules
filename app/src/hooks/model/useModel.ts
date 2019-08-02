@@ -3,6 +3,7 @@ import { useReducer } from 'react';
 import {
   AddingState,
   BaseState,
+  BoardAction,
   FreeingState,
   GameConditions,
   InitialState,
@@ -24,29 +25,12 @@ import {
 import findPath from './findPath';
 import findFullLine from './findFullLine';
 
-type Action =
-  | { type: 'board_clicked'; position: number }
-  | { type: 'animation_finished' }
-  | { type: 'new_game'; options?: GameConditions };
-
-export function boardClicked(position: number): Action {
-  return { type: 'board_clicked', position };
-}
-
-export function animationFinished(): Action {
-  return { type: 'animation_finished' };
-}
-
-export function newGame(options?: GameConditions): Action {
-  return { type: 'new_game', options };
-}
-
 export function useModel(size: number) {
   const initialState = init(size);
   return useReducer(reducer, initialState);
 }
 
-function reducer(state: State, action: Action) {
+function reducer(state: State, action: BoardAction) {
   if (action.type === 'board_clicked' && state.type === StateType.Waiting) {
     return handleBoardClicked(state, action.position);
   }

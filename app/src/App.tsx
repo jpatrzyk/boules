@@ -8,8 +8,8 @@ import {
   NEXT_BALLS_COUNT,
 } from './utils/constants';
 import { loadGameConditions, persistGameConditions } from './utils/storage';
-import { GameConditions } from './model/state';
-import { animationFinished, boardClicked, newGame, useModel } from 'hooks/model/useModel';
+import { GameConditions, newGame } from './model/state';
+import { useModel } from 'hooks/model/useModel';
 import { Board } from 'components/Board';
 import { NextColors } from 'components/NextColors';
 import { CloseBehavior, GameOverModal } from './components/game-over/GameOverModal';
@@ -52,7 +52,7 @@ const App: React.FC = () => {
     setConditionsFromStorage();
   }, [dispatch]);
 
-  const handleModalClosed = useCallback(
+  const handleGameOverModalClosed = useCallback(
     (closeBehavior?: CloseBehavior) => {
       setShowGameOver(false);
       if (closeBehavior === 'new_game') {
@@ -63,17 +63,6 @@ const App: React.FC = () => {
     },
     [dispatch],
   );
-
-  const handleBoardClicked = useCallback(
-    (position: number) => {
-      dispatch(boardClicked(position));
-    },
-    [dispatch],
-  );
-
-  const handleAnimationFinished = useCallback(() => {
-    dispatch(animationFinished());
-  }, [dispatch]);
 
   const handleRequestNewGame = useCallback(() => {
     dispatch(newGame());
@@ -114,13 +103,13 @@ const App: React.FC = () => {
           {t('app.score')} {state.score}
         </h2>
         <NextColors nextColors={nextColors} />
-        <Board
-          state={state}
-          onClick={handleBoardClicked}
-          onAnimationFinished={handleAnimationFinished}
-        />
+        <Board state={state} dispatch={dispatch} />
       </main>
-      <GameOverModal score={state.score} open={showGameOver} onRequestClose={handleModalClosed} />
+      <GameOverModal
+        score={state.score}
+        open={showGameOver}
+        onRequestClose={handleGameOverModalClosed}
+      />
     </div>
   );
 };

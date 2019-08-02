@@ -12,13 +12,6 @@ export function includesAll<T>(arr: T[], values: T[]): boolean {
   return values.every(val => arr.includes(val));
 }
 
-// min included, max excluded
-export function randomInt(min: number, max: number): number {
-  const intMin = Math.ceil(min);
-  const intMax = Math.ceil(max);
-  return Math.floor(Math.random() * (intMax - intMin)) + intMin;
-}
-
 export function findAllKeys<V>(
   obj: NumDict<V>,
   predicate: (key: number, value: V) => boolean,
@@ -38,4 +31,19 @@ export function findKey<V, D extends number | undefined>(
     return defaultValue;
   }
   return found as D;
+}
+
+// min included, max excluded
+export function randomInt(min: number, max: number): number {
+  const intMin = Math.ceil(min);
+  const intMax = Math.ceil(max);
+  return Math.floor(Math.random() * (intMax - intMin)) + intMin;
+}
+
+export function delay(ms: number): Promise<void> {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve();
+    }, ms);
+  });
 }

@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
-import { State, StateType } from 'model/state';
-import { findKey, range } from 'utils/helpers';
+import { State, StateType, BoardAction, boardClicked, animationFinished } from 'model/state';
+import { delay, findKey, range } from 'utils/helpers';
 import { BoardCell } from './BoardCell';
 import { Direction } from './ColoredCell';
 
@@ -9,11 +9,10 @@ import './Board.scss';
 
 interface Props {
   state: State;
-  onClick: (position: number) => void;
-  onAnimationFinished: () => void;
+  dispatch: (action: BoardAction) => void;
 }
 
-export const Board: React.FC<Props> = ({ state, onClick, onAnimationFinished }: Props) => {
+export const Board: React.FC<Props> = ({ state, dispatch }: Props) => {
   const { size, model } = state;
 
   let selectedBall = -1,
@@ -43,15 +42,22 @@ export const Board: React.FC<Props> = ({ state, onClick, onAnimationFinished }: 
     ballsToRemove = state.ballsToRemove;
   }
 
-  function handleMoveFinished() {
+  const handleBoardClicked = useCallback(
+    (position: number) => {
+      if (isAnimating) {
+        return;
+      }
+      dispatch(boardClicked(position));
+    },
+    [dispatch, isAnimating],
+  );
+
+  const handleAnimationFinished = useCallback(async () => {
     if (isLastMove) {
-      setTimeout(() => {
-        onAnimationFinished();
-      }, 100);
-    } else {
-      onAnimationFinished();
+      await delay(100);
     }
-  }
+    dispatch(animationFinished());
+  }, [dispatch, isLastMove]);
 
   return (
     <div className="Board">
@@ -78,8 +84,8 @@ export const Board: React.FC<Props> = ({ state, onClick, onAnimationFinished }: 
                   }
                   fillNewValue={isAddingNewBall ? newBallColor : undefined}
                   disappearing={isDisappearing}
-                  onClick={isAnimating ? noop : onClick}
-                  onAnimationFinished={handleMoveFinished}
+                  onClick={handleBoardClicked}
+                  onAnimationFinished={handleAnimationFinished}
                 />
               );
             })}
@@ -102,5 +108,3 @@ function getAnimationDirection(position: number, nextPosition: number, size: num
   }
   return Direction.right;
 }
-
-function noop() {}
