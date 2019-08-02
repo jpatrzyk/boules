@@ -1,15 +1,28 @@
+@import 'styles/variables';
+
 .App {
+  height: 100vh;
   max-width: 1024px;
   margin: auto;
+  background-image: linear-gradient($color-background-0, $color-background-2 50%, $color-background-2);
 
   header {
+    margin: 0 12px;
     text-align: center;
     position: relative;
   }
 
+  nav {
+    margin: 0 12px;
+    padding-bottom: 8px;
+  }
+
   main {
+    border-top: 1px solid $color-border-0;
+    background-color: $color-background-2;
     display: flex;
     flex-wrap: wrap;
+    padding-bottom: 16px;
   }
 
   aside {

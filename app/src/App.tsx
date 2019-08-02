@@ -32,6 +32,10 @@ const App: React.FC = () => {
   const [showRanking, setShowRanking] = useState<boolean>(false);
 
   useEffect(() => {
+    document.title = t('app.document_title');
+  }, [t]);
+
+  useEffect(() => {
     const setConditionsFromStorage = async () => {
       const savedConditions = await loadGameConditions();
       if (savedConditions) {

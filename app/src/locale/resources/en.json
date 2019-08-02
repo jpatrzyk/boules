@@ -6,6 +6,7 @@
     "cancel": "Cancel"
   },
   "app": {
+    "document_title": "Boules",
     "title": "Boules",
     "score": "Score:",
     "next_colors": "Next colors",

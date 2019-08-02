@@ -6,6 +6,7 @@
     "cancel": "Anuluj"
   },
   "app": {
+    "document_title": "Kulki",
     "title": "Kulki",
     "score": "Punkty:",
     "next_colors": "Następne kolory",
