@@ -5,8 +5,10 @@ import { initReactI18next } from 'react-i18next';
 import en from './resources/en.json';
 import pl from './resources/pl.json';
 
+const languageDetector = new LanguageDetector();
+
 i18n
-  .use(LanguageDetector)
+  .use(languageDetector)
   .use(initReactI18next)
   .init({
     // we init with resources

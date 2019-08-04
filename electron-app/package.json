@@ -1,5 +1,5 @@
 {
-  "name": "electron",
+  "name": "electron-app",
   "version": "0.1.0",
   "main": "main.js",
   "private": true,
@@ -8,7 +8,7 @@
     "package": "electron-builder build --publish never"
   },
   "devDependencies": {
-    "electron": "^5.0.8",
+    "electron": "^6.0.0",
     "electron-builder": "^21.2.0"
   }
 }

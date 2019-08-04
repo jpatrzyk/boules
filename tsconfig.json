@@ -14,7 +14,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "preserve",
-    "baseUrl": "app/src"
+    "baseUrl": "react-app/src"
   },
-  "include": ["app", "electron"]
+  "include": ["react-app", "electron-app"]
 }

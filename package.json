@@ -2,13 +2,13 @@
   "name": "boules",
   "version": "0.1.0",
   "private": true,
-  "main": "electron/main.js",
+  "main": "electron-app/main.js",
   "repository": "git@github.com:jpatrzyk/boules.git",
   "author": "Joanna Patrzyk",
   "license": "MIT",
   "workspaces": [
-    "app",
-    "electron"
+    "react-app",
+    "electron-app"
   ],
   "dependencies": {
     "husky": "^3.0.1",

@@ -15,7 +15,7 @@ function createWindow() {
     },
   });
 
-  const indexHtmlPath = path.resolve(__dirname, '../app/build/index.html');
+  const indexHtmlPath = path.resolve(__dirname, '../react-app/build/index.html');
   win.loadURL(`file://${indexHtmlPath}`);
 
   // Emitted when the window is closed.
