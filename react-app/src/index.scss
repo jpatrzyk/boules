@@ -4,7 +4,15 @@ html {
   box-sizing: border-box;
   font-size: 10px;  // for rem calculation
 
+  @media screen and (max-height: $break-v-large) {
+    font-size: 9.5px;
+  }
+
   @media screen and (max-height: $break-v-medium) {
+    font-size: 8.5px;
+  }
+
+  @media screen and (max-height: $break-v-small) {
     font-size: 8px;
   }
 }

@@ -9,7 +9,7 @@ function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
     width: 1024,
-    height: 768,
+    height: 912, // enough for the largest board size
     webPreferences: {
       nodeIntegration: true,
     },

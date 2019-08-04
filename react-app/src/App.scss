@@ -2,7 +2,7 @@
 
 .App {
   min-height: 96vh;
-  max-width: 102.4rem;
+  max-width: $break-h;
   margin: auto;
   background-image: linear-gradient($color-background-0, $color-background-2 50%, $color-background-2);
 
