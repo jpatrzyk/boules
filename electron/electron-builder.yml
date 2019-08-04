@@ -1,0 +1,18 @@
+appId: 'com.electron.boules'
+productName: 'Boules'
+copyright: 'Copyright © 2019 Joanna Patrzyk'
+
+extraMetadata:
+  description: 'Simple logic game.'
+
+directories:
+  buildResources: 'resources'
+  output: 'dist'
+  app: '..'
+
+# Important! the files below paths should be relative to `app` path. (see directories.app above)
+files: ['app/build/**/*', 'electron/main.js', 'package.json']
+
+extends: null
+mac:
+  category: 'public.app-category.puzzle-games'

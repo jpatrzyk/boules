@@ -1,3 +1,4 @@
+const path = require('path');
 const { app, BrowserWindow } = require('electron');
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -14,8 +15,8 @@ function createWindow() {
     },
   });
 
-  // and load the index.html of the app.
-  win.loadFile('../app/build/index.html');
+  const indexHtmlPath = path.resolve(__dirname, '../app/build/index.html');
+  win.loadURL(`file://${indexHtmlPath}`);
 
   // Emitted when the window is closed.
   win.on('closed', () => {
