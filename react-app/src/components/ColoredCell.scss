@@ -63,11 +63,15 @@ $colors: (
 }
 
 @keyframes bounce {
+  $oblation: 0.125;
   0% {
-    transform: translateY(0);
+    transform: translateY(-0.5 * $oblation * $circle-size) scaleY(1);
   }
   50% {
-    transform: translateY(-10px);
+    transform: translateY($oblation * $circle-size) scaleY(1 - $oblation);
+  }
+  100% {
+    transform: translateY(-0.5 * $oblation * $circle-size) scaleY(1);
   }
 }
 
