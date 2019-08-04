@@ -1,9 +1,9 @@
 appId: 'com.electron.boules'
-productName: 'Boules'
+productName: 'Kulki'
 copyright: 'Copyright © 2019 Joanna Patrzyk'
 
 extraMetadata:
-  description: 'Simple logic game.'
+  description: 'Prosta gra logiczna. Układaj kulki o tym samym kolorze w linie i zdobywaj punkty.'
 
 directories:
   buildResources: 'resources'

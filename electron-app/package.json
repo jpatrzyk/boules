@@ -5,10 +5,17 @@
   "private": true,
   "scripts": {
     "start": "electron .",
-    "package": "electron-builder build --publish never"
+    "package": "electron-builder build --publish never",
+    "package-pl": "electron-builder build --config electron-builder.pl.yml --publish never"
   },
   "devDependencies": {
     "electron": "^6.0.0",
     "electron-builder": "^21.2.0"
+  },
+  "workspaces": {
+    "nohoist": [
+      "electron",
+      "electron/**"
+    ]
   }
 }

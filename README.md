@@ -5,14 +5,14 @@
 * `yarn install`
 
 ### Starting React App in devserver
-* `yarn workspace app start`
+* `yarn workspace react-app start`
 
 ### Starting Electron app
-* `yarn workspace electron start`
+* `yarn workspace electron-app start`
 
 ### Building React App for Production
-* `yarn workspace app build`
+* `yarn workspace react-app build`
 
 ### Packaging Electron App
-* `yarn workspace app build`
-* `yarn workspace electron package`
+* `yarn workspace react-app build`
+* `yarn workspace electron-app package`
