@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "start": "electron .",
+    "build": "webpack -p",
     "package": "electron-builder build --dir",
     "package-pl": "electron-builder build --config electron-builder.pl.yml --dir",
     "dist": "electron-builder build -mw --publish never",
@@ -12,7 +13,9 @@
   },
   "devDependencies": {
     "electron": "^6.0.0",
-    "electron-builder": "^21.2.0"
+    "electron-builder": "^21.2.0",
+    "webpack": "^4.39.1",
+    "webpack-cli": "^3.3.6"
   },
   "workspaces": {
     "nohoist": [

@@ -11,7 +11,7 @@ directories:
   app: '..'
 
 # Important! the files below paths should be relative to `app` path. (see directories.app above)
-files: ['react-app/build/**/*', 'electron-app/main.js', 'package.json']
+files: ['react-app/build/**/*', 'electron-app/main.bundle.js', 'package.json']
 
 extends: null
 mac:

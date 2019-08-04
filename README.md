@@ -15,4 +15,10 @@
 
 ### Packaging Electron App
 * `yarn workspace react-app build`
-* `yarn workspace electron-app package`
+* `yarn workspace electron-app build`
+* `yarn workspace electron-app package` or `yarn workspace electron-app package-pl` for Polish version 
+
+### Building distributable Electron App
+* `yarn workspace react-app build`
+* `yarn workspace electron-app build`
+* `yarn workspace electron-app dist` or `yarn workspace electron-app dist-pl` for Polish version

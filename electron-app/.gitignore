@@ -16,6 +16,7 @@
 *.vcxproj.user
 *.xcodeproj
 /.idea/
+*.bundle.js
 /dist/
 /external_binaries/
 /out/

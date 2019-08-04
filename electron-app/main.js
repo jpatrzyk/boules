@@ -1,12 +1,12 @@
-const path = require('path');
-const { app, BrowserWindow } = require('electron');
+import path from 'path';
+import { app, BrowserWindow } from 'electron';
+import MenuBuilder from './menu';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win;
 
 function createWindow() {
-  // Create the browser window.
   win = new BrowserWindow({
     width: 1024,
     height: 912, // enough for the largest board size
@@ -25,6 +25,9 @@ function createWindow() {
     // when you should delete the corresponding element.
     win = null;
   });
+
+  const menuBuilder = new MenuBuilder(win);
+  menuBuilder.buildMenu();
 }
 
 // This method will be called when Electron has finished
