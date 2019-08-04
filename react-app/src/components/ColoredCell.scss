@@ -1,5 +1,5 @@
-$cell-size: 64px;
-$circle-size: 48px;
+$cell-size: 6.4rem;
+$circle-size: 4.8rem;
 
 $bounce-cycle-duration: 500ms;
 
@@ -15,7 +15,7 @@ $bounce-cycle-duration: 500ms;
   width: $circle-size;
   height: $circle-size;
   border-radius: $circle-size / 2;
-  box-shadow: rgba(0, 0, 0, 0.5) -2px 2px 3px 0;
+  box-shadow: rgba(0, 0, 0, 0.5) -0.2rem 0.2rem 0.3rem 0;
 }
 
 // we must define MAX_COLORS_COUNT colors

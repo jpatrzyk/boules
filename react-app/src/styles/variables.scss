@@ -4,14 +4,20 @@ $color-primary-dark: #116ab8;
 $color-text: #222;
 $color-text-dark-background: #fff;
 
-$color-border-0: #bdbdbd;
+$color-border-0: #aaa;
 
 $color-background-0: #fff;
-$color-background-1: #fafafa;
+$color-background-1: #f5f5f5;
 $color-background-2: #eee;
+$color-background-3: #ddd;
 $color-background-selected: #cfdde8;
 $color-background-disabled: $color-border-0;
 
 $color-shadow: #00000088;
 
-$button-border-radius: 3px;
+$button-border-radius: 0.3rem;
+
+$break-v-small: 480px;
+$break-v-medium: 600px;
+$break-v-large: 768px;
+

@@ -1,7 +1,10 @@
+@import '../styles/variables';
+
 .Board {
-  margin: 24px;
+  margin: 2.4rem;
   display: flex;
   flex-direction: column;
+  border: 1px solid $color-border-0;
 }
 
 .Board-row {

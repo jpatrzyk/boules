@@ -1,15 +1,15 @@
 @import '../../styles/variables';
 
-$icon-size: 24px;
+$icon-size: 2.4rem;
 
 .Button {
   border: 0;
-  min-width: 100px;
-  min-height: 48px;
-  padding: 0 16px;
-  margin: 4px;
+  min-width: 10.0rem;
+  min-height: 4.8rem;
+  padding: 0 1.6rem;
+  margin: 0.4rem;
   border-radius: $button-border-radius;
-  font-size: 1.0rem;
+  font-size: 1.6rem;
   line-height: $icon-size;
   font-weight: 700;
   letter-spacing: 0.05em;
@@ -23,22 +23,22 @@ $icon-size: 24px;
 
   &:focus {
     outline: none;
-    box-shadow: inset $color-primary 0 0 2px 2px;
+    box-shadow: inset $color-primary 0 0 0.2rem 0.2rem;
   }
 
   &--primary {
-    border: 1px solid $color-primary-dark;
+    border: thin solid $color-primary-dark;
     background-image: linear-gradient(to bottom, $color-primary, $color-primary-dark);
     color: $color-text-dark-background;
 
     &:focus {
       outline: none;
-      box-shadow: inset $color-text-dark-background 0 0 2px 2px;
+      box-shadow: inset $color-text-dark-background 0 0 0.2rem 0.2rem;
     }
   }
 
   &--default {
-    border: 1px solid $color-border-0;
+    border: thin solid $color-border-0;
     background-image: linear-gradient($color-background-1, $color-background-2);
     color: lighten($color-text, 10%);
   }
