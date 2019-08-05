@@ -53,6 +53,7 @@ jobs:
   build-gh-pages:
     <<: *defaults
     steps:
+      - checkout
       - run:
           name: Create orphan gh-pages branch
           command: |
