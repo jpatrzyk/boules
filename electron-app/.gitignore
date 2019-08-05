@@ -16,8 +16,8 @@
 *.vcxproj.user
 *.xcodeproj
 /.idea/
-*.bundle.js
 /dist/
+/release/
 /external_binaries/
 /out/
 /vendor/.gclient

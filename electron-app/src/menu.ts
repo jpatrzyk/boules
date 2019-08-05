@@ -1,9 +1,11 @@
-import { app, Menu } from 'electron';
+import { app, Menu, BrowserWindow, MenuItemConstructorOptions } from 'electron';
 
 // todo i18n
 
 export default class MenuBuilder {
-  constructor(mainWindow) {
+  mainWindow: BrowserWindow;
+
+  constructor(mainWindow: BrowserWindow) {
     this.mainWindow = mainWindow;
   }
 
@@ -17,26 +19,26 @@ export default class MenuBuilder {
     return menu;
   }
 
-  buildDarwinTemplate() {
-    const subMenuAbout = {
+  buildDarwinTemplate(): MenuItemConstructorOptions[] {
+    const subMenuAbout: MenuItemConstructorOptions = {
       label: 'Boules',
       submenu: [
         {
           label: 'About Boules',
-          selector: 'orderFrontStandardAboutPanel:',
+          role: 'about',
         },
         { type: 'separator' },
         {
           label: 'Hide Boules',
           accelerator: 'Command+H',
-          selector: 'hide:',
+          role: 'hide',
         },
         {
           label: 'Hide Others',
           accelerator: 'Command+Shift+H',
-          selector: 'hideOtherApplications:',
+          role: 'hideothers',
         },
-        { label: 'Show All', selector: 'unhideAllApplications:' },
+        { label: 'Show All', role: 'unhide' },
         { type: 'separator' },
         {
           label: 'Quit',
@@ -47,64 +49,56 @@ export default class MenuBuilder {
         },
       ],
     };
-    const subMenuViewDev = {
+    const subMenuViewDev: MenuItemConstructorOptions = {
       label: 'View',
       submenu: [
         {
           label: 'Reload',
           accelerator: 'Command+R',
-          click: () => {
-            this.mainWindow.webContents.reload();
-          },
+          role: 'reload',
         },
         {
           label: 'Toggle Full Screen',
           accelerator: 'Ctrl+Command+F',
-          click: () => {
-            this.mainWindow.setFullScreen(!this.mainWindow.isFullScreen());
-          },
+          role: 'togglefullscreen',
         },
         {
           label: 'Toggle Developer Tools',
           accelerator: 'Alt+Command+I',
-          click: () => {
-            this.mainWindow.toggleDevTools();
-          },
+          role: 'toggledevtools',
         },
       ],
     };
-    const subMenuViewProd = {
+    const subMenuViewProd: MenuItemConstructorOptions = {
       label: 'View',
       submenu: [
         {
           label: 'Toggle Full Screen',
           accelerator: 'Ctrl+Command+F',
-          click: () => {
-            this.mainWindow.setFullScreen(!this.mainWindow.isFullScreen());
-          },
+          role: 'togglefullscreen',
         },
       ],
     };
-    const subMenuWindow = {
+    const subMenuWindow: MenuItemConstructorOptions = {
       label: 'Window',
       submenu: [
         {
           label: 'Minimize',
           accelerator: 'Command+M',
-          selector: 'performMiniaturize:',
+          role: 'minimize',
         },
-        { label: 'Close', accelerator: 'Command+W', selector: 'performClose:' },
+        { label: 'Close', accelerator: 'Command+W', role: 'close' },
         { type: 'separator' },
-        { label: 'Bring All to Front', selector: 'arrangeInFront:' },
+        { label: 'Bring All to Front', role: 'front' },
       ],
     };
 
-    const subMenuView = process.env.NODE_ENV === 'development' ? subMenuViewDev : subMenuViewProd;
+    const subMenuView = process.env.NODE_ENV === 'production' ? subMenuViewProd : subMenuViewDev;
 
     return [subMenuAbout, subMenuView, subMenuWindow];
   }
 
-  buildDefaultTemplate() {
+  buildDefaultTemplate(): MenuItemConstructorOptions[] {
     const subMenuFile = {
       label: '&File',
       submenu: [
@@ -142,7 +136,7 @@ export default class MenuBuilder {
           label: 'Toggle &Developer Tools',
           accelerator: 'Alt+Ctrl+I',
           click: () => {
-            this.mainWindow.toggleDevTools();
+            this.mainWindow.webContents.toggleDevTools();
           },
         },
       ],
@@ -159,7 +153,7 @@ export default class MenuBuilder {
         },
       ],
     };
-    const subMenuView = process.env.NODE_ENV === 'development' ? subMenuViewDev : subMenuViewProd;
+    const subMenuView = process.env.NODE_ENV === 'production' ? subMenuViewProd : subMenuViewDev;
 
     return [subMenuFile, subMenuView];
   }

@@ -2,7 +2,7 @@
   "name": "boules",
   "version": "0.1.0",
   "private": true,
-  "main": "electron-app/main.bundle.js",
+  "main": "electron-app/dist/main.bundle.js",
   "repository": "git@github.com:jpatrzyk/boules.git",
   "author": "Joanna Patrzyk",
   "license": "MIT",

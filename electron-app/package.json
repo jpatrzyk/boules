@@ -1,10 +1,10 @@
 {
   "name": "electron-app",
   "version": "0.1.0",
-  "main": "main.js",
+  "main": "dist/main.js",
   "private": true,
   "scripts": {
-    "start": "electron .",
+    "start": "tsc && electron .",
     "build": "webpack -p",
     "package": "electron-builder build --dir",
     "package-pl": "electron-builder build --config electron-builder.pl.yml --dir",
@@ -12,8 +12,11 @@
     "dist-pl": "electron-builder build --config electron-builder.pl.yml -mw --publish never"
   },
   "devDependencies": {
+    "@types/node": "^12.6.9",
     "electron": "^6.0.0",
     "electron-builder": "^21.2.0",
+    "ts-loader": "^6.0.4",
+    "typescript": "^3.5.3",
     "webpack": "^4.39.1",
     "webpack-cli": "^3.3.6"
   },
@@ -22,5 +25,6 @@
       "electron",
       "electron/**"
     ]
-  }
+  },
+  "dependencies": {}
 }

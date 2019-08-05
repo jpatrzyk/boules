@@ -7,11 +7,11 @@ extraMetadata:
 
 directories:
   buildResources: 'resources'
-  output: 'dist'
+  output: 'release'
   app: '..'
 
 # Important! the files below paths should be relative to `app` path. (see directories.app above)
-files: ['react-app/build/**/*', 'electron-app/main.bundle.js', 'package.json']
+files: ['react-app/build/**/*', 'electron-app/dist/main.bundle.js', 'package.json']
 
 extends: null
 mac:
