@@ -66,8 +66,8 @@ jobs:
           name: move artifacts
           command: |
             mkdir /tmp/artifacts;
-            cp electron-app/release/*.exe /tmp/artifacts;
-            cp electron-app/release/*.zip /tmp/artifacts;
+            cp electron-app/release/*.exe /tmp/artifacts || :;
+            cp electron-app/release/*.zip /tmp/artifacts || :;
       - store_artifacts:
           path: /tmp/artifacts
 
