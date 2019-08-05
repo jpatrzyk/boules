@@ -20,7 +20,7 @@ aliases:
         - master
 
 defaults: &defaults
-  working_directory: ~/boules
+  working_directory: /home/circleci/boules
   docker:
     - image: circleci/node:12
 
@@ -62,6 +62,11 @@ jobs:
       - attach_workspace:
           at: react-app
       - run:
+          name: Configure git user
+          command: |
+            git config user.email "jpatrzyk@users.noreply.github.com"
+            git config user.name "Boules CI"
+      - run:
           name: Push bundled react app to gh-pages branch
           command: |
             mv react-app/build/**/* .
@@ -70,14 +75,14 @@ jobs:
             git push --set-upstream origin gh-pages
 
   build-windows:
-    working_directory: ~/boules
+    working_directory: /home/circleci/boules
     docker:
       - image: electronuserland/builder:wine
     steps:
       - checkout
       - restore-cache: *root-restore-yarn-cache
       - attach_workspace:
-          at: react-app/build
+          at: react-app
       - run:
           name: build Electron app
           command: yarn workspace electron-app build
