@@ -60,15 +60,11 @@ jobs:
             git checkout --orphan gh-pages
             git rm -rf .
       - attach_workspace:
-          at: react-app/build
-      - run:
-          name: Configure git user
-          command: |
-            git config user.email "jpatrzyk@users.noreply.github.com"
-            git config user.name "Boules CI"
+          at: react-app
       - run:
           name: Push bundled react app to gh-pages branch
           command: |
+            mv react-app/build/**/* .
             git add react-app/build
             git commit -a -m "GH Pages"
             git push --set-upstream origin gh-pages
