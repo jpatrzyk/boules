@@ -1,39 +1,85 @@
+aliases:
+  - &root-yarn |
+    yarn install --non-interactive --cache-folder ~/.cache/yarn
+
+  - &root-restore-yarn-cache
+    keys:
+      - root-yarn-{{ checksum "yarn.lock" }}
+      # Fallback in case checksum fails
+      - root-yarn-
+
+  - &root-save-yarn-cache
+    paths:
+      - node_modules
+      - ~/.cache/yarn
+    key: root-yarn-{{ checksum "yarn.lock" }}
+
+defaults: &defaults
+  working_directory: ~/boules
+  docker:
+    - image: circleci/node:12
+
 version: 2
 jobs:
-  build_windows:
+  test:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore-cache: *root-restore-yarn-cache
+      - run: *root-yarn
+      - save-cache: *root-save-yarn-cache
+      - run:
+          name: run React app's tests
+          command: yarn workspace react-app test
+
+  build-react:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore-cache: *root-restore-yarn-cache
+      - run: *root-yarn
+      - save-cache: *root-save-yarn-cache
+      - run:
+          name: build React app
+          command: yarn workspace react-app build
+      - store_artifacts:
+          path: react-app/build
+
+  build-windows:
     docker:
       - image: electronuserland/builder:wine
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "yarn.lock" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
-
-      - run: yarn install
-
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "yarn.lock" }}
-
-      # build React app
-      - run: yarn workspace react-app build
-
+      - restore-cache: *root-restore-yarn-cache
+      - run: *root-yarn
+      - save-cache: *root-save-yarn-cache
+      - run:
+          name: build React app
+          command: yarn workspace react-app build
+      - run:
+          name: build Electron app
+          command: yarn workspace electron-app build
+      - run:
+          name: build distributable Windows app
+          command: yarn workspace electron-app dist-pl --win
+      - run:
+          name: move artifacts
+          command: |
+            mkdir /tmp/artifacts;
+            cp electron-app/release/*.exe /tmp/artifacts;
+            cp electron-app/release/*.zip /tmp/artifacts;
       - store_artifacts:
-          path: react-app/build
-
-      # build Electron app
-      - run: yarn workspace electron-app build
-      # build Electron app
-      - run: yarn workspace electron-app dist-pl --win
-
-      - store_artifacts:
-          path: electron-app/release/*.exe
+          path: /tmp/artifacts
 
 workflows:
   version: 2
-  build:
+
+  test-and-build:
     jobs:
-      - build_windows
+      - test
+      - build-react:
+          requires:
+            - test
+      - build-windows:
+          requires:
+            - build-react
