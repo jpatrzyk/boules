@@ -42,13 +42,30 @@ jobs:
     steps:
       - checkout
       - restore-cache: *root-restore-yarn-cache
-      - run: *root-yarn
-      - save-cache: *root-save-yarn-cache
       - run:
           name: build React app
           command: yarn workspace react-app build
-      - store_artifacts:
-          path: react-app/build
+      - persist_to_workspace:
+          root: react-app
+          paths:
+            - build
+
+  build-gh-pages:
+    <<: *defaults
+    steps:
+      - run:
+          name: Create orphan gh-pages branch
+          command: |
+            git checkout --orphan gh-pages
+            git rm -rf .
+      - attach_workspace:
+          at: react-app/build
+      - run:
+          name: Push bundled react app to gh-pages branch
+          command: |
+            git add react-app/build
+            git commit -a -m "GH Pages"
+            git push --set-upstream origin gh-pages
 
   build-windows:
     docker:
@@ -56,11 +73,8 @@ jobs:
     steps:
       - checkout
       - restore-cache: *root-restore-yarn-cache
-      - run: *root-yarn
-      - save-cache: *root-save-yarn-cache
-      - run:
-          name: build React app
-          command: yarn workspace react-app build
+      - attach_workspace:
+          at: react-app/build
       - run:
           name: build Electron app
           command: yarn workspace electron-app build
@@ -85,6 +99,10 @@ workflows:
       - build-react:
           requires:
             - test
+      - build-gh-pages:
+          requires:
+            - build-react
+          filters: *filter-only-master
       - build-windows:
           requires:
             - build-react
