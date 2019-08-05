@@ -19,6 +19,10 @@ aliases:
       only:
         - master
 
+  - &filter-ignore-gh-pages
+    branches:
+      ignore: gh-pages
+
 defaults: &defaults
   working_directory: /home/circleci/boules
   docker:
@@ -103,10 +107,12 @@ workflows:
 
   test-and-build:
     jobs:
-      - test
+      - test:
+          filters: *filter-ignore-gh-pages
       - build-react:
           requires:
             - test
+          filters: *filter-ignore-gh-pages
       - build-gh-pages:
           requires:
             - build-react
