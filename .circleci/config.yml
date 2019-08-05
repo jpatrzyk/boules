@@ -27,10 +27,10 @@ jobs:
       # build Electron app
       - run: yarn workspace electron-app build
       # build Electron app
-      - run: yarn workspace electron-app dist --win
+      - run: yarn workspace electron-app dist-pl --win
 
       - store_artifacts:
-          path: electron-app/release
+          path: electron-app/release/*.exe
 
 workflows:
   version: 2

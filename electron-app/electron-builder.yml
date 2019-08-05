@@ -3,7 +3,7 @@ productName: 'Boules'
 copyright: 'Copyright © 2019 Joanna Patrzyk'
 
 extraMetadata:
-  description: 'Simple logic game.'
+  description: 'Simple puzzle game.'
 
 directories:
   buildResources: 'resources'
@@ -16,3 +16,9 @@ files: ['react-app/build/**/*', 'electron-app/dist/main.bundle.js', 'package.jso
 extends: null
 mac:
   category: 'public.app-category.puzzle-games'
+
+win:
+  target:
+    - target: portable
+      arch:
+        - x64

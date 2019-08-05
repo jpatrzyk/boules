@@ -16,3 +16,9 @@ files: ['react-app/build/**/*', 'electron-app/dist/main.bundle.js', 'package.jso
 extends: null
 mac:
   category: 'public.app-category.puzzle-games'
+
+win:
+  target:
+    - target: portable
+      arch:
+        - x64
