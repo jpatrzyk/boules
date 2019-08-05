@@ -20,10 +20,17 @@ jobs:
 
       # build React app
       - run: yarn workspace react-app build
+
+      - store_artifacts:
+          path: react-app/build
+
       # build Electron app
       - run: yarn workspace electron-app build
       # build Electron app
       - run: yarn workspace electron-app dist --win
+
+      - store_artifacts:
+          path: electron-app/release
 
 workflows:
   version: 2
