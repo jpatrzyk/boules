@@ -8,8 +8,8 @@
     "build": "webpack -p",
     "package": "electron-builder build --dir",
     "package-pl": "electron-builder build --config electron-builder.pl.yml --dir",
-    "dist": "electron-builder build -mw --publish never",
-    "dist-pl": "electron-builder build --config electron-builder.pl.yml -mw --publish never"
+    "dist": "electron-builder build --publish never",
+    "dist-pl": "electron-builder build --config electron-builder.pl.yml --publish never"
   },
   "devDependencies": {
     "@types/node": "^12.6.9",

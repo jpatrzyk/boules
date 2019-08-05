@@ -1,0 +1,32 @@
+version: 2
+jobs:
+  build_windows:
+    docker:
+      - image: electronuserland/builder:wine
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}-{{ checksum "electron-app/package.json" }}-{{ checksum "react-app/package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - run: yarn install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}-{{ checksum "electron-app/package.json" }}-{{ checksum "react-app/package.json" }}
+
+      # build React app
+      - run: yarn workspace react-app build
+      # build Electron app
+      - run: yarn workspace electron-app build
+      # build Electron app
+      - run: yarn workspace electron-app dist --win
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build_windows
