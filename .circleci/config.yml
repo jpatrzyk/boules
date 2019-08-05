@@ -14,6 +14,11 @@ aliases:
       - ~/.cache/yarn
     key: root-yarn-{{ checksum "yarn.lock" }}
 
+  - &filter-only-master
+    branches:
+      only:
+        - master
+
 defaults: &defaults
   working_directory: ~/boules
   docker:
@@ -83,3 +88,4 @@ workflows:
       - build-windows:
           requires:
             - build-react
+          filters: *filter-only-master

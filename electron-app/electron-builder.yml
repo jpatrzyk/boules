@@ -19,6 +19,8 @@ mac:
 
 win:
   target:
-    - target: zip
+    - target: portable
       arch:
         - x64
+  publish:
+    - github

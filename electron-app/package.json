@@ -6,10 +6,10 @@
   "scripts": {
     "start": "tsc && electron .",
     "build": "webpack -p",
-    "package": "electron-builder build --dir",
-    "package-pl": "electron-builder build --config electron-builder.pl.yml --dir",
-    "dist": "electron-builder build --publish never",
-    "dist-pl": "electron-builder build --config electron-builder.pl.yml --publish never"
+    "package": "electron-builder build --dir --publish never",
+    "package-pl": "electron-builder build --config electron-builder.pl.yml --dir --publish never",
+    "dist": "electron-builder build",
+    "dist-pl": "electron-builder build --config electron-builder.pl.yml"
   },
   "devDependencies": {
     "@types/node": "^12.6.9",
