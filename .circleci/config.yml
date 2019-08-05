@@ -73,7 +73,8 @@ jobs:
       - run:
           name: Push bundled react app to gh-pages branch
           command: |
-            mv react-app/build/**/* .
+            cp -rp react-app/build/ .
+            rm -rf react-app/build
             git add -A
             git commit -a -m "GH Pages"
             git push --set-upstream origin gh-pages --force
