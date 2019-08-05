@@ -7,7 +7,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "package.json" }}-{{ checksum "electron-app/package.json" }}-{{ checksum "react-app/package.json" }}
+            - v1-dependencies-{{ checksum "yarn.lock" }}
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
@@ -16,7 +16,7 @@ jobs:
       - save_cache:
           paths:
             - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}-{{ checksum "electron-app/package.json" }}-{{ checksum "react-app/package.json" }}
+          key: v1-dependencies-{{ checksum "yarn.lock" }}
 
       # build React app
       - run: yarn workspace react-app build
