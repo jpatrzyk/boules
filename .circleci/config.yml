@@ -74,6 +74,7 @@ jobs:
             git push --set-upstream origin gh-pages
 
   build-windows:
+    working_directory: ~/boules
     docker:
       - image: electronuserland/builder:wine
     steps:
