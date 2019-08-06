@@ -1,26 +1,7 @@
-appId: 'com.electron.boules'
+extends: 'electron-builder.yml'
+
 productName: 'Kulki'
-copyright: 'Copyright © 2019 Joanna Patrzyk'
 
 extraMetadata:
-  description: 'Prosta gra logiczna. Układaj kulki o tym samym kolorze w linie i zdobywaj punkty.'
+  description: 'Prosta gra logiczna.'
 
-directories:
-  buildResources: 'resources'
-  output: 'release'
-  app: '..'
-
-# Important! the files below paths should be relative to `app` path. (see directories.app above)
-files: ['react-app/build/**/*', 'electron-app/dist/main.bundle.js', 'package.json']
-
-extends: null
-mac:
-  category: 'public.app-category.puzzle-games'
-
-win:
-  target:
-    - target: portable
-      arch:
-        - x64
-  publish:
-    - github

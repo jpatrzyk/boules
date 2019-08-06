@@ -93,6 +93,9 @@ jobs:
           command: yarn workspace electron-app build
       - run:
           name: build distributable Windows app
+          command: yarn workspace electron-app dist --win
+      - run:
+          name: build distributable Windows app (Polish version)
           command: yarn workspace electron-app dist-pl --win
       - run:
           name: move artifacts
