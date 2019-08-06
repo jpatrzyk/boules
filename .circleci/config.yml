@@ -66,6 +66,7 @@ jobs:
             git checkout --orphan gh-pages
             git rm -rf react-app electron-app package.json yarn.lock README.md .prettierrc .gitignore
             git mv gh-pages/README.md .
+            git mv gh-pages/_config.yml .
       - attach_workspace:
           at: react-app
       - run:
