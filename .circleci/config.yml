@@ -63,8 +63,11 @@ jobs:
       - run:
           name: Checkout gh-pages
           command: |
-            git checkout gh-pages
-            git rm -rf react-app
+            git checkout --orphan gh-pages
+            git rm -rf .
+            git reset HEAD gh-pages/README.md .circleci/config.yml
+            git checkout -- gh-pages/README.md .circleci/config.yml
+            git mv gh-pages/README.md .
       - attach_workspace:
           at: react-app
       - run:
@@ -75,7 +78,7 @@ jobs:
       - run:
           name: Push bundled react app to gh-pages branch
           command: |
-            git add -A
+            git add react-app
             git diff-index --quiet HEAD || git commit -m "GH Pages"
             git push --set-upstream origin gh-pages
 
