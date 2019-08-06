@@ -1,17 +1,17 @@
 import { app, Menu, BrowserWindow, MenuItemConstructorOptions } from 'electron';
-
-// todo i18n
+import { TFunction } from 'i18next';
 
 export default class MenuBuilder {
   mainWindow: BrowserWindow;
+  t: TFunction;
 
-  constructor(mainWindow: BrowserWindow) {
+  constructor(mainWindow: BrowserWindow, t: TFunction) {
     this.mainWindow = mainWindow;
+    this.t = t;
   }
 
   buildMenu() {
-    const template =
-      process.platform === 'darwin' ? this.buildDarwinTemplate() : this.buildDefaultTemplate();
+    const template = this.buildTemplate();
 
     const menu = Menu.buildFromTemplate(template);
     Menu.setApplicationMenu(menu);
@@ -19,142 +19,59 @@ export default class MenuBuilder {
     return menu;
   }
 
-  buildDarwinTemplate(): MenuItemConstructorOptions[] {
+  buildTemplate(): MenuItemConstructorOptions[] {
+    const { t } = this;
+    const isMac = process.platform === 'darwin';
+
     const subMenuAbout: MenuItemConstructorOptions = {
-      label: 'Boules',
+      label: app.getName(),
       submenu: [
-        {
-          label: 'About Boules',
-          role: 'about',
-        },
+        { role: 'about', label: t('menu.about') },
         { type: 'separator' },
-        {
-          label: 'Hide Boules',
-          accelerator: 'Command+H',
-          role: 'hide',
-        },
-        {
-          label: 'Hide Others',
-          accelerator: 'Command+Shift+H',
-          role: 'hideothers',
-        },
-        { label: 'Show All', role: 'unhide' },
+        { role: 'hide', label: t('menu.hide') },
+        { role: 'hideothers', label: t('menu.hide_others') },
+        { role: 'unhide', label: t('menu.unhide') },
         { type: 'separator' },
-        {
-          label: 'Quit',
-          accelerator: 'Command+Q',
-          click: () => {
-            app.quit();
-          },
-        },
+        { role: 'quit', label: t('menu.quit') },
       ],
     };
     const subMenuViewDev: MenuItemConstructorOptions = {
-      label: 'View',
+      label: t('menu.view'),
       submenu: [
-        {
-          label: 'Reload',
-          accelerator: 'Command+R',
-          role: 'reload',
-        },
-        {
-          label: 'Toggle Full Screen',
-          accelerator: 'Ctrl+Command+F',
-          role: 'togglefullscreen',
-        },
-        {
-          label: 'Toggle Developer Tools',
-          accelerator: 'Alt+Command+I',
-          role: 'toggledevtools',
-        },
+        { role: 'reload', label: t('menu.reload') },
+        { role: 'forcereload', label: t('menu.force_reload') },
+        { role: 'toggledevtools', label: t('menu.toggle_devtools') },
+        { type: 'separator' },
+        { role: 'resetzoom', label: t('menu.reset_zoom') },
+        { role: 'zoomin', label: t('menu.zoom_in') },
+        { role: 'zoomout', label: t('menu.zoom_out') },
+        { type: 'separator' },
+        { role: 'togglefullscreen', label: t('menu.toggle_fullscreen') },
       ],
     };
     const subMenuViewProd: MenuItemConstructorOptions = {
-      label: 'View',
+      label: t('menu.view'),
       submenu: [
-        {
-          label: 'Toggle Full Screen',
-          accelerator: 'Ctrl+Command+F',
-          role: 'togglefullscreen',
-        },
+        { role: 'resetzoom', label: t('menu.reset_zoom') },
+        { role: 'zoomin', label: t('menu.zoom_in') },
+        { role: 'zoomout', label: t('menu.zoom_out') },
+        { type: 'separator' },
+        { role: 'togglefullscreen', label: t('menu.toggle_fullscreen') },
       ],
     };
     const subMenuWindow: MenuItemConstructorOptions = {
-      label: 'Window',
+      label: t('menu.window'),
       submenu: [
-        {
-          label: 'Minimize',
-          accelerator: 'Command+M',
-          role: 'minimize',
-        },
-        { label: 'Close', accelerator: 'Command+W', role: 'close' },
-        { type: 'separator' },
-        { label: 'Bring All to Front', role: 'front' },
+        { role: 'minimize', label: t('menu.minimize') },
+        { role: 'zoom', label: t('menu.zoom') },
+        ...((isMac
+          ? []
+          : [{ role: 'close', label: t('menu.close') }]) as MenuItemConstructorOptions[]),
       ],
     };
 
     const subMenuView = process.env.NODE_ENV === 'production' ? subMenuViewProd : subMenuViewDev;
 
     return [subMenuAbout, subMenuView, subMenuWindow];
-  }
-
-  buildDefaultTemplate(): MenuItemConstructorOptions[] {
-    const subMenuFile = {
-      label: '&File',
-      submenu: [
-        {
-          label: '&Open',
-          accelerator: 'Ctrl+O',
-        },
-        {
-          label: '&Close',
-          accelerator: 'Ctrl+W',
-          click: () => {
-            this.mainWindow.close();
-          },
-        },
-      ],
-    };
-    const subMenuViewDev = {
-      label: '&View',
-      submenu: [
-        {
-          label: '&Reload',
-          accelerator: 'Ctrl+R',
-          click: () => {
-            this.mainWindow.webContents.reload();
-          },
-        },
-        {
-          label: 'Toggle &Full Screen',
-          accelerator: 'F11',
-          click: () => {
-            this.mainWindow.setFullScreen(!this.mainWindow.isFullScreen());
-          },
-        },
-        {
-          label: 'Toggle &Developer Tools',
-          accelerator: 'Alt+Ctrl+I',
-          click: () => {
-            this.mainWindow.webContents.toggleDevTools();
-          },
-        },
-      ],
-    };
-    const subMenuViewProd = {
-      label: '&View',
-      submenu: [
-        {
-          label: 'Toggle &Full Screen',
-          accelerator: 'F11',
-          click: () => {
-            this.mainWindow.setFullScreen(!this.mainWindow.isFullScreen());
-          },
-        },
-      ],
-    };
-    const subMenuView = process.env.NODE_ENV === 'production' ? subMenuViewProd : subMenuViewDev;
-
-    return [subMenuFile, subMenuView];
   }
 }

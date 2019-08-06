@@ -1,12 +1,19 @@
 import path from 'path';
 import { app, BrowserWindow } from 'electron';
 import MenuBuilder from './menu';
+import initI18n from './locale/init';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win;
 
-function createWindow() {
+app.on('ready', createWindow);
+
+app.on('window-all-closed', () => {
+  app.quit();
+});
+
+async function createWindow() {
   win = new BrowserWindow({
     width: 1024,
     height: 912, // enough for the largest board size
@@ -14,6 +21,8 @@ function createWindow() {
       nodeIntegration: true,
     },
   });
+
+  const { t } = await initI18n( app.getLocale());
 
   const indexHtmlPath = path.resolve(__dirname, '../../react-app/build/index.html');
   win.loadURL(`file://${indexHtmlPath}`);
@@ -26,16 +35,6 @@ function createWindow() {
     win = null;
   });
 
-  const menuBuilder = new MenuBuilder(win);
+  const menuBuilder = new MenuBuilder(win, t);
   menuBuilder.buildMenu();
 }
-
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
-app.on('ready', createWindow);
-
-// Quit when all windows are closed.
-app.on('window-all-closed', () => {
-  app.quit();
-});

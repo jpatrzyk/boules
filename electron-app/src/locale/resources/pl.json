@@ -1,0 +1,21 @@
+{
+  "menu": {
+    "about": "O Programie",
+    "hide": "Ukryj Kulki",
+    "hide_others": "Ukryj pozostałe",
+    "unhide": "Pokaż wszystkie",
+    "quit": "Zamknij Kulki",
+    "view": "Widok",
+    "reload": "Załaduj ponownie",
+    "force_reload": "Załaduj ponownie (pomiń cache)",
+    "toggle_devtools": "Narzędzia dla developerów",
+    "reset_zoom": "Rzeczywisty rozmiar",
+    "zoom_in": "Powiększ",
+    "zoom_out": "Pomniejsz",
+    "toggle_fullscreen": "Tryb pełnoekranowy",
+    "window": "Okno",
+    "minimize": "Zminimalizuj",
+    "zoom": "Powiększ",
+    "close": "Zamknij"
+  }
+}

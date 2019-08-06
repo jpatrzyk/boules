@@ -26,5 +26,7 @@
       "electron/**"
     ]
   },
-  "dependencies": {}
+  "dependencies": {
+    "i18next": "^17.0.9"
+  }
 }
