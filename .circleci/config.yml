@@ -4,7 +4,7 @@ aliases:
 
   - &root-restore-yarn-cache
     keys:
-      - root-yarn-{{ checksum "yarn.lock" }}
+      - root-yarn-{{ checksum "yarn.lock" }}-{{ arch }}
       # Fallback in case checksum fails
       - root-yarn-
 
@@ -12,7 +12,7 @@ aliases:
     paths:
       - node_modules
       - ~/.cache/yarn
-    key: root-yarn-{{ checksum "yarn.lock" }}
+    key: root-yarn-{{ checksum "yarn.lock" }}-{{ arch }}
 
   - &filter-only-master
     branches:
@@ -24,7 +24,7 @@ aliases:
       ignore: gh-pages
 
 defaults: &defaults
-  working_directory: /home/circleci/boules
+  working_directory: ~/boules
   docker:
     - image: circleci/node:12
 
@@ -59,10 +59,10 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Create orphan gh-pages branch
+          name: Checkout gh-pages
           command: |
-            git checkout --orphan gh-pages
-            git rm -rf .
+            git checkout gh-pages
+            git rm -rf react-app
       - attach_workspace:
           at: react-app
       - run:
@@ -73,21 +73,23 @@ jobs:
       - run:
           name: Push bundled react app to gh-pages branch
           command: |
-            cp -rp react-app/build/ .
-            rm -rf react-app/build
             git add -A
             git commit -a -m "GH Pages"
-            git push --set-upstream origin gh-pages --force
+            git push --set-upstream origin gh-pages
 
   build-windows:
-    working_directory: /home/circleci/boules
+    working_directory: ~/boules
     docker:
       - image: electronuserland/builder:wine
     steps:
       - checkout
       - restore-cache: *root-restore-yarn-cache
-      - attach_workspace:
-          at: react-app
+      # this is a different docker image - thus, we cannot use cache or workspace from other jobs
+      - run: *root-yarn
+      - save-cache: *root-save-yarn-cache
+      - run:
+          name: build React app
+          command: yarn workspace react-app build
       - run:
           name: build Electron app
           command: yarn workspace electron-app build
