@@ -64,9 +64,7 @@ jobs:
           name: Checkout gh-pages
           command: |
             git checkout --orphan gh-pages
-            git rm -rf .
-            git reset HEAD gh-pages/README.md .circleci/config.yml
-            git checkout -- gh-pages/README.md .circleci/config.yml
+            git rm -rf react-app electron-app package.json yarn.lock README.md .prettierrc .gitignore
             git mv gh-pages/README.md .
       - attach_workspace:
           at: react-app
