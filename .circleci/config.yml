@@ -79,8 +79,8 @@ jobs:
           name: Push bundled react app to gh-pages branch
           command: |
             git add react-app
-            git diff-index --quiet HEAD || git commit -m "GH Pages"
-            git push --set-upstream origin gh-pages
+            git commit -m "GH Pages"
+            git push --set-upstream origin gh-pages --force
 
   build-windows:
     working_directory: /home/circleci/boules
