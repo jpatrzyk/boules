@@ -11,18 +11,17 @@ export default class MenuBuilder {
   }
 
   buildMenu() {
-    const template = this.buildTemplate();
-
-    const menu = Menu.buildFromTemplate(template);
-    Menu.setApplicationMenu(menu);
-
-    return menu;
+    if(process.platform === 'darwin') {
+      const template = this.buildDarwinTemplate();
+      const menu = Menu.buildFromTemplate(template);
+      Menu.setApplicationMenu(menu);
+    } else {
+      this.mainWindow.removeMenu();
+    }
   }
 
-  buildTemplate(): MenuItemConstructorOptions[] {
+  buildDarwinTemplate(): MenuItemConstructorOptions[] {
     const { t } = this;
-    const isMac = process.platform === 'darwin';
-
     const subMenuAbout: MenuItemConstructorOptions = {
       label: app.getName(),
       submenu: [
@@ -64,9 +63,6 @@ export default class MenuBuilder {
       submenu: [
         { role: 'minimize', label: t('menu.minimize') },
         { role: 'zoom', label: t('menu.zoom') },
-        ...((isMac
-          ? []
-          : [{ role: 'close', label: t('menu.close') }]) as MenuItemConstructorOptions[]),
       ],
     };
 
