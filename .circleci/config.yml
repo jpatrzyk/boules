@@ -4,9 +4,9 @@ aliases:
 
   - &root-restore-yarn-cache
     keys:
-      - root-yarn-{{ checksum "yarn.lock" }}-{{ arch }}
+      - v1-yarn-{{ checksum "yarn.lock" }}-{{ arch }}
       # Fallback in case checksum fails
-      - root-yarn-
+      - v1-yarn-
 
   - &root-save-yarn-cache
     paths:
@@ -14,7 +14,7 @@ aliases:
       - electron-app/node_modules
       - react-app/node_modules
       - /home/circleci/.cache/yarn
-    key: root-yarn-{{ checksum "yarn.lock" }}-{{ arch }}
+    key: v1-yarn-{{ checksum "yarn.lock" }}-{{ arch }}
 
   - &filter-only-master
     branches:
