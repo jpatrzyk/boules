@@ -27,8 +27,8 @@ defaults: &defaults
   working_directory: ~/boules
   docker:
     - image: circleci/node:12
-  environment:
-    DOCKER_IMAGE: node12
+      environment:
+        DOCKER_IMAGE: node12
 
 version: 2
 jobs:
@@ -76,15 +76,15 @@ jobs:
           name: Push bundled react app to gh-pages branch
           command: |
             git add -A
-            git commit -a -m "GH Pages"
+            git diff-index --quiet HEAD || git commit -m "GH Pages"
             git push --set-upstream origin gh-pages
 
   build-windows:
     working_directory: ~/boules
     docker:
       - image: electronuserland/builder:wine
-    environment:
-      DOCKER_IMAGE: wine
+        environment:
+          DOCKER_IMAGE: wine
     steps:
       - checkout
       - restore-cache: *root-restore-yarn-cache
