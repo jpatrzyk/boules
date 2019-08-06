@@ -1,18 +1,18 @@
 aliases:
   - &root-yarn |
-    yarn install --non-interactive --cache-folder ~/.cache/yarn
+    yarn install --non-interactive --cache-folder /home/circleci/.cache/yarn
 
   - &root-restore-yarn-cache
     keys:
-      - root-yarn-{{ checksum "yarn.lock" }}-{{ .Environment.DOCKER_IMAGE }}
+      - root-yarn-{{ checksum "yarn.lock" }}-{{ arch }}
       # Fallback in case checksum fails
       - root-yarn-
 
   - &root-save-yarn-cache
     paths:
       - node_modules
-      - ~/.cache/yarn
-    key: root-yarn-{{ checksum "yarn.lock" }}-{{ .Environment.DOCKER_IMAGE }}
+      - /home/circleci/.cache/yarn
+    key: root-yarn-{{ checksum "yarn.lock" }}-{{ arch }}
 
   - &filter-only-master
     branches:
@@ -24,11 +24,9 @@ aliases:
       ignore: gh-pages
 
 defaults: &defaults
-  working_directory: ~/boules
+  working_directory: /home/circleci/boules
   docker:
     - image: circleci/node:12
-      environment:
-        DOCKER_IMAGE: node12
 
 version: 2
 jobs:
@@ -80,20 +78,14 @@ jobs:
             git push --set-upstream origin gh-pages
 
   build-windows:
-    working_directory: ~/boules
+    working_directory: /home/circleci/boules
     docker:
       - image: electronuserland/builder:wine
-        environment:
-          DOCKER_IMAGE: wine
     steps:
       - checkout
       - restore-cache: *root-restore-yarn-cache
-      # this is a different docker image - thus, we cannot use cache or workspace from other jobs
-      - run: *root-yarn
-      - save-cache: *root-save-yarn-cache
-      - run:
-          name: build React app
-          command: yarn workspace react-app build
+      - attach_workspace:
+          at: react-app
       - run:
           name: build Electron app
           command: yarn workspace electron-app build
