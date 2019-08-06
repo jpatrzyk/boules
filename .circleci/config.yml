@@ -11,6 +11,8 @@ aliases:
   - &root-save-yarn-cache
     paths:
       - node_modules
+      - electron-app/node_modules
+      - react-app/node_modules
       - /home/circleci/.cache/yarn
     key: root-yarn-{{ checksum "yarn.lock" }}-{{ arch }}
 
