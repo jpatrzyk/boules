@@ -4,7 +4,7 @@ aliases:
 
   - &root-restore-yarn-cache
     keys:
-      - root-yarn-{{ checksum "yarn.lock" }}-{{ arch }}
+      - root-yarn-{{ checksum "yarn.lock" }}-{{ .Environment.DOCKER_IMAGE }}
       # Fallback in case checksum fails
       - root-yarn-
 
@@ -12,7 +12,7 @@ aliases:
     paths:
       - node_modules
       - ~/.cache/yarn
-    key: root-yarn-{{ checksum "yarn.lock" }}-{{ arch }}
+    key: root-yarn-{{ checksum "yarn.lock" }}-{{ .Environment.DOCKER_IMAGE }}
 
   - &filter-only-master
     branches:
@@ -27,6 +27,8 @@ defaults: &defaults
   working_directory: ~/boules
   docker:
     - image: circleci/node:12
+  environment:
+    DOCKER_IMAGE: node12
 
 version: 2
 jobs:
@@ -81,6 +83,8 @@ jobs:
     working_directory: ~/boules
     docker:
       - image: electronuserland/builder:wine
+    environment:
+      DOCKER_IMAGE: wine
     steps:
       - checkout
       - restore-cache: *root-restore-yarn-cache
