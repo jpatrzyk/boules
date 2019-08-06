@@ -1,9 +1,12 @@
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { ColoredCell, Direction } from './ColoredCell';
 import './BoardCell.scss';
 
 interface Props {
+  x: number;
+  y: number;
   position: number;
   value: number; // 0 - empty, 1,2,... - color
   selected: boolean;
@@ -16,6 +19,8 @@ interface Props {
 }
 
 export const BoardCell: React.FC<Props> = ({
+  x,
+  y,
   position,
   value,
   selected,
@@ -26,6 +31,8 @@ export const BoardCell: React.FC<Props> = ({
   onClick,
   onAnimationFinished,
 }) => {
+  const { t } = useTranslation();
+
   useEffect(() => {
     if (moveTo || fillNewValue || disappearing) {
       const timeout = setTimeout(() => {
@@ -41,8 +48,18 @@ export const BoardCell: React.FC<Props> = ({
     onClick(position);
   }
 
+  const coords = `(${x}, ${y})`;
+  const coordsLabel = t('board.cell_label', { coords });
+  const contentLabel = value ? t('board.cell_color', { value }) : t('board.cell_empty');
+
   return (
-    <button type="button" className="BoardCell" onClick={cellClicked} disabled={disabled}>
+    <button
+      type="button"
+      className="BoardCell"
+      onClick={cellClicked}
+      disabled={disabled}
+      aria-label={`${coordsLabel}${contentLabel}`}
+    >
       <ColoredCell
         value={value}
         selected={selected}

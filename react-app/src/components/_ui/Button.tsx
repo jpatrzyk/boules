@@ -28,6 +28,7 @@ export const Button: React.FC<Props> = ({
       onClick={onClick}
       disabled={disabled}
       title={children}
+      aria-label={children}
     >
       {!!icon ? <i className={`icon-${icon}`} /> : children}
     </button>

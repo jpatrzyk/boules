@@ -17,6 +17,11 @@
     "load_game": "Wczytaj grę",
     "save_game": "Zapisz grę"
   },
+  "board": {
+    "cell_label": "komórka {{ coords }}",
+    "cell_color": ", kolor: {{ value }}",
+    "cell_empty": ", pusta"
+  },
   "game_over": {
     "modal_title": "Koniec gry",
     "congratulations": "Gratulacje! Twój wynik jest w czołówce!",

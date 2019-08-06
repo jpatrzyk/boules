@@ -17,6 +17,11 @@
     "load_game": "Load Game",
     "save_game": "Save Game"
   },
+  "board": {
+    "cell_label": "cell at {{ coords }}",
+    "cell_color": ", color: {{ value }}",
+    "cell_empty": ", empty"
+  },
   "game_over": {
     "modal_title": "Game Over",
     "congratulations": "Congratulations! You achieved a very high score!",

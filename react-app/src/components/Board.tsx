@@ -81,6 +81,8 @@ export const Board: React.FC<Props> = ({ state, dispatch, onGameOver }: Props) =
               return (
                 <BoardCell
                   key={y}
+                  x={x}
+                  y={y}
                   position={position}
                   value={value}
                   selected={isSelected}
