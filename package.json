@@ -1,6 +1,6 @@
 {
   "name": "boules",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "main": "electron-app/dist/main.bundle.js",
   "repository": "git@github.com:jpatrzyk/boules.git",
