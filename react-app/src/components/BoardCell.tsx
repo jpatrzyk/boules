@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { debounce } from 'utils/helpers';
 import { ColoredCell, Direction } from './ColoredCell';
 import './BoardCell.scss';
 
@@ -44,9 +45,12 @@ export const BoardCell: React.FC<Props> = ({
     }
   }, [moveTo, fillNewValue, disappearing, onAnimationFinished]);
 
-  function cellClicked() {
-    onClick(position);
-  }
+  const cellClicked = useCallback(
+    debounce(() => {
+      onClick(position);
+    }),
+    [onClick, position],
+  );
 
   const coords = `(${x}, ${y})`;
   const coordsLabel = t('board.cell_label', { coords });

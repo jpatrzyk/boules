@@ -48,6 +48,23 @@ export function delay(ms: number): Promise<void> {
   });
 }
 
+export function debounce<T, R>(
+  func: (...args: T[]) => R,
+  delay: number = 300,
+): (...args: T[]) => R | void {
+  let canInvoke = true;
+  function debounced(...args: T[]) {
+    if (canInvoke) {
+      canInvoke = false;
+      setTimeout(() => {
+        canInvoke = true;
+      }, delay);
+      return func(...args);
+    }
+  }
+  return debounced;
+}
+
 export function currentDateFormatted(): string {
   // returns current date in format YYYY-MM-DD_HH:mm eg.: 2019-08-02_1040
   return new Date()
