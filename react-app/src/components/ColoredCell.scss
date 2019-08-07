@@ -21,17 +21,14 @@ $bounce-cycle-duration: 500ms;
 // we must define MAX_COLORS_COUNT colors
 $colors: (
   1: #990000,
-  2: #008000,
-  3: #004499,
-  4: #ffcc00 #cc8800,
-  5: #990099,
-  6: #009999,
-  7: #ff7700 #aa3300 #ffdd88,
-  8: #aacc00 #555500 #eeee77,
-  9: #222222,
-  10: #ff66bb #aa0077 #ffddee,
-  11: #8b4513,
-  12: #808080,
+  2: #008811 #001100 #33ff11,
+  3: #0011aa #001122 #3399ff,
+  4: #ffcc00 #dd8822 #ffee77,
+  5: #404040,
+  6: #990099 #220033 #ff88ff,
+  7: #44aadd #115566 #66ffff,
+  8: #8b4513,
+  9: #ff99dd #dd4499 #ffeeff,
 );
 
 @each $index, $color in $colors {
@@ -50,8 +47,8 @@ $colors: (
     background-image: radial-gradient(
       farthest-corner at 60% 40%,
       $lighter 1%,
-      $main-color 50%,
-      $darker 85%
+      $main-color 55%,
+      $darker 90%
     );
   }
 }
