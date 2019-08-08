@@ -7,7 +7,7 @@ import { isInTopScores, putScore } from 'utils/storage';
 
 import './GameOverModal.scss';
 
-export type CloseBehavior = 'new_game' | 'show_ranking' | 'quit';
+export type CloseBehavior = 'new_game' | 'show_leaderboard' | 'quit';
 
 interface Props {
   score: number;
@@ -40,7 +40,7 @@ export const GameOverModal: React.FC<Props> = ({ score, open, onRequestClose }) 
 
   const handleSave = useCallback(async () => {
     await putScore(playerName, score);
-    onRequestClose('show_ranking');
+    onRequestClose('show_leaderboard');
   }, [playerName, score, onRequestClose]);
 
   const handleRequestNewGame = useCallback(() => {

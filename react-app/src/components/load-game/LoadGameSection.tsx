@@ -31,7 +31,7 @@ export const LoadGameSection: React.FC<Props> = ({ onGameLoaded }) => {
 
   return (
     <>
-      <Button icon="open" onClick={openModal}>
+      <Button icon="load" onClick={openModal}>
         {t('app.load_game')}
       </Button>
       <LoadGameModal open={isModalOpen} onRequestClose={closeModal} onGameLoaded={loadGame} />

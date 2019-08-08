@@ -14,7 +14,7 @@ import { useModel } from 'hooks/model/useModel';
 import { Board } from 'components/Board';
 import { NextColors } from 'components/NextColors';
 import { CloseBehavior, GameOverModal } from './components/game-over/GameOverModal';
-import { RankingSection } from './components/ranking/RankingSection';
+import { LeaderboardSection } from './components/leaderboard/LeaderboardSection';
 import { OptionsSection } from './components/options/OptionsSection';
 import { LoadGameSection } from './components/load-game/LoadGameSection';
 import { SaveGameSection } from './components/save-game/SaveGameSection';
@@ -29,7 +29,7 @@ const App: React.FC = () => {
   const { t } = useTranslation();
   const [state, dispatch] = useModel();
   const [showGameOver, setShowGameOver] = useState<boolean>(false);
-  const [showRanking, setShowRanking] = useState<boolean>(false);
+  const [showLeaderboard, setShowLeaderboard] = useState<boolean>(false);
 
   useEffect(() => {
     document.title = t('app.document_title');
@@ -62,8 +62,8 @@ const App: React.FC = () => {
       setShowGameOver(false);
       if (closeBehavior === 'new_game') {
         dispatch(newGame());
-      } else if (closeBehavior === 'show_ranking') {
-        setShowRanking(true);
+      } else if (closeBehavior === 'show_leaderboard') {
+        setShowLeaderboard(true);
       }
     },
     [dispatch],
@@ -105,16 +105,20 @@ const App: React.FC = () => {
       </header>
 
       <nav>
-        <Button icon="new" onClick={handleNewGameClick}>
-          {t('app.new_game')}
-        </Button>
-        <LoadGameSection onGameLoaded={handleGameLoaded} />
-        <SaveGameSection gameState={state} />
-        <Button icon="undo" disabled={!state.prevStepModel} onClick={handleUndoClick}>
-          {t('app.undo')}
-        </Button>
-        <RankingSection openRankingModal={showRanking} />
-        <OptionsSection value={state} onChange={handleOptionsSubmitted} />
+        <span>
+          <Button icon="new" onClick={handleNewGameClick}>
+            {t('app.new_game')}
+          </Button>
+          <LoadGameSection onGameLoaded={handleGameLoaded} />
+          <SaveGameSection gameState={state} />
+          <Button icon="undo" disabled={!state.prevStepModel} onClick={handleUndoClick}>
+            {t('app.undo')}
+          </Button>
+        </span>
+        <span>
+          <LeaderboardSection showModal={showLeaderboard} />
+          <OptionsSection value={state} onChange={handleOptionsSubmitted} />
+        </span>
       </nav>
 
       <main>

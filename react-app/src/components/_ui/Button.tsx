@@ -14,6 +14,8 @@ interface Props {
   onClick?: () => void;
 }
 
+// TODO YesNoModal etc
+
 export const Button: React.FC<Props> = ({
   children,
   icon,
@@ -30,7 +32,8 @@ export const Button: React.FC<Props> = ({
       title={children}
       aria-label={children}
     >
-      {!!icon ? <i className={`icon-${icon}`} /> : children}
+      {!!icon && <i className={`icon-${icon}`} />}
+      <span>{children}</span>
     </button>
   );
 };

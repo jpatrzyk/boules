@@ -1,10 +1,9 @@
 @import '../../styles/variables';
 
-$icon-size: 2.4rem;
+$icon-size: 2.0rem;
 
 .Button {
   border: 0;
-  min-width: 10.0rem;
   min-height: 4.8rem;
   padding: 0 1.6rem;
   margin: 0.4rem;
@@ -15,10 +14,24 @@ $icon-size: 2.4rem;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+
+  span {
+    min-width: 7.2rem;
+  }
 
   i {
     font-size: $icon-size;
     line-height: $icon-size;
+
+    & + span {
+      margin-left: 0.4rem;
+
+      @media screen and (max-width: $break-h-small) {
+        display: none;
+      }
+    }
   }
 
   &:focus {

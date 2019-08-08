@@ -1,10 +1,1 @@
-export type IconGlyph =
-  | 'scores'
-  | 'undo'
-  | 'save'
-  | 'new'
-  | 'open'
-  | 'refresh'
-  | 'star'
-  | 'delete'
-  | 'settings';
+export type IconGlyph = 'new' | 'load' | 'save' | 'undo' | 'settings' | 'leaderboard' | 'delete';

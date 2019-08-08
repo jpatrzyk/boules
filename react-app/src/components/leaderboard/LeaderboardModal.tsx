@@ -5,16 +5,16 @@ import { Score, loadTopScoresDescending, clearAllScores } from 'utils/storage';
 import { Modal } from '../_ui/Modal';
 import { Button } from '../_ui/Button';
 
-import './RankingModal.scss';
+import './LeaderboardModal.scss';
 
-export type CloseBehavior = 'new_game' | 'show_ranking' | 'quit';
+export type CloseBehavior = 'new_game' | 'show_leaderboard' | 'quit';
 
 interface Props {
   open: boolean;
   onRequestClose: (behavior?: CloseBehavior) => void;
 }
 
-export const RankingModal: React.FC<Props> = ({ open, onRequestClose }) => {
+export const LeaderboardModal: React.FC<Props> = ({ open, onRequestClose }) => {
   const { t } = useTranslation();
   const [scores, setScores] = useState<Score[]>([]);
 
@@ -35,15 +35,15 @@ export const RankingModal: React.FC<Props> = ({ open, onRequestClose }) => {
   }, []);
 
   return (
-    <Modal open={open} onRequestClose={onRequestClose} title={t('ranking.modal_title')}>
-      <div className="RankingModal">
-        <div className="RankingModal-tableWrapper">
+    <Modal open={open} onRequestClose={onRequestClose} title={t('leaderboard.modal_title')}>
+      <div className="LeaderboardModal">
+        <div className="LeaderboardModal-tableWrapper">
           <table>
             <thead>
               <tr>
-                <th>{t('ranking.th_player')}</th>
-                <th>{t('ranking.th_score')}</th>
-                <th>{t('ranking.th_date')}</th>
+                <th>{t('leaderboard.th_player')}</th>
+                <th>{t('leaderboard.th_score')}</th>
+                <th>{t('leaderboard.th_date')}</th>
               </tr>
             </thead>
             <tbody>
@@ -57,10 +57,10 @@ export const RankingModal: React.FC<Props> = ({ open, onRequestClose }) => {
             </tbody>
           </table>
         </div>
-        <div className="RankingModal-buttons">
-          <Button onClick={handleRequestClearScores}>{t('ranking.clear')}</Button>
+        <div className="LeaderboardModal-buttons">
+          <Button onClick={handleRequestClearScores}>{t('leaderboard.clear')}</Button>
           <Button variant="primary" onClick={onRequestClose}>
-            {t('ranking.close')}
+            {t('leaderboard.close')}
           </Button>
         </div>
       </div>

@@ -6,8 +6,8 @@ import App from './App';
 jest.mock('./components/game-over/GameOverModal', () => ({
   GameOverModal: () => <div />,
 }));
-jest.mock('./components/ranking/RankingSection', () => ({
-  RankingSection: () => <div />,
+jest.mock('./components/leaderboard/LeaderboardSection', () => ({
+  LeaderboardSection: () => <div />,
 }));
 jest.mock('./components/options/OptionsSection', () => ({
   OptionsSection: () => <div />,

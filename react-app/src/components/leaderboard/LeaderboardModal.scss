@@ -1,0 +1,29 @@
+.LeaderboardModal {
+  position: relative;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  &-tableWrapper {
+    flex-grow: 1;
+    margin-bottom: 1.6rem;
+    overflow-y: auto;
+
+    table {
+      width: 100%;
+
+      td,
+      th {
+        height: 3.6rem;
+        padding: 0.8rem;
+        text-align: left;
+      }
+    }
+  }
+
+  &-buttons {
+    display: flex;
+    justify-content: space-between;
+  }
+}

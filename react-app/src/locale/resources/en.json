@@ -10,12 +10,12 @@
     "title": "Boules",
     "score": "Score:",
     "next_colors": "Next colors",
-    "new_game": "New Game",
+    "new_game": "New",
     "undo": "Undo",
-    "show_ranking": "Show Ranking",
-    "show_options": "Show Options",
-    "load_game": "Load Game",
-    "save_game": "Save Game"
+    "show_leaderboard": "Leaderboard",
+    "show_options": "Settings",
+    "load_game": "Load",
+    "save_game": "Save"
   },
   "board": {
     "cell_label": "cell at {{ coords }}",
@@ -39,7 +39,7 @@
     "board_size": "Board size:",
     "summary": "With these settings, for <1>{{lineLength}}-cell-long</1> row you will earn <1>{{estimatedScore}}</1> points."
   },
-  "ranking": {
+  "leaderboard": {
     "modal_title": "High Scores",
     "th_player": "Player",
     "th_score": "Score",

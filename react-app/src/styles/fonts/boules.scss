@@ -1,12 +1,10 @@
-$icon-scores: '\e904';
-$icon-undo: '\e900';
-$icon-save: '\e905';
-$icon-new: '\e907';
-$icon-open: '\e901';
-$icon-refresh: '\e909';
-$icon-star: '\e902';
+$icon-new: '\e90e';
+$icon-load: '\e90b';
+$icon-save: '\e90a';
+$icon-undo: '\e90c';
+$icon-settings: '\e909';
+$icon-leaderboard: '\e910';
 $icon-delete: '\e908';
-$icon-settings: '\e903';
 
 @font-face {
   font-family: 'boules';
@@ -31,14 +29,14 @@ i {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-scores {
+.icon-new {
   &:before {
-    content: $icon-scores;
+    content: $icon-new;
   }
 }
-.icon-undo {
+.icon-load {
   &:before {
-    content: $icon-undo;
+    content: $icon-load;
   }
 }
 .icon-save {
@@ -46,33 +44,23 @@ i {
     content: $icon-save;
   }
 }
-.icon-new {
+.icon-undo {
   &:before {
-    content: $icon-new;
-  }
-}
-.icon-open {
-  &:before {
-    content: $icon-open;
-  }
-}
-.icon-refresh {
-  &:before {
-    content: $icon-refresh;
-  }
-}
-.icon-star {
-  &:before {
-    content: $icon-star;
-  }
-}
-.icon-delete {
-  &:before {
-    content: $icon-delete;
+    content: $icon-undo;
   }
 }
 .icon-settings {
   &:before {
     content: $icon-settings;
+  }
+}
+.icon-leaderboard {
+  &:before {
+    content: $icon-leaderboard;
+  }
+}
+.icon-delete {
+  &:before {
+    content: $icon-delete;
   }
 }

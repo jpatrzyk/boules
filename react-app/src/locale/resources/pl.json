@@ -10,12 +10,12 @@
     "title": "Kulki",
     "score": "Punkty:",
     "next_colors": "Następne kolory",
-    "new_game": "Nowa gra",
+    "new_game": "Nowa",
     "undo": "Cofnij",
-    "show_ranking": "Ranking",
-    "show_options": "Opcje gry",
-    "load_game": "Wczytaj grę",
-    "save_game": "Zapisz grę"
+    "show_leaderboard": "Ranking",
+    "show_options": "Ustawienia",
+    "load_game": "Wczytaj",
+    "save_game": "Zapisz"
   },
   "board": {
     "cell_label": "komórka {{ coords }}",
@@ -39,7 +39,7 @@
     "board_size": "Rozmiar planszy:",
     "summary": "Przy powyższych ustawieniach, za zbicie <1>{{lineLength}}</1> kulek zdobędziesz <1>{{estimatedScore}}</1> punktów."
   },
-  "ranking": {
+  "leaderboard": {
     "modal_title": "Najlepsze wyniki",
     "th_player": "Gracz",
     "th_score": "Wynik",
