@@ -3,7 +3,8 @@
     "yes": "Yes",
     "no": "No",
     "save": "Save",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "ok": "OK"
   },
   "app": {
     "document_title": "Boules",
@@ -45,7 +46,9 @@
     "th_score": "Score",
     "th_date": "Date",
     "close": "Close",
-    "clear": "Clear all scores"
+    "clear": "Clear all scores",
+    "clear_scores_title": "Clear all scores",
+    "clear_scores_message": "Are you sure you want to clear all scores in the leaderboard?"
   },
   "load_game": {
     "modal_title": "Load Game",

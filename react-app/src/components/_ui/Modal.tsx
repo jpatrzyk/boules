@@ -8,9 +8,16 @@ interface Props {
   open: boolean;
   onRequestClose: () => void;
   title?: string;
+  priority?: 'top' | 'default';
 }
 
-export const Modal: React.FC<Props> = ({ open, onRequestClose, title, children }) => {
+export const Modal: React.FC<Props> = ({
+  open,
+  onRequestClose,
+  title,
+  priority = 'default',
+  children,
+}) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const [lastActiveElement, setLastActiveElement] = useState<HTMLElement | null>(null);
 
@@ -66,7 +73,7 @@ export const Modal: React.FC<Props> = ({ open, onRequestClose, title, children }
 
   function renderModal() {
     return (
-      <div className={classNames('Modal-backdrop', { 'Modal-backdrop--active': open })}>
+      <div className={classNames('Modal-backdrop', `Modal-backdrop--${priority}Priority`, { 'Modal-backdrop--active': open })}>
         <div
           className={classNames('Modal', { 'Modal--hidden': !open })}
           role="dialog"

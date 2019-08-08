@@ -35,6 +35,10 @@ $intro-animation-duration: 300ms;
     animation-duration: $intro-animation-duration;
     background-color: rgba(0, 0, 0, 0.5);
   }
+
+  &#{&}--topPriority {
+    z-index: 1;
+  }
 }
 
 .Modal {

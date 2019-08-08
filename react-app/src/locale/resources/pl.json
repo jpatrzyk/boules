@@ -3,7 +3,8 @@
     "yes": "Tak",
     "no": "Nie",
     "save": "Zapisz",
-    "cancel": "Anuluj"
+    "cancel": "Anuluj",
+    "ok": "OK"
   },
   "app": {
     "document_title": "Kulki",
@@ -45,7 +46,9 @@
     "th_score": "Wynik",
     "th_date": "Data",
     "close": "Zamknij",
-    "clear": "Skasuj wyniki"
+    "clear": "Skasuj wyniki",
+    "clear_scores_title": "Skasuj wyniki",
+    "clear_scores_message": "Czy na pewno chcesz skasować wszystkie zapisane wyniki?"
   },
   "load_game": {
     "modal_title": "Wczytaj grę",

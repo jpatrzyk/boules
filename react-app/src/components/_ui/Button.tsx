@@ -14,8 +14,6 @@ interface Props {
   onClick?: () => void;
 }
 
-// TODO YesNoModal etc
-
 export const Button: React.FC<Props> = ({
   children,
   icon,

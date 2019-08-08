@@ -6,6 +6,7 @@ import { Modal } from '../_ui/Modal';
 import { Button } from '../_ui/Button';
 
 import './LeaderboardModal.scss';
+import { OkCancelModal } from '../_ui/OkCancelModal';
 
 export type CloseBehavior = 'new_game' | 'show_leaderboard' | 'quit';
 
@@ -17,6 +18,7 @@ interface Props {
 export const LeaderboardModal: React.FC<Props> = ({ open, onRequestClose }) => {
   const { t } = useTranslation();
   const [scores, setScores] = useState<Score[]>([]);
+  const [isConfirmationOpen, setConfirmationOpen] = useState<boolean>(false);
 
   useEffect(() => {
     if (open) {
@@ -29,13 +31,26 @@ export const LeaderboardModal: React.FC<Props> = ({ open, onRequestClose }) => {
     setScores(allScores);
   }
 
-  const handleRequestClearScores = useCallback(async () => {
+  const clearScoresRequested = useCallback(() => {
+    setConfirmationOpen(true);
+  }, [setConfirmationOpen]);
+
+  const clearScoresConfirmed = useCallback(async () => {
     await clearAllScores();
     await loadScores();
   }, []);
 
+  const handleConfirmationCancelled = useCallback(() => {
+    setConfirmationOpen(false);
+  }, [setConfirmationOpen]);
+
+  const handleRequestClose = useCallback(() => {
+    setConfirmationOpen(false);
+    onRequestClose();
+  }, [setConfirmationOpen, onRequestClose]);
+
   return (
-    <Modal open={open} onRequestClose={onRequestClose} title={t('leaderboard.modal_title')}>
+    <Modal open={open} onRequestClose={handleRequestClose} title={t('leaderboard.modal_title')}>
       <div className="LeaderboardModal">
         <div className="LeaderboardModal-tableWrapper">
           <table>
@@ -58,11 +73,20 @@ export const LeaderboardModal: React.FC<Props> = ({ open, onRequestClose }) => {
           </table>
         </div>
         <div className="LeaderboardModal-buttons">
-          <Button onClick={handleRequestClearScores}>{t('leaderboard.clear')}</Button>
-          <Button variant="primary" onClick={onRequestClose}>
+          <Button variant="primary" onClick={handleRequestClose}>
             {t('leaderboard.close')}
           </Button>
+          <Button onClick={clearScoresRequested}>{t('leaderboard.clear')}</Button>
         </div>
+        <OkCancelModal
+          title={t('leaderboard.clear_scores_title')}
+          okLabel={t('global.yes')}
+          open={isConfirmationOpen}
+          onOk={clearScoresConfirmed}
+          onCancel={handleConfirmationCancelled}
+        >
+          {t('leaderboard.clear_scores_message')}
+        </OkCancelModal>
       </div>
     </Modal>
   );
