@@ -8,6 +8,7 @@
   },
   "app": {
     "document_title": "Boules",
+    "document_meta_description": "Simple logic game.",
     "title": "Boules",
     "score": "Score:",
     "next_colors": "Next colors",

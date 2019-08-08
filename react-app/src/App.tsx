@@ -33,6 +33,10 @@ const App: React.FC = () => {
 
   useEffect(() => {
     document.title = t('app.document_title');
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', t('app.document_meta_description'));
+    }
   }, [t]);
 
   useEffect(() => {
