@@ -1,1 +1,15 @@
 theme: jekyll-theme-cayman
+
+show_downloads: 'true'
+github:
+  exe_path: /download/v0.1.0/Boules-0.1.0.exe
+
+t:
+  en:
+    view_on_github: 'View on GitHub'
+    download_asset_index: 0
+    download: 'Download'
+  pl:
+    view_on_github: 'Zobacz na github.com'
+    download_asset_index: 1
+    download: 'Pobierz'

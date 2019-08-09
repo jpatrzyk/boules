@@ -1,0 +1,15 @@
+---
+---
+
+@import "{{ site.theme }}";
+
+header {
+  nav {
+    float: right;
+    margin-bottom: -40px;
+  }
+
+  h1 {
+    clear: both;
+  }
+}
