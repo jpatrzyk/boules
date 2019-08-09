@@ -7,8 +7,6 @@
     "ok": "OK"
   },
   "app": {
-    "document_title": "Kulki",
-    "document_meta_description": "Prosta gra logiczna. Układaj kulki o tym samym kolorze w linie i zdobywaj punkty.",
     "title": "Kulki",
     "score": "Punkty:",
     "next_colors": "Następne kolory",

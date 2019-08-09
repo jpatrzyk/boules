@@ -10,6 +10,7 @@
     "@types/react": "16.8.24",
     "@types/react-dom": "16.8.5",
     "classnames": "^2.2.6",
+    "env-cmd": "^9.0.3",
     "i18next": "^17.0.8",
     "i18next-browser-languagedetector": "^3.0.2",
     "idb": "^4.0.4",
@@ -25,7 +26,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build-manifest": "node ./build_manifest.js",
+    "build": "react-scripts build && yarn build-manifest",
+    "build:pl": "env-cmd -f .env.pl yarn build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
