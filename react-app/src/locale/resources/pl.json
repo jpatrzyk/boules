@@ -17,6 +17,11 @@
     "load_game": "Wczytaj",
     "save_game": "Zapisz"
   },
+  "install_prompt": {
+    "modal_title": "Instaluj 'Kulki'",
+    "prompt": "Teraz możesz miec 'Kulki' dostępne offline, zawsze i wszędzie. Aplikacja jest darmowa i nie zajmuje dużo miejsca.",
+    "ok_label": "Instaluj"
+  },
   "board": {
     "cell_label": "komórka {{ coords }}",
     "cell_color": ", kolor: {{ value }}",
