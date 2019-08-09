@@ -28,7 +28,7 @@ aliases:
 defaults: &defaults
   working_directory: /home/circleci/boules
   docker:
-    - image: circleci/node:12
+    - image: circleci/node:12.7.0-buster
 
 version: 2
 jobs:
@@ -50,11 +50,21 @@ jobs:
       - restore-cache: *root-restore-yarn-cache
       - run:
           name: build React app
-          command: yarn workspace react-app build
+          command: |
+            yarn workspace react-app build
+            mkdir react-app/en
+            mv react-app/build/* react-app/en
+      - run:
+          name: build Polish version of React app
+          command: |
+            yarn workspace react-app build:pl
+            mkdir react-app/pl
+            mv react-app/build/* react-app/pl
       - persist_to_workspace:
           root: react-app
           paths:
-            - build
+            - en
+            - pl
 
   build-gh-pages:
     <<: *defaults
@@ -91,14 +101,19 @@ jobs:
       - attach_workspace:
           at: react-app
       - run:
-          name: build Electron app
-          command: yarn workspace electron-app build
-      - run:
           name: build distributable Windows app
-          command: yarn workspace electron-app dist --win
+          command: |
+            mkdir react-app/build
+            mv react-app/en/* react-app/build
+            yarn workspace electron-app build
+            yarn workspace electron-app dist --win
       - run:
           name: build distributable Windows app (Polish version)
-          command: yarn workspace electron-app dist-pl --win
+          command: |
+            rm -rf react-app/build/*
+            mv react-app/pl/* react-app/build
+            yarn workspace electron-app build
+            yarn workspace electron-app dist:pl --win
       - run:
           name: move artifacts
           command: |

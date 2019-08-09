@@ -12,14 +12,19 @@
 * `yarn workspace electron-app start`
 
 ### Building React App for Production
-* `yarn workspace react-app build`
+* `yarn workspace react-app build` or `yarn workspace react-app build:pl` for Polish version
 
 ### Packaging Electron App
 * `yarn workspace react-app build`
 * `yarn workspace electron-app build`
-* `yarn workspace electron-app package` or `yarn workspace electron-app package-pl` for Polish version 
+* `yarn workspace electron-app package`
 
 ### Building distributable Electron App
 * `yarn workspace react-app build`
 * `yarn workspace electron-app build`
-* `yarn workspace electron-app dist` or `yarn workspace electron-app dist-pl` for Polish version
+* `yarn workspace electron-app dist`
+
+or, to build a Polish version:
+* `yarn workspace react-app build:pl`
+* `yarn workspace electron-app build`
+* `yarn workspace electron-app dist:pl`
