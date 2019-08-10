@@ -18,7 +18,6 @@ import { LeaderboardSection } from './components/leaderboard/LeaderboardSection'
 import { OptionsSection } from './components/options/OptionsSection';
 import { LoadGameSection } from './components/load-game/LoadGameSection';
 import { SaveGameSection } from './components/save-game/SaveGameSection';
-import { InstallPromptSection } from './components/install-prompt/InstallPromptSection';
 import { LocaleChooser } from './components/locale-chooser/LocaleChooser';
 import { Button } from './components/_ui/Button';
 
@@ -135,8 +134,6 @@ const App: React.FC = () => {
         open={showGameOver}
         onRequestClose={handleGameOverModalClosed}
       />
-
-      <InstallPromptSection />
     </div>
   );
 };

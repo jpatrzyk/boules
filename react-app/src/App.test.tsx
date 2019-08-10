@@ -18,9 +18,6 @@ jest.mock('./components/load-game/LoadGameSection', () => ({
 jest.mock('./components/save-game/SaveGameSection', () => ({
   SaveGameSection: () => <div />,
 }));
-jest.mock('./components/install-prompt/InstallPromptSection', () => ({
-  InstallPromptSection: () => <div />,
-}));
 jest.mock('./utils/storage', () => ({
   loadGameConditions: jest.fn(async () => {}),
   persistGameConditions: jest.fn(() => {}),
