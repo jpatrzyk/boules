@@ -5,21 +5,21 @@
   "homepage": ".",
   "dependencies": {
     "@types/classnames": "^2.2.9",
-    "@types/jest": "24.0.16",
-    "@types/node": "12.6.9",
-    "@types/react": "16.8.24",
-    "@types/react-dom": "16.8.5",
+    "@types/jest": "24.0.18",
+    "@types/node": "12.7.2",
+    "@types/react": "16.9.2",
+    "@types/react-dom": "16.9.0",
     "classnames": "^2.2.6",
     "env-cmd": "^9.0.3",
     "i18next": "^17.0.8",
     "i18next-browser-languagedetector": "^3.0.2",
     "idb": "^4.0.4",
     "node-sass": "^4.12.0",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
     "react-i18next": "^10.11.5",
-    "react-scripts": "3.0.1",
-    "typescript": "3.5.3"
+    "react-scripts": "3.1.1",
+    "typescript": "3.6.2"
   },
   "devDependencies": {
     "fake-indexeddb": "^2.1.1"
