@@ -17,6 +17,11 @@
     "load_game": "Wczytaj",
     "save_game": "Zapisz"
   },
+  "install_prompt": {
+    "modal_title": "Instaluj 'Kulki'",
+    "prompt": "Klikając 'Instaluj' możesz utworzyć skrót do 'Kulek' i mieć je dostępne offline, zawsze i wszędzie.",
+    "ok_label": "Instaluj"
+  },
   "board": {
     "cell_label": "komórka {{ coords }}",
     "cell_color": ", kolor: {{ value }}",

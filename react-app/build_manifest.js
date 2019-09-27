@@ -9,6 +9,7 @@ const {
 
 const manifestTemplate = {
   name: REACT_APP_NAME,
+  short_name: REACT_APP_NAME,
   description: REACT_APP_DESCRIPTION,
   default_locale: REACT_APP_DEFAULT_LOCALE,
   icons: [

@@ -9,6 +9,7 @@ interface Props {
   onRequestClose: () => void;
   title?: string;
   priority?: 'top' | 'default';
+  focusElement?: HTMLElement | null;
 }
 
 export const Modal: React.FC<Props> = ({
@@ -17,6 +18,7 @@ export const Modal: React.FC<Props> = ({
   title,
   priority = 'default',
   children,
+  focusElement = null,
 }) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const [lastActiveElement, setLastActiveElement] = useState<HTMLElement | null>(null);
@@ -44,11 +46,13 @@ export const Modal: React.FC<Props> = ({
       }
     }
     if (lastActiveElement) {
-      if (contentRef.current) {
+      if (focusElement && attemptFocus(focusElement)) {
+        return;
+      } else if (contentRef.current) {
         focusFirstDescendant(contentRef.current);
       }
     }
-  }, [lastActiveElement]);
+  }, [lastActiveElement, focusElement]);
 
   useEffect(() => {
     function handleEscape(event: KeyboardEvent) {

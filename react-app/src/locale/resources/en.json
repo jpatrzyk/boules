@@ -17,6 +17,11 @@
     "load_game": "Load",
     "save_game": "Save"
   },
+  "install_prompt": {
+    "modal_title": "Install 'Boules'",
+    "prompt": "By clicking 'Install' you can add this app to your home screen, and be able to play anywhere, even offline.",
+    "ok_label": "Install"
+  },
   "board": {
     "cell_label": "cell at {{ coords }}",
     "cell_color": ", color: {{ value }}",

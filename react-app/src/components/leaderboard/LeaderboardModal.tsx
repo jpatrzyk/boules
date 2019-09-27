@@ -84,6 +84,7 @@ export const LeaderboardModal: React.FC<Props> = ({ open, onRequestClose }) => {
           open={isConfirmationOpen}
           onOk={clearScoresConfirmed}
           onCancel={handleConfirmationCancelled}
+          focusedButton="cancel"
         >
           {t('leaderboard.clear_scores_message')}
         </OkCancelModal>

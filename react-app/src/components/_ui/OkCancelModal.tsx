@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Modal } from 'components/_ui/Modal';
@@ -12,6 +12,8 @@ interface Props {
   open: boolean;
   onOk: () => void;
   onCancel: () => void;
+  focusedButton?: 'ok' | 'cancel';
+  primaryButton?: 'ok' | 'cancel';
 }
 
 export const OkCancelModal: React.FC<Props> = ({
@@ -21,16 +23,40 @@ export const OkCancelModal: React.FC<Props> = ({
   open,
   onOk,
   onCancel,
+  focusedButton = 'ok',
+  primaryButton,
 }) => {
   const { t } = useTranslation();
+  const okButtonRef = useRef<HTMLButtonElement>(null);
+  const cancelButtonRef = useRef<HTMLButtonElement>(null);
+
+  const focusedRef = focusedButton === 'cancel' ? cancelButtonRef : okButtonRef;
 
   return (
-    <Modal priority="top" open={open} onRequestClose={onCancel} title={title}>
+    <Modal
+      priority="top"
+      open={open}
+      onRequestClose={onCancel}
+      title={title}
+      focusElement={focusedRef.current}
+    >
       <div className="OkCancelModal">
         <div className="OkCancelModal-content">{children}</div>
         <div className="OkCancelModal-buttons">
-          <Button onClick={onCancel}>{t('global.cancel')}</Button>
-          <Button onClick={onOk}>{okLabel || t('global.ok')}</Button>
+          <Button
+            ref={cancelButtonRef}
+            variant={primaryButton === 'cancel' ? 'primary' : undefined}
+            onClick={onCancel}
+          >
+            {t('global.cancel')}
+          </Button>
+          <Button
+            ref={okButtonRef}
+            variant={primaryButton === 'ok' ? 'primary' : undefined}
+            onClick={onOk}
+          >
+            {okLabel || t('global.ok')}
+          </Button>
         </div>
       </div>
     </Modal>
