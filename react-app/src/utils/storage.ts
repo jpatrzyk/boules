@@ -1,7 +1,7 @@
 import { openDB, DBSchema } from 'idb';
 
 import { GameConditions, BaseState } from 'model/state';
-import { HIGHEST_SCORES_LENGTH } from './constants';
+import { HIGHEST_SCORES_LENGTH, INSTALL_PROMPT_INTERVAL_MS } from './constants';
 
 export interface Score {
   playerName: string;
@@ -9,8 +9,9 @@ export interface Score {
   timestamp: number;
 }
 
-const GAME_CONDITIONS_KEY = 'GAME_CONDITIONS';
-const RECENT_PLAYER_KEY = 'RECENT_PLAYER_KEY';
+export const GAME_CONDITIONS_KEY = 'GAME_CONDITIONS';
+export const RECENT_PLAYER_KEY = 'RECENT_PLAYER_KEY';
+export const PWA_LAST_INSTALL_PROMPT_DATE_KEY = 'PWA_LAST_INSTALL_PROMPT_DATE_KEY';
 
 interface BoulesDB extends DBSchema {
   scores: {
@@ -30,6 +31,10 @@ interface BoulesDB extends DBSchema {
     key: typeof RECENT_PLAYER_KEY;
     value: string;
   };
+  pwaLastInstallPromptDate: {
+    key: typeof PWA_LAST_INSTALL_PROMPT_DATE_KEY;
+    value: number;
+  };
 }
 
 export const dbPromise = openDB<BoulesDB>('boules-1', 1, {
@@ -41,6 +46,7 @@ export const dbPromise = openDB<BoulesDB>('boules-1', 1, {
     db.createObjectStore('gameConditions');
     db.createObjectStore('savedGames');
     db.createObjectStore('recentPlayer');
+    db.createObjectStore('pwaLastInstallPromptDate');
   },
 });
 
@@ -114,4 +120,19 @@ export async function clearAllSavedGames() {
 export async function loadRecentPlayerName() {
   const db = await dbPromise;
   return await db.get('recentPlayer', RECENT_PLAYER_KEY);
+}
+
+export async function shouldShowInstallPrompt(delay: number = INSTALL_PROMPT_INTERVAL_MS) {
+  const db = await dbPromise;
+  const lastPromptDate = await db.get('pwaLastInstallPromptDate', PWA_LAST_INSTALL_PROMPT_DATE_KEY);
+  return !lastPromptDate || lastPromptDate + delay < Date.now();
+}
+
+export async function persistLastInstallPromptDate(timestampMillis: number) {
+  const db = await dbPromise;
+  return await db.put(
+    'pwaLastInstallPromptDate',
+    timestampMillis,
+    PWA_LAST_INSTALL_PROMPT_DATE_KEY,
+  );
 }

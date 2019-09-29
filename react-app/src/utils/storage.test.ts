@@ -11,6 +11,9 @@ import {
   loadSavedGamesNames,
   loadGame,
   persistGame,
+  shouldShowInstallPrompt,
+  persistLastInstallPromptDate,
+  PWA_LAST_INSTALL_PROMPT_DATE_KEY,
 } from './storage';
 
 describe('isInTopScores', () => {
@@ -202,5 +205,51 @@ describe('persistGame', () => {
     const persisted = await db.get('savedGames', key);
     expect(key).toEqual('test_game');
     expect(persisted).toEqual(gameState);
+  });
+});
+
+describe('shouldShowInstallPrompt', () => {
+  beforeEach(async () => {
+    const db = await dbPromise;
+    await db.clear('pwaLastInstallPromptDate');
+  });
+
+  it('should return true if no date stored', async () => {
+    const result = await shouldShowInstallPrompt(1);
+    expect(result).toBe(true);
+  });
+
+  it('should return false if delay has not been reached', async () => {
+    const db = await dbPromise;
+    const now = Date.now();
+    await db.put('pwaLastInstallPromptDate', now, PWA_LAST_INSTALL_PROMPT_DATE_KEY);
+
+    const result = await shouldShowInstallPrompt(10 * 1000); // ten seconds
+    expect(result).toBe(false);
+  });
+
+  it('should return true if delay has exceeded', async () => {
+    const db = await dbPromise;
+    const tenMinutesAgo = Date.now() - 10 * 60 * 1000;
+    await db.put('pwaLastInstallPromptDate', tenMinutesAgo, PWA_LAST_INSTALL_PROMPT_DATE_KEY);
+
+    const result = await shouldShowInstallPrompt(10 * 1000); // ten seconds
+    expect(result).toBe(true);
+  });
+});
+
+describe('persistLastInstallPromptDate', () => {
+  beforeEach(async () => {
+    const db = await dbPromise;
+    await db.clear('pwaLastInstallPromptDate');
+  });
+
+  it('should put given timestamp in millis into the db', async () => {
+    const timestamp = Date.now();
+    await persistLastInstallPromptDate(timestamp);
+
+    const db = await dbPromise;
+    const persisted = await db.get('pwaLastInstallPromptDate', PWA_LAST_INSTALL_PROMPT_DATE_KEY);
+    expect(persisted).toEqual(timestamp);
   });
 });
