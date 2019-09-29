@@ -37,16 +37,22 @@ interface BoulesDB extends DBSchema {
   };
 }
 
-export const dbPromise = openDB<BoulesDB>('boules-1', 1, {
-  upgrade(db) {
-    const store = db.createObjectStore('scores', {
-      keyPath: 'timestamp',
-    });
-    store.createIndex('by-score', 'score');
-    db.createObjectStore('gameConditions');
-    db.createObjectStore('savedGames');
-    db.createObjectStore('recentPlayer');
-    db.createObjectStore('pwaLastInstallPromptDate');
+export const dbPromise = openDB<BoulesDB>('boules-1', 2, {
+  upgrade(db, oldVersion) {
+    switch (oldVersion) {
+      case 0: {
+        const store = db.createObjectStore('scores', {
+          keyPath: 'timestamp',
+        });
+        store.createIndex('by-score', 'score');
+        db.createObjectStore('gameConditions');
+        db.createObjectStore('savedGames');
+        db.createObjectStore('recentPlayer');
+      }
+      // eslint-disable-next-line no-fallthrough
+      case 1:
+        db.createObjectStore('pwaLastInstallPromptDate');
+    }
   },
 });
 
