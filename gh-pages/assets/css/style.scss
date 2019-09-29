@@ -1,7 +1,7 @@
 ---
 ---
 
-@import "{{ site.theme }}";
+@import '{{ site.theme }}';
 
 header {
   nav {
@@ -12,4 +12,10 @@ header {
   h1 {
     clear: both;
   }
+}
+
+.btn.btn--strong {
+  border-color: rgba(255, 255, 255, 0.6);
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
 }

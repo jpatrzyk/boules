@@ -8,6 +8,7 @@ description: 'Prosta gra logiczna. Układaj kulki o tym samym kolorze w linie i 
 
 {% assign t = site.t[page.lang] %}
 {% assign exe_asset = site.github.latest_release.assets[t.download_asset_index] %}
+{% assign app_href = site.github.baseurl | append: "/react-app/pl/" %}
 
 <p>
   <strong>Kulki</strong> to prosta gra logiczna, która jest dostępna zarówno w formie aplikacji desktopowej,
@@ -20,6 +21,6 @@ description: 'Prosta gra logiczna. Układaj kulki o tym samym kolorze w linie i 
 </p>
 
 <p>
-  <a href="{{ site.github.baseurl }}/react-app/pl/"><strong>Zagraj w przeglądarce</strong></a>
+  <a href="{{ app_href }}"><strong>Zagraj w przeglądarce</strong></a>
   lub <a href="{{ exe_asset.browser_download_url }}">Pobierz aplikację na system Windows</a>
 </p>

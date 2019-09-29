@@ -9,7 +9,9 @@ t:
     view_on_github: 'View on GitHub'
     download_asset_index: 0
     download: 'Download'
+    play_now: 'Play Now'
   pl:
     view_on_github: 'Zobacz na github.com'
     download_asset_index: 1
     download: 'Pobierz'
+    play_now: 'Zagraj w przeglądarce'

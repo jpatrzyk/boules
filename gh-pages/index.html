@@ -8,6 +8,7 @@ description: 'Simple puzzle game.'
 
 {% assign t = site.t[page.lang] %}
 {% assign exe_asset = site.github.latest_release.assets[t.download_asset_index] %}
+{% assign app_href = site.github.baseurl | append: "/react-app/en/" %}
 
 <p>
   <strong>Boules</strong> is a simple demo project. The goal was to build a puzzle game which could
@@ -22,7 +23,7 @@ description: 'Simple puzzle game.'
 </p>
 
 <p>
-  <a href="{{ site.github.baseurl }}/react-app/en/"><strong>Play Now</strong></a> or
+  <a href="{{ app_href }}"><strong>Play Now</strong></a> or
   <a href="{{ exe_asset.browser_download_url }}">Download Windows app</a>
 </p>
 
