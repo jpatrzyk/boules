@@ -21,6 +21,9 @@ jest.mock('./components/leaderboard/LeaderboardSection', () => ({
 jest.mock('./components/options/OptionsSection', () => ({
   OptionsSection: () => <div />,
 }));
+jest.mock('./components/tutorial/TutorialSection', () => ({
+  TutorialSection: () => <div />,
+}));
 jest.mock('./components/load-game/LoadGameSection', () => ({
   LoadGameSection: () => <div />,
 }));

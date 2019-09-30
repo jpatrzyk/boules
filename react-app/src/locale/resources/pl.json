@@ -14,6 +14,7 @@
     "undo": "Cofnij",
     "show_leaderboard": "Ranking",
     "show_options": "Ustawienia",
+    "show_help": "Pomoc",
     "load_game": "Wczytaj",
     "save_game": "Zapisz"
   },
@@ -62,5 +63,13 @@
     "modal_title": "Zapisz grę",
     "initial_game_name": "kulki_{{date}}",
     "input_label": "Nazwa gry"
+  },
+  "tutorial": {
+    "modal_title": "Zasady gry",
+    "info": "Przemieszczaj kulki tak by tworzyły rzędy w tym samym kolorze. Rzędy mogą być poziome, pionowe lub ukośne, muszą składać się przynajmniej z 5 kulek i nie mogą mieć przerw.",
+    "moving_balls": "Aby przesunąć wybraną kulkę, kliknij na nią, a następnie kliknij na wolne miejsce - tam gdzie chcesz ją umieścić. Jeśli istnieje ścieżka do tego miejsca, to kulka się tam przemieści. Jeżeli nie ma ścieżki, to taki ruch jest niemożliwy - musisz wybrać inne możliwe miejsce lub inną kulkę.",
+    "scoring": "Gdy zbudujesz rząd złożony przynajmniej z 5 kulek tego samego koloru, cały rząd zniknie z planszy, a ty otrzymasz punkty.",
+    "score_rules": "Zdobędziesz tym więcej punktów, im więcej kolorów w grze lub im mniejsza plansza. Szczegółowe zasady punktacji są opisane w 'Ustawieniach' gry.",
+    "game_over": "Po każdym ruchu na planszy pojawiają się trzy kolejne kulki. Gra kończy się gdy na planszy nie ma już wolnych miejsc. Jeśli twoja punktacja jest wtedy odpowiednio wysoka, to możesz zapisać swój wynik w rankingu najlepszych graczy."
   }
 }

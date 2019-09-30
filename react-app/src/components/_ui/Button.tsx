@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import { IconGlyph } from 'model/icons';
 import './Button.scss';
+import { Icon, IconGlyph } from "./Icon";
 
 export type ButtonVariant = 'primary' | 'default';
 
@@ -35,7 +35,7 @@ export const Button = React.forwardRef<HTMLButtonElement, Props>(({
       title={children}
       aria-label={children}
     >
-      {!!icon && <i className={`icon-${icon}`} />}
+      {!!icon && <Icon glyph={icon}/>}
       <span>{children}</span>
     </button>
   );

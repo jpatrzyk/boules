@@ -16,6 +16,7 @@ import { NextColors } from 'components/NextColors';
 import { CloseBehavior, GameOverModal } from './components/game-over/GameOverModal';
 import { LeaderboardSection } from './components/leaderboard/LeaderboardSection';
 import { OptionsSection } from './components/options/OptionsSection';
+import { TutorialSection } from "./components/tutorial/TutorialSection";
 import { LoadGameSection } from './components/load-game/LoadGameSection';
 import { SaveGameSection } from './components/save-game/SaveGameSection';
 import { InstallPromptSection } from './components/install-prompt/InstallPromptSection';
@@ -103,7 +104,7 @@ const App: React.FC = () => {
 
       <nav>
         <span>
-          <Button icon="new" onClick={handleNewGameClick}>
+          <Button icon="refresh" onClick={handleNewGameClick}>
             {t('app.new_game')}
           </Button>
           <LoadGameSection onGameLoaded={handleGameLoaded} />
@@ -115,6 +116,7 @@ const App: React.FC = () => {
         <span>
           <LeaderboardSection showModal={showLeaderboard} />
           <OptionsSection value={state} onChange={handleOptionsSubmitted} />
+          <TutorialSection/>
         </span>
       </nav>
 

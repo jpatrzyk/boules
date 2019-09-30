@@ -14,6 +14,7 @@
     "undo": "Undo",
     "show_leaderboard": "Leaderboard",
     "show_options": "Settings",
+    "show_help": "Help",
     "load_game": "Load",
     "save_game": "Save"
   },
@@ -62,5 +63,13 @@
     "modal_title": "Save Game",
     "initial_game_name": "saved_{{date}}",
     "input_label": "Game Name"
+  },
+  "tutorial": {
+    "modal_title": "How to Play",
+    "info": "Move the balls so that they form the line of minimum 5 balls of the same color. The lines could be vertical, horizontal or diagonal.",
+    "moving_balls": "In order to move a ball, first click on it. Next, click on the empty place where you want to move. If there is a path to that position, the ball will move there. Otherwise, you cannot make such a step - you have to select either another place or another ball.",
+    "scoring": "After building a row of at least 5 balls, the whole row will disappear and you will get the points.",
+    "score_rules": "You will score higher if you play with more colors or on smaller board. See game settings for more details.",
+    "game_over": "After each move, the next 3 balls will appear on the board. Once the board is full, the game is over. If your score is high enough, you will be asked to put your name on the Leaders' Board."
   }
 }
