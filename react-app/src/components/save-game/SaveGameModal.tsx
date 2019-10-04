@@ -43,10 +43,8 @@ export const SaveGameModal: React.FC<Props> = ({ gameState, open, onRequestClose
           </label>
         </div>
         <div className="SaveGameModal-buttons">
-          <Button onClick={onRequestClose}>{t('global.cancel')}</Button>
-          <Button variant="primary" onClick={handleSaveClick}>
-            {t('global.save')}
-          </Button>
+          <Button label={t('global.cancel')} onClick={onRequestClose} />
+          <Button label={t('global.save')} variant="primary" onClick={handleSaveClick} />
         </div>
       </div>
     </Modal>

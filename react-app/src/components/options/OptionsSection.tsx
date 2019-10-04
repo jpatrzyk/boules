@@ -34,9 +34,12 @@ export const OptionsSection: React.FC<Props> = ({ value, onChange }) => {
 
   return (
     <>
-      <Button icon="build" onClick={handleRequestShowOptions}>
-        {t('app.show_options')}
-      </Button>
+      <Button
+        icon="build"
+        label={t('app.show_options')}
+        hideLabel
+        onClick={handleRequestShowOptions}
+      />
       <OptionsModal
         open={showOptions}
         initialValue={value}

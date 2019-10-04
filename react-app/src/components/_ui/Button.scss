@@ -13,7 +13,6 @@ $icon-size: 2.0rem;
   line-height: $icon-size;
   font-weight: 700;
   letter-spacing: 0.05em;
-  text-transform: uppercase;
   white-space: nowrap;
   display: inline-flex;
   align-items: center;
@@ -27,8 +26,12 @@ $icon-size: 2.0rem;
     margin-right: 0;
   }
 
-  @media screen and (max-width: $break-h-small) {
+  @media screen and (max-width: $break-h-medium) {
     min-width: auto;
+
+    svg + span {
+      display: none;
+    }
   }
 
   svg {
@@ -38,16 +41,16 @@ $icon-size: 2.0rem;
 
     & + span {
       margin-left: 0.4rem;
-
-      @media screen and (max-width: $break-h-small) {
-        display: none;
-      }
     }
   }
 
   &:focus {
     outline: none;
     box-shadow: inset $color-primary 0 0 0.2rem 0.2rem;
+  }
+
+  &--icon-only {
+    min-width: auto;
   }
 
   &--primary {

@@ -47,7 +47,7 @@ export const LoadGameModal: React.FC<Props> = ({ open, onGameLoaded, onRequestCl
           <SegmentedControl vertical options={savedGames} onChange={handleGameChosen} />
         </div>
         <div className="LoadGameModal-buttons">
-          <Button onClick={onRequestClose}>{t('global.cancel')}</Button>
+          <Button label={t('global.cancel')} onClick={onRequestClose} />
         </div>
       </div>
     </Modal>

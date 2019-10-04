@@ -47,6 +47,10 @@ export const GameOverModal: React.FC<Props> = ({ score, open, onRequestClose }) 
     onRequestClose('new_game');
   }, [onRequestClose]);
 
+  const handleClose = useCallback(() => {
+    onRequestClose();
+  }, [onRequestClose]);
+
   function renderContent() {
     if (isTopScore) {
       return (
@@ -69,20 +73,16 @@ export const GameOverModal: React.FC<Props> = ({ score, open, onRequestClose }) 
     if (isTopScore) {
       return (
         <div className="GameOverModal-buttons">
-          <Button variant="primary" onClick={handleSave}>
-            {t('global.save')}
-          </Button>
-          <Button onClick={onRequestClose}>{t('game_over.dont_save')}</Button>
+          <Button variant="primary" label={t('global.save')} onClick={handleSave} />
+          <Button label={t('game_over.dont_save')} onClick={handleClose} />
         </div>
       );
     }
 
     return (
       <div className="GameOverModal-buttons">
-        <Button variant="primary" onClick={handleRequestNewGame}>
-          {t('global.yes')}
-        </Button>
-        <Button onClick={onRequestClose}>{t('global.no')}</Button>
+        <Button variant="primary" label={t('global.yes')} onClick={handleRequestNewGame} />
+        <Button label={t('global.no')} onClick={handleClose} />
       </div>
     );
   }

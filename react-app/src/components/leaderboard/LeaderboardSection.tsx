@@ -26,9 +26,12 @@ export const LeaderboardSection: React.FC<Props> = ({ showModal }) => {
 
   return (
     <>
-      <Button icon="leaderboard" onClick={handleRequestShowRanking}>
-        {t('app.show_leaderboard')}
-      </Button>
+      <Button
+        icon="leaderboard"
+        label={t('app.show_leaderboard')}
+        hideLabel
+        onClick={handleRequestShowRanking}
+      />
       <LeaderboardModal open={isModalOpen} onRequestClose={handleRankingClosed} />
     </>
   );

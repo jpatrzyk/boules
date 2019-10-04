@@ -18,13 +18,13 @@ export const TutorialSection: React.FC<{}> = () => {
 
   return (
     <>
-      <Button icon="help" onClick={handleRequestShowTutorial}>
-        {t('app.show_help')}
-      </Button>
-      <TutorialModal
-        open={showModal}
-        onRequestClose={handleModalClosed}
+      <Button
+        icon="help"
+        label={t('app.show_help')}
+        hideLabel
+        onClick={handleRequestShowTutorial}
       />
+      <TutorialModal open={showModal} onRequestClose={handleModalClosed} />
     </>
   );
 };

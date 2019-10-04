@@ -24,7 +24,7 @@ export const TutorialModal: React.FC<Props> = ({ open, onRequestClose }) => {
         <p>{t('tutorial.game_over')}</p>
       </div>
       <div className="TutorialModal-buttons">
-        <Button onClick={onRequestClose}>{t('global.ok')}</Button>
+        <Button label={t('global.ok')} onClick={onRequestClose} />
       </div>
     </Modal>
   );

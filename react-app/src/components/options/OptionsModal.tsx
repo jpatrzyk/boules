@@ -98,10 +98,8 @@ export const OptionsModal: React.FC<Props> = ({ open, initialValue, onSubmit, on
         </Trans>
       </div>
       <div className="OptionsModal-buttons">
-        <Button onClick={onCancel}>{t('global.cancel')}</Button>
-        <Button variant="primary" onClick={handleSubmit}>
-          {t('global.save')}
-        </Button>
+        <Button label={t('global.cancel')} onClick={onCancel} />
+        <Button label={t('global.save')} variant="primary" onClick={handleSubmit} />
       </div>
     </Modal>
   );

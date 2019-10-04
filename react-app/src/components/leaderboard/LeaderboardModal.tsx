@@ -73,10 +73,8 @@ export const LeaderboardModal: React.FC<Props> = ({ open, onRequestClose }) => {
           </table>
         </div>
         <div className="LeaderboardModal-buttons">
-          <Button variant="primary" onClick={handleRequestClose}>
-            {t('leaderboard.close')}
-          </Button>
-          <Button onClick={clearScoresRequested}>{t('leaderboard.clear')}</Button>
+          <Button label={t('leaderboard.close')} variant="primary" onClick={handleRequestClose} />
+          <Button label={t('leaderboard.clear')} onClick={clearScoresRequested} />
         </div>
         <OkCancelModal
           title={t('leaderboard.clear_scores_title')}

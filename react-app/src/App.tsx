@@ -16,7 +16,7 @@ import { NextColors } from 'components/NextColors';
 import { CloseBehavior, GameOverModal } from './components/game-over/GameOverModal';
 import { LeaderboardSection } from './components/leaderboard/LeaderboardSection';
 import { OptionsSection } from './components/options/OptionsSection';
-import { TutorialSection } from "./components/tutorial/TutorialSection";
+import { TutorialSection } from './components/tutorial/TutorialSection';
 import { LoadGameSection } from './components/load-game/LoadGameSection';
 import { SaveGameSection } from './components/save-game/SaveGameSection';
 import { InstallPromptSection } from './components/install-prompt/InstallPromptSection';
@@ -103,21 +103,19 @@ const App: React.FC = () => {
       </header>
 
       <nav>
-        <span>
-          <Button icon="refresh" onClick={handleNewGameClick}>
-            {t('app.new_game')}
-          </Button>
-          <LoadGameSection onGameLoaded={handleGameLoaded} />
-          <SaveGameSection gameState={state} />
-          <Button icon="undo" disabled={!state.prevStepModel} onClick={handleUndoClick}>
-            {t('app.undo')}
-          </Button>
-        </span>
-        <span>
-          <LeaderboardSection showModal={showLeaderboard} />
-          <OptionsSection value={state} onChange={handleOptionsSubmitted} />
-          <TutorialSection/>
-        </span>
+        <Button icon="refresh" label={t('app.new_game')} onClick={handleNewGameClick} />
+        <LoadGameSection onGameLoaded={handleGameLoaded} />
+        <SaveGameSection gameState={state} />
+        <Button
+          icon="undo"
+          label={t('app.undo')}
+          disabled={!state.prevStepModel}
+          onClick={handleUndoClick}
+        />
+        <span style={{ flexGrow: 1 }} />
+        <LeaderboardSection showModal={showLeaderboard} />
+        <OptionsSection value={state} onChange={handleOptionsSubmitted} />
+        <TutorialSection />
       </nav>
 
       <main>

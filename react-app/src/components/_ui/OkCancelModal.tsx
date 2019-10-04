@@ -45,18 +45,16 @@ export const OkCancelModal: React.FC<Props> = ({
         <div className="OkCancelModal-buttons">
           <Button
             ref={cancelButtonRef}
+            label={t('global.cancel')}
             variant={primaryButton === 'cancel' ? 'primary' : undefined}
             onClick={onCancel}
-          >
-            {t('global.cancel')}
-          </Button>
+          />
           <Button
             ref={okButtonRef}
+            label={okLabel || t('global.ok')}
             variant={primaryButton === 'ok' ? 'primary' : undefined}
             onClick={onOk}
-          >
-            {okLabel || t('global.ok')}
-          </Button>
+          />
         </div>
       </div>
     </Modal>
