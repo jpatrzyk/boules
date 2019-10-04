@@ -53,10 +53,18 @@ $intro-animation-duration: 300ms;
   max-height: 90%;
   background-color: $color-background-0;
   border-radius: 0.2rem;
-  box-shadow: $color-shadow 0 0.2rem 1.0rem 0;
+  box-shadow: $color-shadow 0 0.2rem 1rem 0;
   padding: 2.4rem;
   display: flex;
   flex-direction: column;
+
+  @media screen and (max-width: $break-h-large) {
+    min-width: 75%;
+  }
+
+  @media screen and (max-width: $break-h-medium) {
+    min-width: 90%;
+  }
 
   .Modal--hidden & {
     transform: translateX(-50%) translateY(-50%);
