@@ -57,10 +57,8 @@ export const dbPromise = openDB<BoulesDB>('boules-1', 3, {
         db.createObjectStore('currentGame');
         const savedConditions = await (tx as IDBPTransaction).objectStore('gameConditions').getAll();
         if (savedConditions.length) {
-          console.info('saved conditions:', savedConditions[0]);
           await tx.objectStore('currentGame').put(savedConditions[0], CURRENT_GAME_KEY);
         }
-        console.info('will delete gameConditions store');
         (db as IDBPDatabase).deleteObjectStore('gameConditions');
       }
     }
