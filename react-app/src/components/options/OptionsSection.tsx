@@ -1,7 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { persistGameConditions } from 'utils/storage';
 import { GameConditions } from 'model/state';
 import { Button } from 'components/_ui/Button';
 import { OptionsModal } from './OptionsModal';
@@ -26,7 +25,6 @@ export const OptionsSection: React.FC<Props> = ({ value, onChange }) => {
   const handleOptionsSubmitted = useCallback(
     async (options: GameConditions) => {
       setShowOptions(false);
-      await persistGameConditions(options);
       onChange(options);
     },
     [setShowOptions, onChange],

@@ -8,7 +8,7 @@ import {
   INITIAL_BALLS_COUNT,
   NEXT_BALLS_COUNT,
 } from './utils/constants';
-import { loadGameConditions, persistGameConditions } from './utils/storage';
+import { loadCurrentGame, persistCurrentGame } from './utils/storage';
 import { GameConditions, newGame, loadGame, BaseState, undo } from './model/state';
 import { useModel } from 'hooks/model/useModel';
 import { Board } from 'components/Board';
@@ -34,22 +34,29 @@ const App: React.FC = () => {
   const [showLeaderboard, setShowLeaderboard] = useState<boolean>(false);
 
   useEffect(() => {
-    const setConditionsFromStorage = async () => {
-      const savedConditions = await loadGameConditions();
-      if (savedConditions) {
-        dispatch(newGame(savedConditions));
+    const restoreCurrentGame = async () => {
+      const currentGame = await loadCurrentGame();
+      if (currentGame) {
+        if ((currentGame as BaseState).model) {
+          dispatch(loadGame(currentGame as BaseState));
+        } else {
+          dispatch(newGame(currentGame));
+        }
       } else {
         const defaultConditions: GameConditions = {
           size: DEFAULT_BOARD_SIZE,
           showNextColors: DEFAULT_SHOW_NEXT_COLORS,
           colorsCount: DEFAULT_COLORS_COUNT,
         };
-        await persistGameConditions(defaultConditions);
         dispatch(newGame(defaultConditions));
       }
     };
-    setConditionsFromStorage();
+    restoreCurrentGame();
   }, [dispatch]);
+
+  useEffect(() => {
+    persistCurrentGame(state);
+  }, [state]);
 
   const handleGameOver = useCallback(() => {
     setShowGameOver(true);
@@ -82,7 +89,7 @@ const App: React.FC = () => {
     [dispatch],
   );
 
-  const handleGameLoaded = useCallback(
+  const handleGameLoadedFromStorage = useCallback(
     (gameState: BaseState) => {
       dispatch(loadGame(gameState));
     },
@@ -104,7 +111,7 @@ const App: React.FC = () => {
 
       <nav>
         <Button icon="refresh" label={t('app.new_game')} onClick={handleNewGameClick} />
-        <LoadGameSection onGameLoaded={handleGameLoaded} />
+        <LoadGameSection onGameLoaded={handleGameLoadedFromStorage} />
         <SaveGameSection gameState={state} />
         <Button
           icon="undo"

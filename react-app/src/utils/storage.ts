@@ -1,4 +1,4 @@
-import { openDB, DBSchema } from 'idb';
+import { openDB, DBSchema, IDBPDatabase, IDBPTransaction } from 'idb';
 
 import { GameConditions, BaseState } from 'model/state';
 import { HIGHEST_SCORES_LENGTH, INSTALL_PROMPT_INTERVAL_MS } from './constants';
@@ -9,7 +9,7 @@ export interface Score {
   timestamp: number;
 }
 
-export const GAME_CONDITIONS_KEY = 'GAME_CONDITIONS';
+export const CURRENT_GAME_KEY = 'CURRENT_GAME';
 export const RECENT_PLAYER_KEY = 'RECENT_PLAYER_KEY';
 export const PWA_LAST_INSTALL_PROMPT_DATE_KEY = 'PWA_LAST_INSTALL_PROMPT_DATE_KEY';
 
@@ -19,9 +19,9 @@ interface BoulesDB extends DBSchema {
     value: Score;
     indexes: { 'by-score': number };
   };
-  gameConditions: {
-    key: typeof GAME_CONDITIONS_KEY;
-    value: GameConditions;
+  currentGame: {
+    key: typeof CURRENT_GAME_KEY;
+    value: BaseState | GameConditions;
   };
   savedGames: {
     key: string;
@@ -37,21 +37,32 @@ interface BoulesDB extends DBSchema {
   };
 }
 
-export const dbPromise = openDB<BoulesDB>('boules-1', 2, {
-  upgrade(db, oldVersion) {
+export const dbPromise = openDB<BoulesDB>('boules-1', 3, {
+  async upgrade(db, oldVersion, newVersion, tx) {
     switch (oldVersion) {
       case 0: {
         const store = db.createObjectStore('scores', {
           keyPath: 'timestamp',
         });
         store.createIndex('by-score', 'score');
-        db.createObjectStore('gameConditions');
+        (db as IDBPDatabase).createObjectStore('gameConditions');
         db.createObjectStore('savedGames');
         db.createObjectStore('recentPlayer');
       }
       // eslint-disable-next-line no-fallthrough
       case 1:
         db.createObjectStore('pwaLastInstallPromptDate');
+      // eslint-disable-next-line no-fallthrough
+      case 2: {
+        db.createObjectStore('currentGame');
+        const savedConditions = await (tx as IDBPTransaction).objectStore('gameConditions').getAll();
+        if (savedConditions.length) {
+          console.info('saved conditions:', savedConditions[0]);
+          await tx.objectStore('currentGame').put(savedConditions[0], CURRENT_GAME_KEY);
+        }
+        console.info('will delete gameConditions store');
+        (db as IDBPDatabase).deleteObjectStore('gameConditions');
+      }
     }
   },
 });
@@ -93,14 +104,14 @@ export async function clearAllScores() {
   await db.clear('scores');
 }
 
-export async function loadGameConditions() {
+export async function loadCurrentGame() {
   const db = await dbPromise;
-  return db.get('gameConditions', GAME_CONDITIONS_KEY);
+  return db.get('currentGame', CURRENT_GAME_KEY);
 }
 
-export async function persistGameConditions(value: GameConditions) {
+export async function persistCurrentGame(value: BaseState) {
   const db = await dbPromise;
-  return await db.put('gameConditions', value, GAME_CONDITIONS_KEY);
+  return await db.put('currentGame', value, CURRENT_GAME_KEY);
 }
 
 export async function loadSavedGamesNames() {
@@ -116,11 +127,6 @@ export async function loadGame(name: string) {
 export async function persistGame(name: string, state: BaseState) {
   const db = await dbPromise;
   return await db.put('savedGames', state, name);
-}
-
-export async function clearAllSavedGames() {
-  const db = await dbPromise;
-  await db.clear('savedGames');
 }
 
 export async function loadRecentPlayerName() {

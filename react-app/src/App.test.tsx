@@ -3,14 +3,9 @@ import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 
 import './locale/init';
-import { loadGameConditions, persistGameConditions } from './utils/storage';
+import { loadCurrentGame } from './utils/storage';
 
 import App from './App';
-import {
-  DEFAULT_BOARD_SIZE,
-  DEFAULT_COLORS_COUNT,
-  DEFAULT_SHOW_NEXT_COLORS,
-} from './utils/constants';
 
 jest.mock('./components/game-over/GameOverModal', () => ({
   GameOverModal: () => <div />,
@@ -34,8 +29,8 @@ jest.mock('./components/install-prompt/InstallPromptSection', () => ({
   InstallPromptSection: () => <div />,
 }));
 jest.mock('./utils/storage', () => ({
-  loadGameConditions: jest.fn(async () => {}),
-  persistGameConditions: jest.fn(() => {}),
+  loadCurrentGame: jest.fn(async () => {}),
+  persistCurrentGame: jest.fn(async () => {}),
 }));
 
 describe('App', () => {
@@ -60,33 +55,10 @@ describe('App', () => {
     });
   });
 
-  it('calls loadGameConditions on mount', async () => {
+  it('calls loadCurrentGame on mount', async () => {
     await act(async () => {
       ReactDOM.render(<App />, container);
     });
-    expect(loadGameConditions).toHaveBeenCalled();
-  });
-
-  it('calls persistGameConditions with default conditions if no were stored', async () => {
-    await act(async () => {
-      ReactDOM.render(<App />, container);
-    });
-    expect(persistGameConditions).toHaveBeenCalledWith({
-      size: DEFAULT_BOARD_SIZE,
-      showNextColors: DEFAULT_SHOW_NEXT_COLORS,
-      colorsCount: DEFAULT_COLORS_COUNT,
-    });
-  });
-
-  it('does not call persistGameConditions if there were already stored conditions', async () => {
-    (loadGameConditions as jest.Mock).mockReturnValue({
-      size: 5,
-      showNextColors: true,
-      colorsCount: 5,
-    });
-    await act(async () => {
-      ReactDOM.render(<App />, container);
-    });
-    expect(persistGameConditions).not.toHaveBeenCalled();
+    expect(loadCurrentGame).toHaveBeenCalled();
   });
 });
