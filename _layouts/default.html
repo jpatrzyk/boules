@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang }}">
+<head>
+
+    {% if site.google_analytics %}
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.google_analytics }}"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '{{ site.google_analytics }}');
+    </script>
+    {% endif %}
+    <meta charset="UTF-8">
+
+    {% seo %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
+</head>
+<body>
+
+{% assign t = site.t[page.lang] %}
+{% assign exe_asset = site.github.latest_release.assets[t.download_asset_index] %}
+{% assign app_href = site.github.baseurl | append: "/react-app/" | append: page.lang | append: "/" %}
+
+<header class="page-header" role="banner">
+    <nav>
+        {% assign pages=site.pages | where:"ref", page.ref | sort: 'lang' %}
+        {% for page in pages %}
+        <a href="{{ site.github.baseurl }}{{ page.url }}" class="btn {{ page.lang }}">{{ page.lang }}</a>
+        {% endfor %}
+    </nav>
+    <h1 class="project-name">{{ page.title }}</h1>
+    <h2 class="project-tagline">{{ page.description }}</h2>
+    {% if site.github.is_project_page %}
+    <a href="{{ site.github.repository_url }}" class="btn">{{ t.view_on_github }}</a>
+    {% endif %}
+    {% if site.show_downloads %}
+    <a href="{{ exe_asset.browser_download_url }}" class="btn">{{ t.download }} .exe</a>
+    <a href="{{ app_href }}" class="btn btn--strong">{{ t.play_now }}</a>
+    {% endif %}
+</header>
+
+<main id="content" class="main-content" role="main">
+
+    <a href="https://circleci.com/gh/jpatrzyk/boules">
+        <img src="https://circleci.com/gh/jpatrzyk/boules.svg?style=svg&amp;circle-token=71b29362cc58e7fbee87d105c9d84782a8bf05c9" alt="CircleCI">
+    </a>
+
+    {{ content }}
+
+</main>
+</body>
+</html>

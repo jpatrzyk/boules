@@ -1,0 +1,26 @@
+---
+ref: 'home'
+lang: 'pl'
+layout: default
+title: 'Kulki'
+description: 'Prosta gra logiczna. Układaj kulki o tym samym kolorze w linie i zdobywaj punkty.'
+---
+
+{% assign t = site.t[page.lang] %}
+{% assign exe_asset = site.github.latest_release.assets[t.download_asset_index] %}
+{% assign app_href = site.github.baseurl | append: "/react-app/pl/" %}
+
+<p>
+  <strong>Kulki</strong> to prosta gra logiczna, która jest dostępna zarówno w formie aplikacji desktopowej,
+  jak i aplikacji webowej.
+</p>
+
+<p>
+  Aplikacja webowa jest dodatkowo aplikacją PWA (<a href="https://developers.google.com/web/progressive-web-apps/">Progressive Web App</a>), 
+  czyli taką, która działa także off-line i może być “zainstalowana” - czyli dodana do pulpitu lub ekranu głównego.
+</p>
+
+<p>
+  <a href="{{ app_href }}"><strong>Zagraj w przeglądarce</strong></a>
+  lub <a href="{{ exe_asset.browser_download_url }}">Pobierz aplikację na system Windows</a>
+</p>

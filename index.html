@@ -1,0 +1,34 @@
+---
+ref: 'home'
+lang: 'en'
+layout: default
+title: 'Boules'
+description: 'Simple puzzle game.'
+---
+
+{% assign t = site.t[page.lang] %}
+{% assign exe_asset = site.github.latest_release.assets[t.download_asset_index] %}
+{% assign app_href = site.github.baseurl | append: "/react-app/en/" %}
+
+<p>
+  <strong>Boules</strong> is a simple demo project. The goal was to build a puzzle game which could
+  be installed as a desktop application, but also available as a web app (specifically a PWA).
+</p>
+
+<p>
+  The web app is implemented in <a href="https://reactjs.org/">React.js</a>. The desktop version is
+  an <a href="https://electronjs.org/">Electron</a> app that wraps the React app. Also, the web app
+  is a fully-fledged PWA (<a href="https://developers.google.com/web/progressive-web-apps/">Progressive Web App</a>).
+  As a PWA, it is installable and live on the user's home screen, without the need for an app store.
+</p>
+
+<p>
+  <a href="{{ app_href }}"><strong>Play Now</strong></a> or
+  <a href="{{ exe_asset.browser_download_url }}">Download Windows app</a>
+</p>
+
+<footer class="site-footer">
+  <span class="site-footer-owner">
+      <a href="{{ site.github.repository_url }}">{{ site.github.repository_name }}</a> is maintainedby <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a>.
+  </span>
+</footer>
